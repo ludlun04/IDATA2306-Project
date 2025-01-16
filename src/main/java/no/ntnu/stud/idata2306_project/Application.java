@@ -1,13 +1,13 @@
-package no.ntnu.stud.idata2301_frontend;
+package no.ntnu.stud.idata2306_project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Idata2301FrontendApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Idata2301FrontendApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }
