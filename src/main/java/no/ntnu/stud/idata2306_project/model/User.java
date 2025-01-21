@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 public class User{
   
   @Id
-  long id;
+  Long id;
   String username;
   String password;
 }
