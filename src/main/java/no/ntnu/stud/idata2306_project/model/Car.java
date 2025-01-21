@@ -2,6 +2,8 @@ package no.ntnu.stud.idata2306_project.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -13,6 +15,9 @@ public class Car {
   @Id
   @NotNull
   private int id;
+  @NotNull
+  @NotEmpty
+  @NotBlank
   private String name;
 
   //TODO: company
@@ -47,14 +52,10 @@ public class Car {
   }
 
   /**
-   * Sets the car's name. The name cannot be null or empty.
+   * Sets the car's name.
    * @param name
-   * @throws IllegalArgumentException if the name is null or empty
    */
   public void setName(String name) {
-    if (name == null || name.isEmpty()) {
-      throw new IllegalArgumentException("Name cannot be null or empty");
-    }
     this.name = name;
   }
 }
