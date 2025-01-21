@@ -6,6 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/**
+ * User entity class
+ * 
+ * <p> Will be used for possible authenticaion in the future
+ */
 @Entity
 public class User{
   
