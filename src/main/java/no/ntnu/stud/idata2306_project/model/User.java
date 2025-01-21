@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 /**
  * User entity class
  * 
- * <p> Will be used for possible authenticaion in the future
+ * <p> Will be used for possible authenticaion
  */
 @Entity
 public class User{
