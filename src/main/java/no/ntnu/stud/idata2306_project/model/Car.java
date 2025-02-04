@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
 public class Car {
   @Id
   @NotNull
-  private int id;
+  private long id;
   @NotNull
   @NotEmpty
   @NotBlank
@@ -30,7 +30,7 @@ public class Car {
    *
    * @return the car's id
    */
-  public int getId() {
+  public long getId() {
     return this.id;
   }
 
