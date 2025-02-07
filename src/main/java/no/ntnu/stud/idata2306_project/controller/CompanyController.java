@@ -1,5 +1,8 @@
 package no.ntnu.stud.idata2306_project.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import no.ntnu.stud.idata2306_project.model.Company;
 import no.ntnu.stud.idata2306_project.repository.CompanyRepository;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,10 @@ public class CompanyController {
     this.companyRepository = companyRepository;
   }
 
+  @Operation(summary = "Get all companies", description = "Get a list of all companies")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "List of companies")
+  })
   @GetMapping()
   public List<Company> getCompanies() {
     return companyRepository.findAll();
