@@ -1,10 +1,6 @@
 package no.ntnu.stud.idata2306_project.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 /**
  * User entity class
@@ -12,7 +8,8 @@ import jakarta.persistence.Id;
  * <p> Will be used for possible authenticaion
  */
 @Entity
-public class User{
+@Table(name = "app_user")
+public class User {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
