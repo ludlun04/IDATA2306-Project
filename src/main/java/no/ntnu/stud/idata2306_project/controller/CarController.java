@@ -26,8 +26,8 @@ public class CarController {
   @Autowired
   private CarRepository carRepository;
 
-  @GetMapping("/")
-  public List<Car> getAll(@RequestParam String param) {
+  @GetMapping()
+  public List<Car> getAll() {
       return carRepository.findAll();
   }
   
