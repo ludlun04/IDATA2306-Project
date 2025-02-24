@@ -1,6 +1,9 @@
 package no.ntnu.stud.idata2306_project.model;
 
 import jakarta.persistence.*;
+import java.util.Collection;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * User entity class
@@ -9,7 +12,7 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "app_user")
-public class User {
+public class User implements UserDetails {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +20,19 @@ public class User {
   Long id;
   String username;
   String password;
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return null;
+  }
+
+  @Override
+  public String getPassword() {
+    return null;
+  }
+
+  @Override
+  public String getUsername() {
+    return null;
+  }
 }
