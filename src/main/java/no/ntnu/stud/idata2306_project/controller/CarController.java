@@ -44,6 +44,11 @@ public class CarController {
       return ResponseEntity.ok(car.get());
   }
 
+  @GetMapping("/search/{keyWord}")
+  public List<Car> getByKeyWord(@RequestParam String keyWord) {
+      return carRepository.findByNameContaining(keyWord);
+  }
+
   @PostMapping("/")
   public ResponseEntity<String> addCar(@RequestBody Car entity) {
       carRepository.save(entity);
