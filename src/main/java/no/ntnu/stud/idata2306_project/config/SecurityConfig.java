@@ -22,6 +22,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import no.ntnu.stud.idata2306_project.model.User;
 import no.ntnu.stud.idata2306_project.repository.UserRepository;
@@ -36,6 +38,13 @@ import no.ntnu.stud.idata2306_project.repository.UserRepository;
 @EnableMethodSecurity
 public class SecurityConfig {
   private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+  JwtRequestFilter jwtRequestFilter; 
+
+  public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+    super();
+    this.jwtRequestFilter = jwtRequestFilter;
+  }
 
   /**
    * Configures the security filter chain.
@@ -53,6 +62,7 @@ public class SecurityConfig {
           .requestMatchers("/").permitAll()
           .anyRequest().authenticated()
         )
+        .addFilterBefore(this.jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
         .formLogin(withDefaults())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
         .build();
