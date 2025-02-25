@@ -1,0 +1,84 @@
+package no.ntnu.stud.idata2306_project.config;
+
+import java.io.IOException;
+
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+
+/**
+ * Filter class for handling JWT tokens.
+ * Inspiration taken from:
+ * girt
+ */
+@Component
+public class JwtRequestFilter extends OncePerRequestFilter {
+
+
+  UserDetailsService userDetailsService;
+  JwtUtil jwtUtil;
+
+  public JwtRequestFilter(JwtUtil jwtUtil) {
+    super();
+    this.jwtUtil = jwtUtil;
+  }
+
+  @Override
+  protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
+      throws ServletException, IOException {
+        String jwtToken = getJwtToken(request);
+        String username = jwtToken != null ? getUsernameFromToken(jwtToken) : null;
+
+        if (username != null && !isContextAuthenticated()) {
+          UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+          if (userDetails != null && jwtUtil.validateToken(jwtToken, userDetails)) {
+            registerUserAsAuthenticated(request, userDetails);
+          }
+        }
+
+      filterChain.doFilter(request, response);
+  }
+
+  private String getJwtToken(HttpServletRequest request) {
+    String authHeader = request.getHeader("Authorization");
+    String jwt = null;
+    if (authHeader != null && authHeader.startsWith("Bearer ")) {
+      jwt = authHeader.replace("Bearer ", "");
+    }
+    return jwt;
+  }
+
+  private String getUsernameFromToken(String jwtToken) {
+    String username = null;
+    try {
+      username = jwtUtil.extractUsername(jwtToken);
+    } catch (Exception e) {}
+
+    return username;
+  }
+
+  private boolean isContextAuthenticated() {
+    return SecurityContextHolder.getContext().getAuthentication() != null;
+  }
+
+  private static void registerUserAsAuthenticated(HttpServletRequest request,
+                                                  UserDetails userDetails) {
+    final UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(
+        userDetails, null, userDetails.getAuthorities());
+    upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+    SecurityContextHolder.getContext().setAuthentication(upat);
+  }
+  
+}
