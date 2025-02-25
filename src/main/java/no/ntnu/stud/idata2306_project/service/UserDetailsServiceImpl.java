@@ -8,7 +8,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import no.ntnu.stud.idata2306_project.model.User;
 import no.ntnu.stud.idata2306_project.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
   UserRepository userRepository;
