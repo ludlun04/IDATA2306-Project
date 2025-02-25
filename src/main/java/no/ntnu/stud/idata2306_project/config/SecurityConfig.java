@@ -4,6 +4,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.hibernate.mapping.List;
 import org.springframework.boot.CommandLineRunner;
@@ -45,12 +46,14 @@ public class SecurityConfig {
   public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
     return http
         .csrf(AbstractHttpConfigurer::disable)
-        .cors(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(auth -> auth.requestMatchers("/authenticate").permitAll())
-        .authorizeHttpRequests(auth -> auth.requestMatchers("/").permitAll())
-        .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+        .authorizeHttpRequests(auth -> auth
+          .requestMatchers("/authenticate").permitAll()
+          .requestMatchers("/").permitAll()
+          .anyRequest().authenticated()
+        )
+        .formLogin(withDefaults())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .httpBasic(withDefaults()).build();
+        .build();
   }
 
   /**
@@ -65,15 +68,15 @@ public class SecurityConfig {
 
   @Bean
   CommandLineRunner createInitialUsers(UserRepository userRepository) {
-    return _ -> {
-      
-      ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    return args -> {
+      Optional<User> optional = userRepository.findByUsername("user");
 
-      authorities.add(new SimpleGrantedAuthority("ADMIN"));
+      if (optional.isEmpty()) {
+        User user = new User("user", passwordEncoder.encode("password"));
 
-      User user = new User("user", passwordEncoder.encode("password"));
-
-      userRepository.save(user);
+        System.out.println(user.getAuthorities());
+        userRepository.save(user);
+      }
     };
   }
 }

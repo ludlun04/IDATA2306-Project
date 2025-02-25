@@ -1,8 +1,11 @@
 package no.ntnu.stud.idata2306_project.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -18,8 +21,12 @@ public class User implements UserDetails {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id", nullable = false, updatable = false)
   Long id;
+
+  @Column(unique = true)
   String username;
   String password;
+
+  public User() {}
 
   public User(String username, String password) {
     super();
@@ -38,7 +45,11 @@ public class User implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+
+    authorities.add(new SimpleGrantedAuthority("ADMIN"));
+
+    return authorities;
   }
 
   @Override
