@@ -25,6 +25,11 @@ public class Car {
 
   public Car() {}
 
+  public Car(long id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+
   /**
    * Returns the car's id.
    *
