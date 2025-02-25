@@ -54,7 +54,7 @@ public class SecurityConfig {
           .anyRequest().authenticated()
         )
         .formLogin(withDefaults())
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
         .build();
   }
 
