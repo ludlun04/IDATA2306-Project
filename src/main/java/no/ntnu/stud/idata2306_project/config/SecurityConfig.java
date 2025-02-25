@@ -4,8 +4,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
 
+import no.ntnu.stud.idata2306_project.enums.Gender;
 import no.ntnu.stud.idata2306_project.model.Car;
 import no.ntnu.stud.idata2306_project.repository.CarRepository;
 import org.hibernate.mapping.List;
@@ -83,7 +85,7 @@ public class SecurityConfig {
       Optional<User> optional = userRepository.findByUsername("user");
 
       if (optional.isEmpty()) {
-        User user = new User("user", passwordEncoder.encode("password"));
+        User user = new User("user", passwordEncoder.encode("password"), 12345678, new Date(System.currentTimeMillis()-108273460), "email@email.com", Gender.Unidentified);
 
         System.out.println(user.getAuthorities());
         userRepository.save(user);

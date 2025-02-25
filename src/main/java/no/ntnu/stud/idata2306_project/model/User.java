@@ -2,9 +2,12 @@ package no.ntnu.stud.idata2306_project.model;
 
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.regex.Pattern;
+import no.ntnu.stud.idata2306_project.enums.Gender;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,15 +26,25 @@ public class User implements UserDetails {
   @Column(name = "user_id", nullable = false, updatable = false)
   Long id;
 
+  @NotNull
   @Column(unique = true)
   String username;
+
+  @NotNull
   String password;
 
-  //TODO: Phone number, email, gender, date of birth
+  @NotNull
+  int phoneNumber;
+
+  @NotNull
+  Date dateOfBirth;
+  String email;
+  Gender gender = Gender.Unidentified;
+
 
   public User() {}
 
-  public User(String username, String password) {
+  public User(String username, String password, int phoneNumber, Date dateOfBirth, String email, Gender gender) {
     super();
 
     if (username == null || username.isEmpty()) {
@@ -42,8 +55,26 @@ public class User implements UserDetails {
       throw new IllegalArgumentException("Password cannot be null or empty");
     }
 
+    if (phoneNumber < 0 || phoneNumber > 99999999) {
+      throw new IllegalArgumentException("Phone number cannot be negative");
+    }
+
+    if (email != null) {
+      if (!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email)) {
+          throw new IllegalArgumentException("Email is not valid");
+      }
+    }
+
+    if (dateOfBirth == null) {
+      throw new IllegalArgumentException("Date of birth cannot be null");
+    }
+
     this.username = username;
     this.password = password;
+    this.phoneNumber = phoneNumber;
+    this.dateOfBirth = dateOfBirth;
+    this.email = email;
+    this.gender = gender;
   }
 
   @Override
@@ -63,5 +94,21 @@ public class User implements UserDetails {
   @Override
   public String getUsername() {
     return username;
+  }
+
+  public int getPhoneNumber() {
+      return this.phoneNumber;
+  }
+
+  public Date getDateOfBirth() {
+      return this.dateOfBirth;
+  }
+
+  public String getEmail() {
+      return this.email;
+  }
+
+  public Gender getGender() {
+      return this.gender;
   }
 }
