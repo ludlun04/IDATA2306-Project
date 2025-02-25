@@ -21,6 +21,21 @@ public class User implements UserDetails {
   String username;
   String password;
 
+  public User(String username, String password) {
+    super();
+
+    if (username == null || username.isEmpty()) {
+      throw new IllegalArgumentException("Username cannot be null or empty");
+    }
+
+    if (password == null || password.isEmpty()) {
+      throw new IllegalArgumentException("Password cannot be null or empty");
+    }
+
+    this.username = username;
+    this.password = password;
+  }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return null;
