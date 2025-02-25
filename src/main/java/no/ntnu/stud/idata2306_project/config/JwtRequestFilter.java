@@ -2,6 +2,7 @@ package no.ntnu.stud.idata2306_project.config;
 
 import java.io.IOException;
 
+import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,9 +31,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   UserDetailsService userDetailsService;
   JwtUtil jwtUtil;
 
-  public JwtRequestFilter(JwtUtil jwtUtil) {
+  public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService) {
     super();
     this.jwtUtil = jwtUtil;
+    this.userDetailsService = userDetailsService;
   }
 
   @Override
