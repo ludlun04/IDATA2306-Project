@@ -39,7 +39,7 @@ import no.ntnu.stud.idata2306_project.repository.UserRepository;
 public class SecurityConfig {
   private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-  JwtRequestFilter jwtRequestFilter; 
+  JwtRequestFilter jwtRequestFilter;
 
   public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
     super();
@@ -58,10 +58,9 @@ public class SecurityConfig {
     return http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> auth
-          .requestMatchers("/authenticate").permitAll()
-          .requestMatchers("/").permitAll()
-          .anyRequest().authenticated()
-        )
+            .requestMatchers("/authenticate").permitAll()
+            .requestMatchers("/").permitAll()
+            .anyRequest().authenticated())
         .addFilterBefore(this.jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
         .formLogin(withDefaults())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
@@ -95,8 +94,8 @@ public class SecurityConfig {
   @Bean
   CommandLineRunner createInitialCars(CarRepository carRepository) {
     return args -> {
-      String[] names = {"Volvo V60", "BMW M3", "Audi A4", "Tesla Model S", "Volkswagen Golf",
-        "Toyota Corolla", "Ford Focus", "Mercedes-Benz C-Class", "Peugeot 208", "Skoda Octavia"};
+      String[] names = { "Volvo V60", "BMW M3", "Audi A4", "Tesla Model S", "Volkswagen Golf",
+          "Toyota Corolla", "Ford Focus", "Mercedes-Benz C-Class", "Peugeot 208", "Skoda Octavia" };
 
       long id = 1L;
       for (String name : names) {
