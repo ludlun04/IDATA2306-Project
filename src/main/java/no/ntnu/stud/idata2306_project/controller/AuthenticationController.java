@@ -1,5 +1,7 @@
 package no.ntnu.stud.idata2306_project.controller;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import no.ntnu.stud.idata2306_project.config.AuthenticationRequest;
 import no.ntnu.stud.idata2306_project.config.JwtUtil;
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
@@ -13,12 +15,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Represents a controller for authentication.
+ *
+ * <p>Contains the endpoint used for authenticating users.
+ */
 @RestController
 public class AuthenticationController {
   private AuthenticationManager authenticationManager;
   private UserDetailsServiceImpl userDetailsService;
   private JwtUtil jwtUtil;
 
+  /**
+   * Creates a new AuthenticationController.
+   *
+   * @param authenticationManager the authentication manager to use
+   * @param userDetailsService the user details service to use
+   * @param jwtUtil the JWT utility to use
+   */
   public AuthenticationController(
     AuthenticationManager authenticationManager,
     UserDetailsServiceImpl userDetailsService,
@@ -28,6 +42,15 @@ public class AuthenticationController {
     this.jwtUtil = jwtUtil;
   }
 
+  /**
+   * Authenticates a user.
+   *
+   * @param request the authentication request
+   * @return a response entity containing the JWT token
+   */
+//  @ApiResponses(values = {
+//    @ApiResponse(responseCode = "200", description = "JWT")
+//  })
   @PostMapping("/authenticate")
   public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
     try {

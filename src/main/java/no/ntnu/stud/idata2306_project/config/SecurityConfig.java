@@ -61,13 +61,14 @@ public class SecurityConfig {
   public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
     return http
         .csrf(AbstractHttpConfigurer::disable)
+        .cors(withDefaults())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/authenticate").permitAll()
             .requestMatchers("/").permitAll()
             .anyRequest().authenticated())
         .addFilterBefore(this.jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-        .formLogin(withDefaults())
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+        .formLogin(AbstractHttpConfigurer::disable)
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .build();
   }
 
