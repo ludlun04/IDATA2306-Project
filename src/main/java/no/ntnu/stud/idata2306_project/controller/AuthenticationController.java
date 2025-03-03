@@ -2,6 +2,8 @@ package no.ntnu.stud.idata2306_project.controller;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import no.ntnu.stud.idata2306_project.config.AuthenticationRequest;
 import no.ntnu.stud.idata2306_project.config.JwtUtil;
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
@@ -30,13 +32,13 @@ public class AuthenticationController {
    * Creates a new AuthenticationController.
    *
    * @param authenticationManager the authentication manager to use
-   * @param userDetailsService the user details service to use
-   * @param jwtUtil the JWT utility to use
+   * @param userDetailsService    the user details service to use
+   * @param jwtUtil               the JWT utility to use
    */
   public AuthenticationController(
-    AuthenticationManager authenticationManager,
-    UserDetailsServiceImpl userDetailsService,
-    JwtUtil jwtUtil) {
+      AuthenticationManager authenticationManager,
+      UserDetailsServiceImpl userDetailsService,
+      JwtUtil jwtUtil) {
     this.authenticationManager = authenticationManager;
     this.userDetailsService = userDetailsService;
     this.jwtUtil = jwtUtil;
@@ -48,15 +50,20 @@ public class AuthenticationController {
    * @param request the authentication request
    * @return a response entity containing the JWT token
    */
-//  @ApiResponses(values = {
-//    @ApiResponse(responseCode = "200", description = "JWT")
-//  })
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "JWT"),
+      @ApiResponse(responseCode = "400", description = "Missing body"),
+      @ApiResponse(responseCode = "401", description = "Incorrect username or password")
+  })
   @PostMapping("/authenticate")
-  public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
+  public ResponseEntity<?> authenticate(@RequestBody(required = false) AuthenticationRequest request) {
+    if (request == null) {
+      return new ResponseEntity<>("Missing body", HttpStatus.BAD_REQUEST);
+    }
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-        request.getUsername(),
-        request.getPassword()
+          request.getUsername(),
+          request.getPassword()
       ));
     } catch (BadCredentialsException e) {
       return new ResponseEntity<>("Incorrect username or password", HttpStatus.UNAUTHORIZED);
