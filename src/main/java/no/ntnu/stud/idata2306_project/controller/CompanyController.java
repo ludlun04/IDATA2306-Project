@@ -12,16 +12,37 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Represents a controller for companies.
+ *
+ * <p>Contains the following endpoints:
+ * <ul>
+ *  <li>GET /company: Get all companies</li>
+ *  <li>GET /company/{id}: Get a company by id</li>
+ *  <li>POST /company: Add a new company</li>
+ *  <li>DELETE /company/{id}: Delete a company by id</li>
+ *  </ul>
+ */
 @RestController
 @RequestMapping("/company")
 public class CompanyController {
 
   private final CompanyRepository companyRepository;
 
+  /**
+   * Creates a new CompanyController.
+   *
+   * @param companyRepository the repository to use
+   */
   public CompanyController(CompanyRepository companyRepository) {
     this.companyRepository = companyRepository;
   }
 
+  /**
+   * Get all companies.
+   *
+   * @return a list of all companies
+   */
   @Operation(summary = "Get all companies", description = "Get a list of all companies")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "List of companies")
@@ -31,6 +52,12 @@ public class CompanyController {
     return companyRepository.findAll();
   }
 
+  /**
+   * Get a company by its id.
+   *
+   * @param id the id of the company to get
+   * @return the company that was found
+   */
   @Operation(summary = "Get a company", description = "Get a company by id")
   @Parameter(name = "id", description = "The id of the company to get", required = true)
   @ApiResponses(value = {
@@ -43,6 +70,12 @@ public class CompanyController {
     return ResponseEntity.status(company == null ? HttpStatus.NOT_FOUND : HttpStatus.OK).body(company);
   }
 
+  /**
+   * Add a new company.
+   *
+   * @param company the company to add
+   * @return the company that was added
+   */
   @Operation(summary = "Add a company", description = "Add a new company")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "201", description = "Company that was added")
@@ -53,6 +86,12 @@ public class CompanyController {
     return ResponseEntity.status(HttpStatus.CREATED).body(newCompany);
   }
 
+  /**
+   * Delete a company by its id.
+   *
+   * @param id the id of the company to delete
+   * @return the company that was deleted
+   */
   @Operation(summary = "Delete a company", description = "Delete a company by id")
   @Parameter(name = "id", description = "The id of the company to delete", required = true)
   @ApiResponses(value = {
