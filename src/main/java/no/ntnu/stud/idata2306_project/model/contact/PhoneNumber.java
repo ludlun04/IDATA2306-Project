@@ -1,14 +1,14 @@
-package no.ntnu.stud.idata2306_project.model;
+package no.ntnu.stud.idata2306_project.model.contact;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class Address {
+public class PhoneNumber {
   @Id
   private Long id;
 
-  public Address() {}
+  public PhoneNumber() {}
 
   public void setId(Long id) {
     this.id = id;

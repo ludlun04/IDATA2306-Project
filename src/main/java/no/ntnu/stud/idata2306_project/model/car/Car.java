@@ -1,4 +1,4 @@
-package no.ntnu.stud.idata2306_project.model;
+package no.ntnu.stud.idata2306_project.model.car;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

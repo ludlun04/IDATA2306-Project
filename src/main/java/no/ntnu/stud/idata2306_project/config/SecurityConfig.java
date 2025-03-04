@@ -8,9 +8,6 @@ import java.util.Date;
 import java.util.Optional;
 
 import no.ntnu.stud.idata2306_project.enums.Gender;
-import no.ntnu.stud.idata2306_project.model.Address;
-import no.ntnu.stud.idata2306_project.model.Car;
-import no.ntnu.stud.idata2306_project.model.PhoneNumber;
 import no.ntnu.stud.idata2306_project.repository.CarRepository;
 import org.hibernate.mapping.List;
 import org.springframework.boot.CommandLineRunner;
@@ -31,7 +28,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import no.ntnu.stud.idata2306_project.model.User;
+import no.ntnu.stud.idata2306_project.model.car.Car;
+import no.ntnu.stud.idata2306_project.model.contact.Address;
+import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
+import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.repository.UserRepository;
 
 /**

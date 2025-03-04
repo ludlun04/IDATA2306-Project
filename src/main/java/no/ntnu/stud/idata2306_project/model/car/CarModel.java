@@ -1,4 +1,4 @@
-package no.ntnu.stud.idata2306_project.model;
+package no.ntnu.stud.idata2306_project.model.car;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;

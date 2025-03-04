@@ -1,4 +1,4 @@
-package no.ntnu.stud.idata2306_project.model;
+package no.ntnu.stud.idata2306_project.model.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
@@ -17,6 +17,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 import no.ntnu.stud.idata2306_project.enums.Gender;
+import no.ntnu.stud.idata2306_project.model.car.Car;
+import no.ntnu.stud.idata2306_project.model.contact.Address;
+import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
