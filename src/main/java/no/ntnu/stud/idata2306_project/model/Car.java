@@ -2,6 +2,7 @@ package no.ntnu.stud.idata2306_project.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -20,12 +21,20 @@ public class Car {
   @NotBlank
   private String name;
 
-  //TODO: company
-  //TODO: addons
-
+  
   public Car() {}
 
   public Car(long id, String name) {
+    if (id < 1) {
+      throw new IllegalArgumentException("Id must be positive");
+    }
+    if (name == null) {
+      throw new IllegalArgumentException("Name must not be null");
+    }
+    if (name.isBlank()) {
+      throw new IllegalArgumentException("Name must not be blank");
+    }
+
     this.id = id;
     this.name = name;
   }
