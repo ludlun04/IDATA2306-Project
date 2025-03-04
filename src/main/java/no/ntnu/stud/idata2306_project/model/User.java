@@ -33,6 +33,8 @@ public class User implements UserDetails {
   @NotNull
   String password;
 
+  //TODO: First/Last name
+
   @NotNull
   int phoneNumber;
 
