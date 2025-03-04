@@ -8,7 +8,9 @@ import java.util.Date;
 import java.util.Optional;
 
 import no.ntnu.stud.idata2306_project.enums.Gender;
+import no.ntnu.stud.idata2306_project.model.Address;
 import no.ntnu.stud.idata2306_project.model.Car;
+import no.ntnu.stud.idata2306_project.model.PhoneNumber;
 import no.ntnu.stud.idata2306_project.repository.CarRepository;
 import org.hibernate.mapping.List;
 import org.springframework.boot.CommandLineRunner;
@@ -93,7 +95,12 @@ public class SecurityConfig {
       Optional<User> optional = userRepository.findByUsername("user");
 
       if (optional.isEmpty()) {
-        User user = new User("user", passwordEncoder.encode("password"), 12345678, new Date(System.currentTimeMillis()-108273460), "email@email.com", Gender.Unidentified);
+        User user = new User();
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPhoneNumber(new PhoneNumber());
+        user.setDateOfBirth(new Date(System.currentTimeMillis()-108273460));
+        user.setEmail("email@email.com");
 
         System.out.println(user.getAuthorities());
         userRepository.save(user);

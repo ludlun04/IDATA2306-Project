@@ -20,7 +20,6 @@ public class Car {
   @NotEmpty
   @NotBlank
   private String name;
-
   
   public Car() {}
 
