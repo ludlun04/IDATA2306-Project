@@ -1,5 +1,6 @@
 package no.ntnu.stud.idata2306_project.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ public class Company {
     /**
      * The id of the company
      */
+    @Schema(description = "The id of the company", example = "1")
     @Id
     @NotNull
     private int id;
@@ -22,6 +24,7 @@ public class Company {
     /**
      * The name of the company
      */
+    @Schema(description = "The name of the company", example = "Company")
     @NotNull
     @NotEmpty
     @NotBlank
@@ -30,17 +33,20 @@ public class Company {
     /**
      * The address of the company
      */
+    @Schema(description = "The address of the company", example = "Borgundveien 14")
     private String address;
 
     /**
      * The phone number for the company
      */
+    @Schema(description = "The phone number for the company", example = "12345678")
     @NotNull
     private int phoneNumber;
 
     /**
      * The country code for the phone number
      */
+    @Schema(description = "The country code for the phone number", example = "47")
     @NotNull
     private int phoneNumberCountryCode;
 
