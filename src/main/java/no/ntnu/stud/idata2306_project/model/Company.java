@@ -11,21 +11,70 @@ import jakarta.validation.constraints.NotNull;
  */
 @Entity
 public class Company {
+
+    /**
+     * The id of the company
+     */
     @Id
     @NotNull
     private int id;
+
+    /**
+     * The name of the company
+     */
     @NotNull
     @NotEmpty
     @NotBlank
     private String name;
+
+    /**
+     * The address of the company
+     */
     private String address;
+
+    /**
+     * The phone number for the company
+     */
     @NotNull
     private int phoneNumber;
+
+    /**
+     * The country code for the phone number
+     */
     @NotNull
     private int phoneNumberCountryCode;
 
-    public Company() {
+    public Company() {}
 
+    /**
+     * Creates a new company.
+     *
+     * @param id the company's id
+     * @param name the company's name
+     * @param address the company's address
+     * @param phoneNumber the company's phone number
+     * @param phoneNumberCountryCode the company's phone number country code
+     */
+    public Company(int id, String name, String address, int phoneNumber, int phoneNumberCountryCode) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+        if (phoneNumber < 0 || phoneNumber > 99999999) {
+            throw new IllegalArgumentException("Phone number cannot be negative");
+        }
+        if (phoneNumberCountryCode < 0 || phoneNumberCountryCode > 999) {
+            throw new IllegalArgumentException("Phone number country code cannot be negative");
+        }
+        if (address != null && address.isEmpty()) {
+            throw new IllegalArgumentException("Address cannot be empty");
+        }
+
+
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.phoneNumberCountryCode = phoneNumberCountryCode;
     }
 
     /**
