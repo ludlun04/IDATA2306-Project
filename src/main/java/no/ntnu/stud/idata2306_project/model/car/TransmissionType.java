@@ -19,12 +19,18 @@ public class TransmissionType {
   @Column(name = "transmission_id", nullable = false, updatable = false)
   private long id;
 
-  @Schema(description = "The name of the transmission type", example = "Petrol")
+  @Schema(description = "The name of the transmission type", example = "Manual")
   @NotNull
   @NotEmpty
   @NotBlank
   @Column(name = "transmission_name", nullable = false)
   String name;
+
+  /**
+   * Creates a new transmission
+   * type.
+   */
+  public TransmissionType() {}
 
   /**
    * Creates a new transmission
