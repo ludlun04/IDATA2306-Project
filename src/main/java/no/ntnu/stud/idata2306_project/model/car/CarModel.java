@@ -10,6 +10,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+/**
+ * Represents a car model.
+ */
 public class CarModel {
 
   @Schema(description = "The id of the car model", example = "1")
