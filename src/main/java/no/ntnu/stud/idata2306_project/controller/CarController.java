@@ -26,11 +26,20 @@ public class CarController {
   
   private CarRepository carRepository;
 
+  /**
+   * Constructor for CarController
+   * 
+   * @param carRepository The repository for cars
+   */
   public CarController(CarRepository carRepository) {
     this.carRepository = carRepository;
   }
 
-  
+  /**
+   * Endpoint to get all cars
+   *
+   * @return ResponseEntity with a list of all cars
+   */
   @Operation(summary = "Get all cars")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "List of cars"),
@@ -40,7 +49,12 @@ public class CarController {
       return ResponseEntity.ok(carRepository.findAll());
   }
   
-
+  /**
+   * Endpoint for getting a car by its id
+   * 
+   * @param id The id of the car
+   * @return ResponseEntity with the car if it is found
+   */
   @Operation(summary = "Get a car by its id")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Car found"),
@@ -57,6 +71,12 @@ public class CarController {
       return ResponseEntity.ok(car.get());
   }
 
+  /**
+   * Endpoint for getting cars by name
+   * 
+   * @param keyWord The search term
+   * @return List of cars that match the search term
+   */
   @Operation(summary = "Get cars by name")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "List of cars that match the search term"),
@@ -66,6 +86,12 @@ public class CarController {
       return carRepository.findByNameContaining(keyWord);
   }
 
+  /**
+   * Endpoint for adding a new car
+   * 
+   * @param car The car to add
+   * @return ResponseEntity with the id of the new cars id
+   */
   @Parameter(name = "car", description = "The car to add", required = true)
   @Operation(summary = "Add a new car")
   @ApiResponses(value = {
@@ -78,6 +104,12 @@ public class CarController {
       return ResponseEntity.ok(String.valueOf(car.getId()));
   }
 
+  /**
+   * Endpoint for deleting a car by its id
+   * 
+   * @param id The id of the car to delete
+   * @return ResponseEntity with a message if the car was deleted
+   */
   @Operation(summary = "Delete a car by its id")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Car deleted"),
