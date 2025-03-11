@@ -21,8 +21,6 @@ public class Feature {
   private long id;
 
   @Schema(description = "The name of the feature", example = "Parking camera")
-  @NotNull
-  @NotEmpty
   @NotBlank
   @Column(name = "feature_name", nullable = false)
   String name;

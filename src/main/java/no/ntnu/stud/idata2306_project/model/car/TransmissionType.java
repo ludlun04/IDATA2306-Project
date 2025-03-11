@@ -20,8 +20,6 @@ public class TransmissionType {
   private long id;
 
   @Schema(description = "The name of the transmission type", example = "Manual")
-  @NotNull
-  @NotEmpty
   @NotBlank
   @Column(name = "transmission_name", nullable = false)
   String name;

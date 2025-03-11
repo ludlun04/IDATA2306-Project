@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -63,6 +64,7 @@ public class User implements UserDetails {
   @Schema(description = "The address of the user")
   @NotBlank
   @ManyToOne
+  @JoinColumn(name = "address_id")
   Address address;
 
   @Schema(description = "The date of birth of the user", example = "2000-01-01")

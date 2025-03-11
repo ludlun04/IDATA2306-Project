@@ -20,8 +20,6 @@ public class Addon {
   private long id;
 
   @Schema(description = "The name of the addon", example = "Baby seat")
-  @NotNull
-  @NotEmpty
   @NotBlank
   @Column(name = "addon_name", nullable = false)
   String name;

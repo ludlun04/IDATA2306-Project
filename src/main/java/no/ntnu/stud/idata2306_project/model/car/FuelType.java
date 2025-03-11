@@ -21,8 +21,6 @@ public class FuelType {
   private long id;
 
   @Schema(description = "The name of the fuel type", example = "Petrol")
-  @NotNull
-  @NotEmpty
   @NotBlank
   @Column(name = "fuel_name", nullable = false)
   String name;

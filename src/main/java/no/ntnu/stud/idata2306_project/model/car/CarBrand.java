@@ -20,8 +20,6 @@ public class CarBrand {
   long id;
 
   @Schema(description = "The name of the car brand", example = "Toyota")
-  @NotNull
-  @NotEmpty
   @NotBlank
   String name;
 
