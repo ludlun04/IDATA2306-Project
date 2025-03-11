@@ -12,7 +12,9 @@ public class Address implements Serializable{
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  public Address() {}
+  public Address() { // default
+
+  }
 
   public void setId(Long id) {
     this.id = id;
