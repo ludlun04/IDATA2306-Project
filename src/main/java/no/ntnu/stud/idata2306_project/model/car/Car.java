@@ -58,14 +58,6 @@ public class Car implements Serializable {
   }
 
   /**
-   * Sets the car's id.
-   * @param newid
-   */
-  public void setId(int newid) {
-    this.id = newid;
-  }
-
-  /**
    * Sets the car's name.
    * @param name
    */
