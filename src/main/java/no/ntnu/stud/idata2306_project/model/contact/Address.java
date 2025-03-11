@@ -61,6 +61,14 @@ public class Address implements Serializable{
   }
 
   /**
+   * Returns the zip code of the address
+   * @return the zip code of the address
+   */
+  public String getZipCode() {
+    return this.zipCode;
+  }
+
+  /**
    * Sets the address
    * @param address the new address
    */
@@ -74,5 +82,13 @@ public class Address implements Serializable{
    */
   public void setCountry(String country) {
     this.country = country;
+  }
+
+  /**
+   * Sets the zip code of the address
+   * @param zipCode the new zip code
+   */
+  public void setZipCode(String zipCode) {
+    this.zipCode = zipCode;
   }
 }
