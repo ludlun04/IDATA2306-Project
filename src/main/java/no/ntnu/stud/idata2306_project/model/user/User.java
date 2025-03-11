@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 import no.ntnu.stud.idata2306_project.enums.Gender;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.contact.Address;
@@ -78,11 +77,7 @@ public class User implements UserDetails {
 
   @Schema(description = "The user's favorite cars")
   @ManyToMany
-  List<Car> favorites;
-
-
-  public User() {
-  }
+  private List<Car> favorites;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
