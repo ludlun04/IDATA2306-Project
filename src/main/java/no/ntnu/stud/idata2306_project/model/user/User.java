@@ -55,12 +55,12 @@ public class User implements UserDetails {
   String lastName;
 
   @Schema(description = "The phone number of the user", example = "12345678")
-  @NotBlank
+  @NotNull
   @ManyToOne
-  PhoneNumber phoneNumber;
+  private PhoneNumber phoneNumber;
 
   @Schema(description = "The address of the user")
-  @NotBlank
+  @NotNull
   @ManyToOne
   Address address;
 
@@ -232,6 +232,30 @@ public class User implements UserDetails {
    */
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  /**
+   * Sets the users first name
+   * @param firstName
+   */
+  public void setFirstname(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
+  }
+
+  public void setFavorites(List<Car> favorites) {
+    this.favorites = favorites;
+  }
+
+  public void setGender(Gender gender) {
+    this.gender = gender;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
 }
