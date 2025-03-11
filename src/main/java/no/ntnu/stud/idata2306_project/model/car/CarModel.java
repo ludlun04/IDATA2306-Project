@@ -29,8 +29,6 @@ public class CarModel {
   String name;
 
   @Schema(description = "The brand of the car model", example = "Toyota")
-  @NotNull
-  @NotEmpty
   @NotBlank
   @ManyToOne
   CarBrand brand;

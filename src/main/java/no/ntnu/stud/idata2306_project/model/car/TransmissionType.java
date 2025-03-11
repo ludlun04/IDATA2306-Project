@@ -6,8 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 /**
  * Represents a transmission type.
@@ -20,8 +18,6 @@ public class TransmissionType {
   private long id;
 
   @Schema(description = "The name of the transmission type", example = "Manual")
-  @NotNull
-  @NotEmpty
   @NotBlank
   @Column(name = "transmission_name", nullable = false)
   String name;

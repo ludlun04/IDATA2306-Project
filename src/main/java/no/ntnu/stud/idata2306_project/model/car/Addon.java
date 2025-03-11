@@ -6,8 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 /**
  * Represents an addon.
@@ -20,8 +18,6 @@ public class Addon {
   private long id;
 
   @Schema(description = "The name of the addon", example = "Baby seat")
-  @NotNull
-  @NotEmpty
   @NotBlank
   @Column(name = "addon_name", nullable = false)
   String name;

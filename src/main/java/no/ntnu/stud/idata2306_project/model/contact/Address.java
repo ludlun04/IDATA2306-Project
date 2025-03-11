@@ -1,7 +1,6 @@
 package no.ntnu.stud.idata2306_project.model.contact;
 
 import java.io.Serializable;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

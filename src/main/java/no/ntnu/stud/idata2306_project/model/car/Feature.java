@@ -5,8 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -21,8 +19,6 @@ public class Feature {
   private long id;
 
   @Schema(description = "The name of the feature", example = "Parking camera")
-  @NotNull
-  @NotEmpty
   @NotBlank
   @Column(name = "feature_name", nullable = false)
   String name;
