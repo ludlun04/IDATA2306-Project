@@ -3,7 +3,6 @@ package no.ntnu.stud.idata2306_project.config;
 import java.io.IOException;
 
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,12 +62,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   }
 
   private String getUsernameFromToken(String jwtToken) {
-    String username = null;
-    try {
-      username = jwtUtil.extractUsername(jwtToken);
-    } catch (Exception e) {}
-
-    return username;
+    return jwtUtil.extractUsername(jwtToken);
   }
 
   private boolean isContextAuthenticated() {

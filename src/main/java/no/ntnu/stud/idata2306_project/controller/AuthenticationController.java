@@ -2,8 +2,6 @@ package no.ntnu.stud.idata2306_project.controller;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import no.ntnu.stud.idata2306_project.config.AuthenticationRequest;
 import no.ntnu.stud.idata2306_project.config.JwtUtil;
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
@@ -56,7 +54,7 @@ public class AuthenticationController {
       @ApiResponse(responseCode = "401", description = "Incorrect username or password")
   })
   @PostMapping("/authenticate")
-  public ResponseEntity<?> authenticate(@RequestBody(required = false) AuthenticationRequest request) {
+  public ResponseEntity<String> authenticate(@RequestBody(required = false) AuthenticationRequest request) {
     if (request == null) {
       return new ResponseEntity<>("Missing body", HttpStatus.BAD_REQUEST);
     }
