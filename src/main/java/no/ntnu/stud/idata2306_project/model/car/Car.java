@@ -1,8 +1,9 @@
 package no.ntnu.stud.idata2306_project.model.car;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
  *
  */
 @Entity
-public class Car {
+public class Car implements Serializable {
   @Id
   @NotNull
   private long id;
