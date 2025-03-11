@@ -51,7 +51,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       Address address = new Address();
       addressRepository.save(address);
 
-      PhoneNumber phoneNumber = new PhoneNumber();
+      PhoneNumber phoneNumber = new PhoneNumber("+47", "12345678");
       phoneNumberRepository.save(phoneNumber);
 
       user.setUsername("user");

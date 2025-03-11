@@ -1,7 +1,6 @@
 package no.ntnu.stud.idata2306_project.model.contact;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import java.io.Serializable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +16,6 @@ public class PhoneNumber implements Serializable {
   @Schema(description = "The id of the phone number", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "phone_number_id", nullable = false, updatable = false)
   private long id;
 
   @Schema(description = "The country code of the phone number", example = "+47")
@@ -39,8 +37,7 @@ public class PhoneNumber implements Serializable {
    * @param countryCode the country code of the phone number
    * @param number the number part of the phone number
    */
-  public PhoneNumber(long id, String countryCode, String number) {
-    this.id = id;
+  public PhoneNumber(String countryCode, String number) {
     this.countryCode = countryCode;
     this.number = number;
   }
