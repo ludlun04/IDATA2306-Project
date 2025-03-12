@@ -58,7 +58,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       user.setFirstname("user");
       user.setLastName("user");
       user.setAddress(address);
-      user.setGender(Gender.Female);
+      user.setGender(Gender.FEMALE);
       user.setPassword(passwordEncoder.encode("yes"));
       user.setPhoneNumber(phoneNumber);
       user.setDateOfBirth(new Date(System.currentTimeMillis() - 108273460));

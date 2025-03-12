@@ -1,7 +1,6 @@
 package no.ntnu.stud.idata2306_project.model.contact;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.io.Serializable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +11,7 @@ import jakarta.validation.constraints.NotBlank;
  * Represents a phone number
  */
 @Entity
-public class PhoneNumber implements Serializable {
+public class PhoneNumber {
   @Schema(description = "The id of the phone number", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
