@@ -7,6 +7,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 
+/**
+ * Represents a car brand.
+ */
 public class CarBrand {
 
   @Schema(description = "The id of the car brand", example = "1")
@@ -19,17 +22,36 @@ public class CarBrand {
   @NotBlank
   String name;
 
+  /**
+   * Creates a new car brand.
+   */
   public CarBrand() {}
 
+  /**
+   * Creates a new car brand.
+   *
+   * @param id the car brand's id
+   * @param name the car brand's name
+   */
   public CarBrand(long id, String name) {
       this.id = id;
       this.name = name;
   }
 
+  /**
+   * Returns the car brand's id.
+   *
+   * @return the car brand's id
+   */
   public long getId() {
       return this.id;
   }
 
+  /**
+   * Returns the car brand's name.
+   *
+   * @return the car brand's name
+   */
   public String getName() {
       return this.name;
   }
