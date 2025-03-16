@@ -35,7 +35,7 @@ public class TransmissionType {
    * @param name the transmission
    *            type's name
    */
-  public TransmissionType(Long id, String name) {
+  public TransmissionType(long id, String name) {
     this.id = id;
     this.name = name;
   }

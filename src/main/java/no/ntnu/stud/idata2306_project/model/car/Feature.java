@@ -32,7 +32,7 @@ public class Feature {
    * @param id   the feature's id
    * @param name the feature's name
    */
-  public Feature(Long id, String name) {
+  public Feature(long id, String name) {
     this.id = id;
     this.name = name;
   }

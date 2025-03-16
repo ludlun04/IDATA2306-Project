@@ -36,7 +36,8 @@ public class PhoneNumber {
    * @param countryCode the country code of the phone number
    * @param number the number part of the phone number
    */
-  public PhoneNumber(String countryCode, String number) {
+  public PhoneNumber(long id, String countryCode, String number) {
+    this.id = id;
     this.countryCode = countryCode;
     this.number = number;
   }

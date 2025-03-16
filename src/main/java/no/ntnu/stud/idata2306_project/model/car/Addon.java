@@ -31,7 +31,7 @@ public class Addon {
    * @param id the addon's id
    * @param name the addon's name
    */
-  public Addon(Long id, String name) {
+  public Addon(long id, String name) {
     this.id = id;
     this.name = name;
   }

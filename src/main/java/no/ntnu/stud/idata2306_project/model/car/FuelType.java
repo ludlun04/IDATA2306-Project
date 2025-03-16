@@ -32,7 +32,7 @@ public class FuelType {
    * @param id the fuel type's id
    * @param name the fuel type's name
    */
-  public FuelType(Long id, String name) {
+  public FuelType(long id, String name) {
     this.id = id;
     this.name = name;
   }
