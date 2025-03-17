@@ -3,7 +3,6 @@ package no.ntnu.stud.idata2306_project.model.car;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -18,14 +17,12 @@ public class CarModel {
   long id;
 
   @Schema(description = "The name of the car model", example = "Corolla")
-  @NotNull
-  @NotEmpty
   @NotBlank
   @Column(name = "model_name", nullable = false)
   String name;
 
   @Schema(description = "The brand of the car model", example = "Toyota")
-  @NotBlank
+  @NotNull
   @ManyToOne
   CarBrand brand;
 
