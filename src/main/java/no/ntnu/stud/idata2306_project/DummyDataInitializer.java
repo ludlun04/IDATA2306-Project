@@ -72,7 +72,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       Address address = new Address(1, "6009", "Norway", "Apple Road 2");
       addressRepository.save(address);
 
-      PhoneNumber phoneNumber = new PhoneNumber(1, "+47", "12345678");
+      PhoneNumber phoneNumber = new PhoneNumber("+47", "12345678");
       phoneNumberRepository.save(phoneNumber);
 
       user.setUsername("user");
@@ -115,7 +115,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     Feature heatedSeats = new Feature(2, "Heated seats");
     this.featureRepository.saveAll(List.of(airConditioning, heatedSeats));
 
-    PhoneNumber companyPhoneNumber = new PhoneNumber(2, "+47", "12345678");
+    PhoneNumber companyPhoneNumber = new PhoneNumber("+47", "12345678");
     phoneNumberRepository.save(companyPhoneNumber);
 
     //TODO: use address class when implemented
