@@ -59,19 +59,13 @@ public class Car {
   @ManyToMany
   private List<Feature> features;
 
-  //TODO: Car has companies or company has cars?
-  @Schema(description = "The company of the car")
-  @NotNull
-  @ManyToOne
-  private Company company;
-
 
   public Car() {
   }
 
   public Car(long id, int year, int numberOfSeats, int pricePerDay, CarModel model,
              FuelType fuelType, TransmissionType transmissionType, List<Addon> addons,
-             List<Feature> features, Company company) {
+             List<Feature> features) {
     this.id = id;
     this.year = year;
     this.numberOfSeats = numberOfSeats;
@@ -81,7 +75,6 @@ public class Car {
     this.transmissionType = transmissionType;
     this.addons = addons;
     this.features = features;
-    this.company = company;
   }
 
   /**
@@ -199,15 +192,6 @@ public class Car {
    */
   public void setFeatures(List<Feature> features) {
     this.features = features;
-  }
-
-  /**
-   * Returns the car's company.
-   *
-   * @return the car's company
-   */
-  public Company getCompany() {
-    return this.company;
   }
 
 }
