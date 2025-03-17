@@ -1,11 +1,7 @@
 package no.ntnu.stud.idata2306_project.model.car;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 /**
  * Represents a car model.
  */
+@Entity
 public class CarModel {
 
   @Schema(description = "The id of the car model", example = "1")

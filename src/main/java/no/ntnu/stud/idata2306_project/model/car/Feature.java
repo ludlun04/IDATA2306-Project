@@ -1,15 +1,13 @@
 package no.ntnu.stud.idata2306_project.model.car;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Represents a feature.
  */
+@Entity
 public class Feature {
 
   @Schema(description = "The id of the feature", example = "1")
@@ -34,7 +32,7 @@ public class Feature {
    * @param id   the feature's id
    * @param name the feature's name
    */
-  public Feature(Long id, String name) {
+  public Feature(long id, String name) {
     this.id = id;
     this.name = name;
   }

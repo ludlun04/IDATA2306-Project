@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.repository.UserRepository;
+import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,10 +26,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     Optional<User> user = userRepository.findByUsername(username);
 
     if (user.isEmpty()) {
-      
       throw new UsernameNotFoundException("User not found");
     }
     
-    return user.get();
+    return new AccessUserDetails(user.get());
   }
 }

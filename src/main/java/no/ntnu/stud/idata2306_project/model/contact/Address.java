@@ -7,28 +7,29 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
 /**
  * Represents an address.
  */
 @Entity
-public class Address implements Serializable{
+public class Address {
   @Schema(description = "the id of the address", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Schema(description = "the zip code of the address", example = "6009")
-  @NotEmpty
+  @NotBlank
   String zipCode;
 
   @Schema(description = "the country of the address", example = "Norway")
-  @NotEmpty
+  @NotBlank
   String country;
 
   @Schema(description = "the address", example = "Apple Road 2")
-  @NotEmpty
+  @NotBlank
   String address;
 
   /**

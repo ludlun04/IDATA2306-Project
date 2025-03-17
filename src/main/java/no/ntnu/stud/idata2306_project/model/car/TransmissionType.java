@@ -1,15 +1,13 @@
 package no.ntnu.stud.idata2306_project.model.car;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 /**
  * Represents a transmission type.
  */
+@Entity
 public class TransmissionType {
   @Schema(description = "The id of the transmission type", example = "1")
   @Id
@@ -37,7 +35,7 @@ public class TransmissionType {
    * @param name the transmission
    *            type's name
    */
-  public TransmissionType(Long id, String name) {
+  public TransmissionType(long id, String name) {
     this.id = id;
     this.name = name;
   }

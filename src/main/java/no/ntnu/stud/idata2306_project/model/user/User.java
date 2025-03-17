@@ -12,8 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import no.ntnu.stud.idata2306_project.enums.Gender;
@@ -21,16 +19,12 @@ import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.contact.Address;
 import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 /**
  * User entity class
  */
 @Entity
 @Table(name = "app_user")
-public class User implements UserDetails {
+public class User {
 
   @Schema(description = "The id of the user", example = "1")
   @Id
@@ -74,19 +68,38 @@ public class User implements UserDetails {
   String email;
 
   @Schema(description = "The gender of a user")
-  Gender gender = Gender.Unidentified;
+  Gender gender = Gender.UNIDENTIFIED;
 
   @Schema(description = "The user's favorite cars")
   @ManyToMany
   private List<Car> favorites;
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+  @Schema(description = "The user's roles")
+  @ManyToMany
+  private List<Role> roles;
 
-    authorities.add(new SimpleGrantedAuthority("ADMIN"));
+  public List<Role> getRoles() {
+    return roles;
+  }
 
-    return authorities;
+  public void addRole(Role role) {
+    if (role == null) {
+      throw new IllegalArgumentException("Role cannot be null");
+    }
+
+    this.roles.add(role);
+  }
+
+  public void removeRole(Role role) throws IllegalArgumentException {
+    if (role == null) {
+      throw new IllegalArgumentException("Role cannot be null");
+    }
+
+    if (this.roles.contains(role)) {
+      this.roles.remove(role);
+    } else {
+      throw new IllegalArgumentException("Role not found");
+    }
   }
 
   /**
@@ -94,7 +107,6 @@ public class User implements UserDetails {
    *
    * @return the user's id
    */
-  @Override
   public String getPassword() {
     return password;
   }
@@ -104,7 +116,6 @@ public class User implements UserDetails {
    *
    * @return the user's username
    */
-  @Override
   public String getUsername() {
     return username;
   }

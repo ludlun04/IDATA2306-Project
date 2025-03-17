@@ -3,9 +3,10 @@ package no.ntnu.stud.idata2306_project.model.company;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
 
 /**
  * Represents a car providing company
@@ -16,22 +17,20 @@ public class Company {
     @Schema(description = "The id of the company", example = "1")
     @Id
     @NotNull
-    private int id;
+    private long id;
 
     @Schema(description = "The name of the company", example = "Company")
     @NotBlank
     private String name;
 
     @Schema(description = "The address of the company", example = "Borgundveien 14")
+    @NotNull
     private String address;
 
-    @Schema(description = "The phone number for the company", example = "12345678")
+    @Schema(description = "The phone number for the company")
     @NotNull
-    private int phoneNumber;
-
-    @Schema(description = "The country code for the phone number", example = "47")
-    @NotNull
-    private int phoneNumberCountryCode;
+    @ManyToOne
+    private PhoneNumber phoneNumber;
 
     public Company() {}
 
@@ -42,28 +41,12 @@ public class Company {
      * @param name the company's name
      * @param address the company's address
      * @param phoneNumber the company's phone number
-     * @param phoneNumberCountryCode the company's phone number country code
      */
-    public Company(int id, String name, String address, int phoneNumber, int phoneNumberCountryCode) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
-        if (phoneNumber < 0 || phoneNumber > 99999999) {
-            throw new IllegalArgumentException("Phone number cannot be negative");
-        }
-        if (phoneNumberCountryCode < 0 || phoneNumberCountryCode > 999) {
-            throw new IllegalArgumentException("Phone number country code cannot be negative");
-        }
-        if (address != null && address.isEmpty()) {
-            throw new IllegalArgumentException("Address cannot be empty");
-        }
-
-
+    public Company(long id, String name, String address, PhoneNumber phoneNumber) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.phoneNumberCountryCode = phoneNumberCountryCode;
     }
 
     /**
@@ -71,7 +54,7 @@ public class Company {
      *
      * @return the company's id.
      */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -102,16 +85,8 @@ public class Company {
      *
      * @return the company's phone number.
      */
-    public int getPhoneNumber() {
+    public PhoneNumber getPhoneNumber() {
         return this.phoneNumber;
     }
 
-    /**
-     * Returns the company's phone number country code.
-     *
-     * @return the company's phone number country code.
-     */
-    public int getPhoneNumberCountryCode() {
-        return this.phoneNumberCountryCode;
-    }
 }
