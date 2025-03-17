@@ -95,6 +95,10 @@ public class Car {
   }
 
   /**
+<<<<<<< HEAD
+   * Sets the car's name.
+   * @param name
+=======
    * Returns the car's number of seats.
    *
    * @return the car's number of seats
@@ -107,6 +111,7 @@ public class Car {
    * Sets the car's number of seats.
    *
    * @param numberOfSeats the car's number of seats
+>>>>>>> 38a1d958a529bbc8ffd5cea1670657fbc0bf645f
    */
   public void setNumberOfSeats(int numberOfSeats) {
     this.numberOfSeats = numberOfSeats;

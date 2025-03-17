@@ -57,7 +57,6 @@ public class User {
   @Schema(description = "The address of the user")
   @NotNull
   @ManyToOne
-  @JoinColumn(name = "address_id")
   Address address;
 
   @Schema(description = "The date of birth of the user", example = "2000-01-01")
@@ -191,15 +190,6 @@ public class User {
    */
   public List<Car> getFavorites() {
     return this.favorites;
-  }
-
-  /**
-   * Sets the user's id.
-   *
-   * @param newid
-   */
-  public void setId(long newid) {
-    this.id = newid;
   }
 
   /**
