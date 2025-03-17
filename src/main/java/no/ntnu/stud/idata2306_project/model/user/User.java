@@ -51,7 +51,7 @@ public class User {
 
   @Schema(description = "The phone number of the user", example = "12345678")
   @NotNull
-  @ManyToOne //TODO: Check if this is correct
+  @ManyToOne
   private PhoneNumber phoneNumber;
 
   @Schema(description = "The address of the user")

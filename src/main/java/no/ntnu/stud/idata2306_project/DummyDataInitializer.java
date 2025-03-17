@@ -124,10 +124,10 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     Company company = new Company(1, "Company", "Apple road", companyPhoneNumber);
     this.companyRepository.save(company);
 
-    Car car1 = new Car(1, 2010, 5, 500, toyotaCorolla, petrol, manual, List.of(gps), List.of(airConditioning, heatedSeats), company);
-    Car car2 = new Car(2, 2015, 5, 550, volkswagenGolf, diesel, automatic, List.of(childSeat, gps), List.of(heatedSeats), company);
-    Car car3 = new Car(3, 2018, 5, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning), company);
-    Car car4 = new Car(4, 2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats), company);
+    Car car1 = new Car(1, 2010, 5, 500, toyotaCorolla, petrol, manual, List.of(gps), List.of(airConditioning, heatedSeats));
+    Car car2 = new Car(2, 2015, 5, 550, volkswagenGolf, diesel, automatic, List.of(childSeat, gps), List.of(heatedSeats));
+    Car car3 = new Car(3, 2018, 5, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning));
+    Car car4 = new Car(4, 2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats));
     this.carRepository.saveAll(List.of(car1, car2, car3, car4));
   }
 
