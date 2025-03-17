@@ -36,7 +36,6 @@ public class Company {
     /**
      * Creates a new company.
      *
-     * @param id the company's id
      * @param name the company's name
      * @param address the company's address
      * @param phoneNumber the company's phone number

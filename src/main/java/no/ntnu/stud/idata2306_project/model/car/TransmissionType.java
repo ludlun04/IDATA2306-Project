@@ -29,8 +29,6 @@ public class TransmissionType {
    * Creates a new transmission
    * type.
    *
-   * @param id the transmission
-   *          type's id
    * @param name the transmission
    *            type's name
    */

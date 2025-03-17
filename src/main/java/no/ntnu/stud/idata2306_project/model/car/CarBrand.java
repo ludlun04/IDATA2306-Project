@@ -27,11 +27,9 @@ public class CarBrand {
   /**
    * Creates a new car brand.
    *
-   * @param id the car brand's id
    * @param name the car brand's name
    */
-  public CarBrand(long id, String name) {
-      this.id = id;
+  public CarBrand(String name) {
       this.name = name;
   }
 

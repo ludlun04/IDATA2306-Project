@@ -28,7 +28,6 @@ public class FuelType {
   /**
    * Creates a new fuel type.
    *
-   * @param id the fuel type's id
    * @param name the fuel type's name
    */
   public FuelType(String name) {

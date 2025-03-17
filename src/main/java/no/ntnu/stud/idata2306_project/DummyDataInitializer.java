@@ -88,9 +88,9 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       userRepository.save(user);
     }
 
-    CarBrand toyota = new CarBrand(1, "Toyota");
-    CarBrand volkswagen = new CarBrand(2, "Volkswagen");
-    CarBrand ford = new CarBrand(3, "Ford");
+    CarBrand toyota = new CarBrand("Toyota");
+    CarBrand volkswagen = new CarBrand("Volkswagen");
+    CarBrand ford = new CarBrand("Ford");
     this.carBrandRepository.saveAll(List.of(toyota, volkswagen, ford));
 
     CarModel toyotaCorolla = new CarModel("Corolla", toyota);

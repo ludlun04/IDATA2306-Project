@@ -28,7 +28,6 @@ public class Feature {
   /**
    * Creates a new feature.
    *
-   * @param id   the feature's id
    * @param name the feature's name
    */
   public Feature(String name) {
