@@ -2,11 +2,9 @@ package no.ntnu.stud.idata2306_project.model.car;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import no.ntnu.stud.idata2306_project.model.company.Company;
-import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
 
 import java.util.List;
 

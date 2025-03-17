@@ -3,7 +3,7 @@ package no.ntnu.stud.idata2306_project.model.company;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
@@ -23,13 +23,13 @@ public class Company {
     @NotBlank
     private String name;
 
-    //TODO: use address class, add not null?
     @Schema(description = "The address of the company", example = "Borgundveien 14")
+    @NotNull
     private String address;
 
     @Schema(description = "The phone number for the company")
     @NotNull
-    @OneToOne //TODO: Check if this is correct
+    @ManyToOne
     private PhoneNumber phoneNumber;
 
     public Company() {}
