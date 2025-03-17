@@ -13,7 +13,6 @@ public class FuelType {
   @Schema(description = "The id of the fuel type", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "fuel_id", nullable = false, updatable = false)
   private long id;
 
   @Schema(description = "The name of the fuel type", example = "Petrol")
@@ -32,8 +31,7 @@ public class FuelType {
    * @param id the fuel type's id
    * @param name the fuel type's name
    */
-  public FuelType(long id, String name) {
-    this.id = id;
+  public FuelType(String name) {
     this.name = name;
   }
 

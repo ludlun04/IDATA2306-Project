@@ -28,7 +28,6 @@ public class User {
   @Schema(description = "The id of the user", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id", nullable = false, updatable = false)
   Long id;
 
   @Schema(description = "The username of the user", example = "username")

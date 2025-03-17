@@ -13,7 +13,6 @@ public class CarBrand {
   @Schema(description = "The id of the car brand", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "brand_id", nullable = false, updatable = false)
   long id;
 
   @Schema(description = "The name of the car brand", example = "Toyota")

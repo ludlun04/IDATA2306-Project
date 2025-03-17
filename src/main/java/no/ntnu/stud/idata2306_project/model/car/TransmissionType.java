@@ -12,7 +12,6 @@ public class TransmissionType {
   @Schema(description = "The id of the transmission type", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "transmission_id", nullable = false, updatable = false)
   private long id;
 
   @Schema(description = "The name of the transmission type", example = "Manual")
@@ -35,8 +34,7 @@ public class TransmissionType {
    * @param name the transmission
    *            type's name
    */
-  public TransmissionType(long id, String name) {
-    this.id = id;
+  public TransmissionType(String name) {
     this.name = name;
   }
 

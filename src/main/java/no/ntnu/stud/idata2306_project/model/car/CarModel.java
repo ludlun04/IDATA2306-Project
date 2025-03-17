@@ -15,7 +15,6 @@ public class CarModel {
   @Schema(description = "The id of the car model", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "model_id", nullable = false, updatable = false)
   long id;
 
   @Schema(description = "The name of the car model", example = "Corolla")
@@ -43,8 +42,7 @@ public class CarModel {
    * @param name the car model's name
    * @param brand the car model's brand
    */
-  public CarModel(long id, String name, CarBrand brand) {
-    this.id = id;
+  public CarModel(String name, CarBrand brand) {
     this.name = name;
     this.brand = brand;
   }

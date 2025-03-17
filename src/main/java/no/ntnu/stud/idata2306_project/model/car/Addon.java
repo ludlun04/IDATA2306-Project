@@ -12,7 +12,6 @@ public class Addon {
   @Schema(description = "The id of the addon", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "addon_id", nullable = false, updatable = false)
   private long id;
 
   @Schema(description = "The name of the addon", example = "Baby seat")
@@ -28,11 +27,9 @@ public class Addon {
   /**
    * Creates a new addon.
    *
-   * @param id the addon's id
    * @param name the addon's name
    */
-  public Addon(long id, String name) {
-    this.id = id;
+  public Addon(String name) {
     this.name = name;
   }
 

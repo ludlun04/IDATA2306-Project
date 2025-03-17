@@ -16,7 +16,6 @@ public class Company {
 
     @Schema(description = "The id of the company", example = "1")
     @Id
-    @NotNull
     private long id;
 
     @Schema(description = "The name of the company", example = "Company")
@@ -42,8 +41,7 @@ public class Company {
      * @param address the company's address
      * @param phoneNumber the company's phone number
      */
-    public Company(long id, String name, String address, PhoneNumber phoneNumber) {
-        this.id = id;
+    public Company(String name, String address, PhoneNumber phoneNumber) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;

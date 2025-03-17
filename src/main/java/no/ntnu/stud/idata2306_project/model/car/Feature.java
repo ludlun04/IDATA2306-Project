@@ -13,7 +13,6 @@ public class Feature {
   @Schema(description = "The id of the feature", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "feature_id", nullable = false, updatable = false)
   private long id;
 
   @Schema(description = "The name of the feature", example = "Parking camera")
@@ -32,8 +31,7 @@ public class Feature {
    * @param id   the feature's id
    * @param name the feature's name
    */
-  public Feature(long id, String name) {
-    this.id = id;
+  public Feature(String name) {
     this.name = name;
   }
 

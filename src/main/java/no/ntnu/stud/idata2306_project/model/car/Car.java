@@ -15,7 +15,6 @@ public class Car {
   @Schema(description = "The id of the car", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "car_id", nullable = false, updatable = false)
   private long id;
 
   @Schema(description = "The year of the car", example = "2015")
@@ -62,10 +61,9 @@ public class Car {
   public Car() {
   }
 
-  public Car(long id, int year, int numberOfSeats, int pricePerDay, CarModel model,
+  public Car(int year, int numberOfSeats, int pricePerDay, CarModel model,
              FuelType fuelType, TransmissionType transmissionType, List<Addon> addons,
              List<Feature> features) {
-    this.id = id;
     this.year = year;
     this.numberOfSeats = numberOfSeats;
     this.pricePerDay = pricePerDay;

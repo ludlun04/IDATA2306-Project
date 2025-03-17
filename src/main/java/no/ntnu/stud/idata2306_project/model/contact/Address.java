@@ -42,8 +42,7 @@ public class Address {
    * @param country the country of the address
    * @param address the address
    */
-  public Address(long id, String zipCode, String country, String address) {
-    this.id = id;
+  public Address(String zipCode, String country, String address) {
     this.zipCode = zipCode;
     this.country = country;
     this.streetAddress = address;
