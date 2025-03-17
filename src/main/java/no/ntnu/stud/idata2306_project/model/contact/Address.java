@@ -1,14 +1,11 @@
 package no.ntnu.stud.idata2306_project.model.contact;
 
-import java.io.Serializable;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 
 /**
  * Represents an address.
@@ -30,12 +27,12 @@ public class Address {
 
   @Schema(description = "the address", example = "Apple Road 2")
   @NotBlank
-  String address;
+  String streetAddress;
 
   /**
    * Creates an address
    */
-  public Address() {}
+  public Address() {/** */}
 
   /**
    * Returns the id of the address
@@ -58,7 +55,7 @@ public class Address {
    * @return the address part of the address
    */
   public String getAddress() {
-    return this.address;
+    return this.streetAddress;
   }
 
   /**
@@ -74,7 +71,7 @@ public class Address {
    * @param address the new address
    */
   public void setAddress(String address) {
-    this.address = address;
+    this.streetAddress = address;
   }
 
   /**
