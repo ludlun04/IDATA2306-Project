@@ -83,6 +83,26 @@ public class User {
     return roles;
   }
 
+  public void addRole(Role role) {
+    if (role == null) {
+      throw new IllegalArgumentException("Role cannot be null");
+    }
+
+    this.roles.add(role);
+  }
+
+  public void removeRole(Role role) throws IllegalArgumentException {
+    if (role == null) {
+      throw new IllegalArgumentException("Role cannot be null");
+    }
+
+    if (this.roles.contains(role)) {
+      this.roles.remove(role);
+    } else {
+      throw new IllegalArgumentException("Role not found");
+    }
+  }
+
   /**
    * Returns the user's id.
    *
