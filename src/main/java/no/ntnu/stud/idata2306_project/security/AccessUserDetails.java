@@ -2,7 +2,7 @@ package no.ntnu.stud.idata2306_project.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,7 +31,7 @@ public class AccessUserDetails implements UserDetails {
     convertRolesToAuthorities(user.getRoles());
   }
 
-  private void convertRolesToAuthorities(List<Role> roles) {
+  private void convertRolesToAuthorities(Set<Role> roles) {
     for (Role role : roles) {
       SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
       authorities.add(authority);

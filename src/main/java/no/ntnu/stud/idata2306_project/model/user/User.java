@@ -11,8 +11,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import no.ntnu.stud.idata2306_project.enums.Gender;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.contact.Address;
@@ -50,7 +54,7 @@ public class User {
   @Schema(description = "The phone number of the user", example = "12345678")
   @NotNull
   @ManyToOne
-  private PhoneNumber phoneNumber;
+  PhoneNumber phoneNumber;
 
   @Schema(description = "The address of the user")
   @NotNull
@@ -70,34 +74,28 @@ public class User {
 
   @Schema(description = "The user's favorite cars")
   @ManyToMany
-  private List<Car> favorites;
+  List<Car> favorites;
 
   @Schema(description = "The user's roles")
   @ManyToMany
-  private List<Role> roles;
+  Set<Role> roles = new HashSet<>();
 
-  public List<Role> getRoles() {
+  /**
+   * Returns roles assosiated with the current user.
+   *
+   * @return A set of roles
+   */
+  public Set<Role> getRoles() {
     return roles;
   }
 
-  public void addRole(Role role) {
-    if (role == null) {
-      throw new IllegalArgumentException("Role cannot be null");
-    }
-
-    this.roles.add(role);
-  }
-
-  public void removeRole(Role role) throws IllegalArgumentException {
-    if (role == null) {
-      throw new IllegalArgumentException("Role cannot be null");
-    }
-
-    if (this.roles.contains(role)) {
-      this.roles.remove(role);
-    } else {
-      throw new IllegalArgumentException("Role not found");
-    }
+  /**
+   * Sets the roles for the user.
+   *
+   * @param roles a set of roles to be set as the current roles
+   */
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
   }
 
   /**
