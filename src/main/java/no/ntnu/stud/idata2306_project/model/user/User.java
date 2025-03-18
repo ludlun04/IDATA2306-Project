@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306_project.model.user;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -77,8 +78,14 @@ public class User {
   List<Car> favorites;
 
   @Schema(description = "The user's roles")
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   Set<Role> roles = new HashSet<>();
+
+  /**
+   * Default constructor for User
+   *
+   */
+  public User() {}
 
   /**
    * Returns roles assosiated with the current user.
@@ -86,7 +93,7 @@ public class User {
    * @return A set of roles
    */
   public Set<Role> getRoles() {
-    return roles;
+    return this.roles;
   }
 
   /**
@@ -241,20 +248,40 @@ public class User {
     this.firstName = firstName;
   }
 
+  /**
+   * Sets the users last name
+   *
+   * @param lastName
+   */
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  /**
+   * Sets the user's address.
+   *
+   * @param address
+   */
   public void setAddress(Address address) {
     this.address = address;
   }
 
+  /**
+   * Sets the user's favorites.
+   *
+   * @param favorites
+   */
   public void setFavorites(List<Car> favorites) {
     this.favorites = favorites;
   }
 
+  /**
+   * Sets the users gender
+   *
+   * @param gender
+   */
   public void setGender(Gender gender) {
     this.gender = gender;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
   }
 
 }

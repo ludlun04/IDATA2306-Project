@@ -45,7 +45,7 @@ public class CarController {
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "List of cars"),
   })
-  @PreAuthorize("hasRole('User')")
+  @PreAuthorize("hasAuthority('USER')")
   @GetMapping()
   public ResponseEntity<List<Car>> getAll() {
       return ResponseEntity.ok(carRepository.findAll());

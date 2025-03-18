@@ -2,6 +2,8 @@ package no.ntnu.stud.idata2306_project.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -17,7 +19,7 @@ import no.ntnu.stud.idata2306_project.model.user.User;
 public class AccessUserDetails implements UserDetails {
   private String username;
   private String password;
-  private ArrayList<GrantedAuthority> authorities;
+  private Set<GrantedAuthority> authorities;
 
   /**
    * Constructor for AccessUserDetails
@@ -27,14 +29,19 @@ public class AccessUserDetails implements UserDetails {
   public AccessUserDetails(User user) {
     this.username = user.getUsername();
     this.password = user.getPassword();
-    this.authorities = new ArrayList<>();
+    this.authorities = new HashSet<>();
     convertRolesToAuthorities(user.getRoles());
   }
 
   private void convertRolesToAuthorities(Set<Role> roles) {
-    for (Role role : roles) {
+    Iterator<Role> iterator = roles.iterator();
+
+    while (iterator.hasNext()) {
+      Role role = iterator.next();
+      System.out.println(role.getName());
       SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
-      authorities.add(authority);
+      System.out.println(authority.getAuthority());
+      this.authorities.add(authority);
     }
   }
 

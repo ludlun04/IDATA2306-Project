@@ -7,7 +7,6 @@ import no.ntnu.stud.idata2306_project.config.JwtUtil;
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -54,7 +53,6 @@ public class AuthenticationController {
       @ApiResponse(responseCode = "400", description = "Missing body"),
       @ApiResponse(responseCode = "401", description = "Incorrect username or password")
   })
-  @PreAuthorize("permitAll()")
   @PostMapping("/authenticate")
   public ResponseEntity<String> authenticate(@RequestBody(required = false) AuthenticationRequest request) {
     if (request == null) {
