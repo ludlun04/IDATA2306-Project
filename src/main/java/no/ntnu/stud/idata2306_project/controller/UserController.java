@@ -9,6 +9,7 @@ import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class UserController {
     this.userRepository = userRepository;
   }
 
+  @PreAuthorize("hasAuthority('ADMIN')")
   @Operation(summary = "Get all users", description = "Get a list of all users")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of users")
