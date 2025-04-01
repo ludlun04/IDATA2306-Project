@@ -38,9 +38,7 @@ public class AccessUserDetails implements UserDetails {
 
     while (iterator.hasNext()) {
       Role role = iterator.next();
-      System.out.println(role.getName());
       SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
-      System.out.println(authority.getAuthority());
       this.authorities.add(authority);
     }
   }
