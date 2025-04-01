@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import no.ntnu.stud.idata2306_project.enums.Gender;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.contact.Address;
@@ -41,6 +43,7 @@ public class User {
   String username;
 
   @Schema(description = "The password of the user", example = "password")
+  @JsonIgnore
   @NotBlank
   String password;
 

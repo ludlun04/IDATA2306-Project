@@ -24,11 +24,11 @@ public class UserController {
     this.userRepository = userRepository;
   }
 
-  @PreAuthorize("hasAuthority('ADMIN')")
   @Operation(summary = "Get all users", description = "Get a list of all users")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of users")
+    @ApiResponse(responseCode = "200", description = "List of users")
   })
+  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping()
   public ResponseEntity<List<User>> getUsers() {
     return ResponseEntity.ok(userRepository.findAll());

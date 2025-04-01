@@ -1,6 +1,5 @@
 package no.ntnu.stud.idata2306_project.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
