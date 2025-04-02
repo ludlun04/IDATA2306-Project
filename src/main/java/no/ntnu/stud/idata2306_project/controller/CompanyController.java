@@ -65,7 +65,7 @@ public class CompanyController {
     @ApiResponse(responseCode = "404", description = "Company not found")
   })
   @GetMapping("/{id}")
-  public ResponseEntity<Company> getCompany(int id) {
+  public ResponseEntity<Company> getCompany(@PathVariable int id) {
     Company company = companyRepository.findById(id).orElse(null);
     return ResponseEntity.status(company == null ? HttpStatus.NOT_FOUND : HttpStatus.OK).body(company);
   }
@@ -99,7 +99,7 @@ public class CompanyController {
     @ApiResponse(responseCode = "404", description = "Company not found")
   })
   @DeleteMapping("/{id}")
-  public ResponseEntity<Company> deleteCompany(int id) {
+  public ResponseEntity<Company> deleteCompany(@PathVariable int id) {
     Company company = companyRepository.findById(id).orElse(null);
     if (company != null) {
       companyRepository.delete(company);
