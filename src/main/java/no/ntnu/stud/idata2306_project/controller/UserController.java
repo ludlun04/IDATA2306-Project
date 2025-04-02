@@ -9,8 +9,10 @@ import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,8 +27,9 @@ public class UserController {
 
   @Operation(summary = "Get all users", description = "Get a list of all users")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of users")
+    @ApiResponse(responseCode = "200", description = "List of users")
   })
+  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping()
   public ResponseEntity<List<User>> getUsers() {
     return ResponseEntity.ok(userRepository.findAll());
@@ -58,7 +61,7 @@ public class UserController {
       @ApiResponse(responseCode = "201", description = "User that was added")
   })
   @GetMapping("/add")
-  public ResponseEntity<User> addUser(User user) {
+  public ResponseEntity<User> addUser(@RequestBody User user) {
       User newUser = userRepository.save(user);
       return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
   }

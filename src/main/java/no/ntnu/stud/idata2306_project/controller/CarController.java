@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,7 @@ public class CarController {
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "List of cars"),
   })
+  @PreAuthorize("hasAuthority('USER')")
   @GetMapping()
   public ResponseEntity<List<Car>> getAll() {
     logger.info("Getting all cars");

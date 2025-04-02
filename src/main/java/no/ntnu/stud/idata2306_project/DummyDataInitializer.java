@@ -1,6 +1,7 @@
 package no.ntnu.stud.idata2306_project;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import no.ntnu.stud.idata2306_project.enums.Gender;
 import no.ntnu.stud.idata2306_project.model.contact.Address;
 import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
+import no.ntnu.stud.idata2306_project.model.user.Role;
 import no.ntnu.stud.idata2306_project.model.user.User;
 
 @Component
@@ -35,6 +37,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private AddonRepository addonRepository;
   private FeatureRepository featureRepository;
   private CompanyRepository companyRepository;
+  private RoleRepository roleRepository;
 
   private Logger logger = LoggerFactory.getLogger(DummyDataInitializer.class);
 
@@ -50,7 +53,8 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     TransmissionTypeRepository transmissionTypeRepository,
     AddonRepository addonRepository,
     FeatureRepository featureRepository,
-    CompanyRepository companyRepository
+    CompanyRepository companyRepository,
+    RoleRepository roleRepository
     ) {
     this.userRepository = userRepository;
     this.carRepository = carRepository;
@@ -64,6 +68,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.addonRepository = addonRepository;
     this.featureRepository = featureRepository;
     this.companyRepository = companyRepository;
+    this.roleRepository = roleRepository;
   }
 
   @Override
@@ -79,6 +84,13 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       PhoneNumber phoneNumber = new PhoneNumber("+47", "12345678");
       phoneNumberRepository.save(phoneNumber);
 
+      Role role = new Role("USER");
+      roleRepository.save(role);
+
+      Role adminRole = new Role("ADMIN");
+      roleRepository.save(adminRole);
+
+      user.setRoles(new HashSet<>(List.of(role, adminRole)));
       user.setUsername("user");
       user.setFirstname("user");
       user.setLastName("user");
@@ -88,7 +100,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       user.setPhoneNumber(phoneNumber);
       user.setDateOfBirth(new Date(System.currentTimeMillis() - 108273460));
       user.setEmail("email@email.com");
-
+      
       userRepository.save(user);
     }
 

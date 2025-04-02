@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306_project.model.user;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,8 +12,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import no.ntnu.stud.idata2306_project.enums.Gender;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.contact.Address;
@@ -36,6 +43,7 @@ public class User {
   String username;
 
   @Schema(description = "The password of the user", example = "password")
+  @JsonIgnore
   @NotBlank
   String password;
 
@@ -50,7 +58,7 @@ public class User {
   @Schema(description = "The phone number of the user", example = "12345678")
   @NotNull
   @ManyToOne
-  private PhoneNumber phoneNumber;
+  PhoneNumber phoneNumber;
 
   @Schema(description = "The address of the user")
   @NotNull
@@ -70,34 +78,34 @@ public class User {
 
   @Schema(description = "The user's favorite cars")
   @ManyToMany
-  private List<Car> favorites;
+  List<Car> favorites;
 
   @Schema(description = "The user's roles")
-  @ManyToMany
-  private List<Role> roles;
+  @ManyToMany(fetch = FetchType.EAGER)
+  Set<Role> roles = new HashSet<>();
 
-  public List<Role> getRoles() {
-    return roles;
+  /**
+   * Default constructor for User
+   *
+   */
+  public User() {}
+
+  /**
+   * Returns roles assosiated with the current user.
+   *
+   * @return A set of roles
+   */
+  public Set<Role> getRoles() {
+    return this.roles;
   }
 
-  public void addRole(Role role) {
-    if (role == null) {
-      throw new IllegalArgumentException("Role cannot be null");
-    }
-
-    this.roles.add(role);
-  }
-
-  public void removeRole(Role role) throws IllegalArgumentException {
-    if (role == null) {
-      throw new IllegalArgumentException("Role cannot be null");
-    }
-
-    if (this.roles.contains(role)) {
-      this.roles.remove(role);
-    } else {
-      throw new IllegalArgumentException("Role not found");
-    }
+  /**
+   * Sets the roles for the user.
+   *
+   * @param roles a set of roles to be set as the current roles
+   */
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
   }
 
   /**
@@ -243,20 +251,40 @@ public class User {
     this.firstName = firstName;
   }
 
+  /**
+   * Sets the users last name
+   *
+   * @param lastName
+   */
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  /**
+   * Sets the user's address.
+   *
+   * @param address
+   */
   public void setAddress(Address address) {
     this.address = address;
   }
 
+  /**
+   * Sets the user's favorites.
+   *
+   * @param favorites
+   */
   public void setFavorites(List<Car> favorites) {
     this.favorites = favorites;
   }
 
+  /**
+   * Sets the users gender
+   *
+   * @param gender
+   */
   public void setGender(Gender gender) {
     this.gender = gender;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
   }
 
 }
