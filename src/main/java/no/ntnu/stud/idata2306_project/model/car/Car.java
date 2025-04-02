@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import no.ntnu.stud.idata2306_project.model.company.Company;
 
 import java.util.List;
 
@@ -57,6 +58,10 @@ public class Car {
   @ManyToMany
   private List<Feature> features;
 
+  @Schema(description = "The company that owns the car")
+  @NotNull
+  @ManyToOne
+  private Company company;
 
   public Car() {
   }
@@ -93,10 +98,6 @@ public class Car {
   }
 
   /**
-<<<<<<< HEAD
-   * Sets the car's name.
-   * @param name
-=======
    * Returns the car's number of seats.
    *
    * @return the car's number of seats
@@ -109,7 +110,6 @@ public class Car {
    * Sets the car's number of seats.
    *
    * @param numberOfSeats the car's number of seats
->>>>>>> 38a1d958a529bbc8ffd5cea1670657fbc0bf645f
    */
   public void setNumberOfSeats(int numberOfSeats) {
     this.numberOfSeats = numberOfSeats;
