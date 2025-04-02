@@ -11,7 +11,7 @@
   </parent>
   <groupId>no.ntnu.stud</groupId>
   <artifactId>idata2306-project</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <name>idata2306-project</name>
   <description>Demo project for Spring Boot</description>
   <url />

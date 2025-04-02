@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +17,7 @@ import no.ntnu.stud.idata2306_project.model.car.Addon;
  * Represents an order
  */
 @Entity
+@Table(name = "rent_order")
 public class Order {
 
   @Schema(description = "The id of the order")
