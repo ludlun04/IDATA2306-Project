@@ -14,6 +14,7 @@ import no.ntnu.stud.idata2306_project.repository.CarRepository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -90,8 +91,8 @@ public class CarController {
     @ApiResponse(responseCode = "200", description = "List of cars that match the search term"),
   })
   @GetMapping("/search/{keyWord}")
-  public List<Car> getByKeyWord(@PathVariable String keyWord) {
-    return null;//carRepository.findByNameContaining(keyWord);
+  public ResponseEntity<List<Car>> getByKeyWord(@PathVariable String keyWord) {
+    return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
   }
 
   /**

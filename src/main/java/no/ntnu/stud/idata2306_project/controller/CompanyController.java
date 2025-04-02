@@ -106,4 +106,20 @@ public class CompanyController {
     }
     return ResponseEntity.status(company == null ? HttpStatus.NOT_FOUND : HttpStatus.OK).body(company);
   }
+
+
+  /**
+   * Adds a user to a company.
+   */
+  @Operation(summary = "Add a user to a company", description = "Add a user to a company")
+  @Parameter(name = "companyId", description = "The id of the company to add the user to", required = true)
+  @Parameter(name = "userId", description = "The id of the user to add to the company", required = true)
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "User was added to the company"),
+    @ApiResponse(responseCode = "404", description = "Company or user not found")
+  })
+  @PostMapping("/{companyId}/user/{userId}")
+  public ResponseEntity<String> adduserToCompany(@PathVariable int companyId, @PathVariable int userId) {
+    return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Not implemented yet");
+  }
 }
