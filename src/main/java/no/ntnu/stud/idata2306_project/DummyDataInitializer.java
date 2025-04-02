@@ -7,6 +7,8 @@ import java.util.Optional;
 import no.ntnu.stud.idata2306_project.model.car.*;
 import no.ntnu.stud.idata2306_project.model.company.Company;
 import no.ntnu.stud.idata2306_project.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.lang.NonNull;
@@ -33,6 +35,8 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private AddonRepository addonRepository;
   private FeatureRepository featureRepository;
   private CompanyRepository companyRepository;
+
+  private Logger logger = LoggerFactory.getLogger(DummyDataInitializer.class);
 
   public DummyDataInitializer(
     UserRepository userRepository, 
@@ -129,6 +133,8 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     Car car3 = new Car(2018, 5, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning));
     Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats));
     this.carRepository.saveAll(List.of(car1, car2, car3, car4));
+
+    logger.info("Dummy data initialized");
   }
 
 }

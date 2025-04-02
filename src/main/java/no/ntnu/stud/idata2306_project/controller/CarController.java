@@ -1,5 +1,7 @@
 package no.ntnu.stud.idata2306_project.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,12 +25,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/cars")
 public class CarController {
-  
+
   private CarRepository carRepository;
+  private Logger logger = LoggerFactory.getLogger(CarController.class);
 
   /**
    * Constructor for CarController
-   * 
+   *
    * @param carRepository The repository for cars
    */
   public CarController(CarRepository carRepository) {
@@ -46,12 +49,13 @@ public class CarController {
   })
   @GetMapping()
   public ResponseEntity<List<Car>> getAll() {
-      return ResponseEntity.ok(carRepository.findAll());
+    logger.info("Getting all cars");
+    return ResponseEntity.ok(carRepository.findAll());
   }
-  
+
   /**
    * Endpoint for getting a car by its id
-   * 
+   *
    * @param id The id of the car
    * @return ResponseEntity with the car if it is found
    */
@@ -62,18 +66,20 @@ public class CarController {
   })
   @GetMapping("/{id}")
   public ResponseEntity<Car> getMethodName(@PathVariable Long id) {
-      Optional<Car> car = carRepository.findById(id);
+    Optional<Car> car = carRepository.findById(id);
 
-      if (car.isEmpty()) {
-          return ResponseEntity.notFound().build();
-      }
+    if (car.isEmpty()) {
+      logNotFound(id);
+      return ResponseEntity.notFound().build();
+    }
 
-      return ResponseEntity.ok(car.get());
+    logger.info("Car with id {} found", id);
+    return ResponseEntity.ok(car.get());
   }
 
   /**
    * Endpoint for getting cars by name
-   * 
+   *
    * @param keyWord The search term
    * @return List of cars that match the search term
    */
@@ -83,12 +89,12 @@ public class CarController {
   })
   @GetMapping("/search/{keyWord}")
   public List<Car> getByKeyWord(@PathVariable String keyWord) {
-      return null;//carRepository.findByNameContaining(keyWord);
+    return null;//carRepository.findByNameContaining(keyWord);
   }
 
   /**
    * Endpoint for adding a new car
-   * 
+   *
    * @param car The car to add
    * @return ResponseEntity with the id of the new cars id
    */
@@ -99,14 +105,15 @@ public class CarController {
   })
   @PostMapping("/")
   public ResponseEntity<String> addCar(@RequestBody Car car) {
-      carRepository.save(car);
+    carRepository.save(car);
+    logger.info("Car added with id {}", car.getId());
 
-      return ResponseEntity.ok(String.valueOf(car.getId()));
+    return ResponseEntity.ok(String.valueOf(car.getId()));
   }
 
   /**
    * Endpoint for deleting a car by its id
-   * 
+   *
    * @param id The id of the car to delete
    * @return ResponseEntity with a message if the car was deleted
    */
@@ -117,16 +124,21 @@ public class CarController {
   })
   @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteCar(@PathVariable Long id) {
-      Optional<Car> car = carRepository.findById(id);
+    Optional<Car> car = carRepository.findById(id);
 
-      if (car.isEmpty()) {
-          return ResponseEntity.notFound().build();
-      }
+    if (car.isEmpty()) {
+      logNotFound(id);
+      return ResponseEntity.notFound().build();
+    }
 
-      carRepository.delete(car.get());
-
-      return ResponseEntity.ok("Car deleted");
+    carRepository.delete(car.get());
+    logger.info("Car with id {} deleted", id);
+    return ResponseEntity.ok("Car deleted");
   }
-  
+
+  private void logNotFound(Long id) {
+    logger.warn("Car with id {} not found", id);
+  }
+
 
 }
