@@ -2,6 +2,7 @@ package no.ntnu.stud.idata2306_project.controller;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.ntnu.stud.idata2306_project.config.AuthenticationRequest;
 import no.ntnu.stud.idata2306_project.config.JwtUtil;
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * <p>Contains the endpoint used for authenticating users.
  */
+@Tag(name = "Authentication", description = "Endpoints for authentication")
 @RestController
 public class AuthenticationController {
   private AuthenticationManager authenticationManager;

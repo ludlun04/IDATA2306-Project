@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.ntnu.stud.idata2306_project.model.company.Company;
 import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.service.CompanyService;
@@ -27,6 +28,7 @@ import java.util.Set;
  *  <li>DELETE /company/{id}: Delete a company by id</li>
  *  </ul>
  */
+@Tag(name = "Companies", description = "Endpoints for managing companies")
 @RestController
 @RequestMapping("/company")
 public class CompanyController {
