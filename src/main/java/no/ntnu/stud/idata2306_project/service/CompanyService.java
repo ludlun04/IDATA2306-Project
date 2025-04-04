@@ -2,11 +2,14 @@ package no.ntnu.stud.idata2306_project.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import no.ntnu.stud.idata2306_project.model.company.Company;
 import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.repository.CompanyRepository;
 import no.ntnu.stud.idata2306_project.repository.UserRepository;
 
+@Service
 public class CompanyService {
   
   UserRepository userRepository;

@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import no.ntnu.stud.idata2306_project.model.company.Company;
-import no.ntnu.stud.idata2306_project.repository.CompanyRepository;
 import no.ntnu.stud.idata2306_project.service.CompanyService;
 
 import org.springframework.http.HttpStatus;
