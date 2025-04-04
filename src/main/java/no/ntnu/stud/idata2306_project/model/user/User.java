@@ -76,6 +76,7 @@ public class User {
   Gender gender = Gender.UNIDENTIFIED;
 
   @Schema(description = "The user's favorite cars")
+  @JsonIgnore
   @ManyToMany
   List<Car> favorites;
 
