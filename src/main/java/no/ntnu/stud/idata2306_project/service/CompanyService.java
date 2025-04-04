@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306_project.service;
 import java.util.List;
 
 import no.ntnu.stud.idata2306_project.model.company.Company;
+import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.repository.CompanyRepository;
 import no.ntnu.stud.idata2306_project.repository.UserRepository;
 
@@ -51,8 +52,8 @@ public class CompanyService {
    * Add user to company
    */
   public void addUserToCompany(long userId, long companyId) {
-    var user = userRepository.findById(userId).orElse(null);
-    var company = companyRepository.findById(companyId).orElse(null);
+    User user = userRepository.findById(userId).orElse(null);
+    Company company = companyRepository.findById(companyId).orElse(null);
 
     if (user != null && company != null) {
       company.addUser(user);
@@ -66,8 +67,8 @@ public class CompanyService {
    * @param companyId the id of the company to remove the user from
    */
   public void removeUserFromCompany(long userId, long companyId) {
-    var user = userRepository.findById(userId).orElse(null);
-    var company = companyRepository.findById(companyId).orElse(null);
+    User user = userRepository.findById(userId).orElse(null);
+    Company company = companyRepository.findById(companyId).orElse(null);
     if (user != null && company != null) {
       company.removeUser(user);
     }
