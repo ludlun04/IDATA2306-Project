@@ -6,8 +6,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import no.ntnu.stud.idata2306_project.model.company.Company;
 import no.ntnu.stud.idata2306_project.repository.CompanyRepository;
+import no.ntnu.stud.idata2306_project.service.CompanyService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,15 +30,15 @@ import java.util.List;
 @RequestMapping("/company")
 public class CompanyController {
 
-  private final CompanyRepository companyRepository;
+  private final CompanyService companyService;
 
   /**
    * Creates a new CompanyController.
    *
    * @param companyRepository the repository to use
    */
-  public CompanyController(CompanyRepository companyRepository) {
-    this.companyRepository = companyRepository;
+  public CompanyController(CompanyService companyService) {
+    this.companyService = companyService;
   }
 
   /**
@@ -47,9 +50,10 @@ public class CompanyController {
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "List of companies")
   })
+  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping()
   public List<Company> getCompanies() {
-    return companyRepository.findAll();
+    return companyService.getCompanies();
   }
 
   /**
@@ -64,10 +68,17 @@ public class CompanyController {
     @ApiResponse(responseCode = "200", description = "Company that was found"),
     @ApiResponse(responseCode = "404", description = "Company not found")
   })
+  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping("/{id}")
-  public ResponseEntity<Company> getCompany(@PathVariable int id) {
-    Company company = companyRepository.findById(id).orElse(null);
-    return ResponseEntity.status(company == null ? HttpStatus.NOT_FOUND : HttpStatus.OK).body(company);
+  public ResponseEntity<Company> getCompany(@PathVariable long id) {
+    Company company = companyService.getCompanyById(id);
+
+    if (company != null) {
+      return ResponseEntity.status( HttpStatus.OK).body(company);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+    
   }
 
   /**
@@ -80,10 +91,11 @@ public class CompanyController {
   @ApiResponses(value = {
     @ApiResponse(responseCode = "201", description = "Company that was added")
   })
+  @PreAuthorize("hasAuthority('ADMIN')")
   @PostMapping()
-  public ResponseEntity<Company> addCompany(Company company) {
-    Company newCompany = companyRepository.save(company);
-    return ResponseEntity.status(HttpStatus.CREATED).body(newCompany);
+  public ResponseEntity<Long> addCompany(Company company) {
+    companyService.addCompany(company);
+    return ResponseEntity.status(HttpStatus.CREATED).body(company.getId());
   }
 
   /**
@@ -98,13 +110,11 @@ public class CompanyController {
     @ApiResponse(responseCode = "200", description = "Company that was deleted"),
     @ApiResponse(responseCode = "404", description = "Company not found")
   })
+  @PreAuthorize("hasAuthority('ADMIN')")
   @DeleteMapping("/{id}")
-  public ResponseEntity<Company> deleteCompany(@PathVariable int id) {
-    Company company = companyRepository.findById(id).orElse(null);
-    if (company != null) {
-      companyRepository.delete(company);
-    }
-    return ResponseEntity.status(company == null ? HttpStatus.NOT_FOUND : HttpStatus.OK).body(company);
+  public ResponseEntity<Long> deleteCompany(@PathVariable Long id) {
+    companyService.deleteCompanyById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(id);
   }
 
 
@@ -118,8 +128,27 @@ public class CompanyController {
     @ApiResponse(responseCode = "200", description = "User was added to the company"),
     @ApiResponse(responseCode = "404", description = "Company or user not found")
   })
+  @PreAuthorize("hasAuthority('ADMIN')")
   @PostMapping("/{companyId}/user/{userId}")
   public ResponseEntity<String> adduserToCompany(@PathVariable int companyId, @PathVariable int userId) {
-    return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Not implemented yet");
+    companyService.addUserToCompany(userId, companyId);
+    return ResponseEntity.status(HttpStatus.OK).body("User was added to the company");
+  }
+
+  /**
+   * Removes a user from a company.
+   */
+  @Operation(summary = "Remove a user from a company", description = "Remove a user from a company")
+  @Parameter(name = "companyId", description = "The id of the company to remove the user from", required = true)
+  @Parameter(name = "userId", description = "The id of the user to remove from the company", required = true)
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "User was removed from the company"),
+    @ApiResponse(responseCode = "404", description = "Company or user not found")
+  })
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @DeleteMapping("/{companyId}/user/{userId}")
+  public ResponseEntity<String> removeUserFromCompany(@PathVariable int companyId, @PathVariable int userId) {
+    companyService.removeUserFromCompany(userId, companyId);
+    return ResponseEntity.status(HttpStatus.OK).body("User was removed from the company");
   }
 }
