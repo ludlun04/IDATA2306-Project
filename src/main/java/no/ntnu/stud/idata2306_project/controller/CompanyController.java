@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import no.ntnu.stud.idata2306_project.model.company.Company;
+import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.service.CompanyService;
 
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a controller for companies.
@@ -149,5 +151,26 @@ public class CompanyController {
   public ResponseEntity<String> removeUserFromCompany(@PathVariable int companyId, @PathVariable int userId) {
     companyService.removeUserFromCompany(userId, companyId);
     return ResponseEntity.status(HttpStatus.OK).body("User was removed from the company");
+  }
+
+
+  /**
+   * Get all users in a company.
+   */
+  @Operation(summary = "Get all users in a company", description = "Get all users in a company")
+  @Parameter(name = "companyId", description = "The id of the company to get users from", required = true)
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "List of users in the company"),
+    @ApiResponse(responseCode = "404", description = "Company not found")
+  })
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @GetMapping("/{companyId}/users")
+  public ResponseEntity<Set<User>> getUsersInCompany(@PathVariable Long companyId) {
+    Set<User> users = this.companyService.getUsersInCompany(companyId);
+    if (users != null) {
+      return ResponseEntity.status(HttpStatus.OK).body(users);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
   }
 }

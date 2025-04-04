@@ -132,4 +132,13 @@ public class Company {
 
     this.users.remove(user);
   }
+
+  /**
+   * Returns the list of users associated with the company.
+   *
+   * @return the list of users associated with the company.
+   */
+  public Set<User> getUsers() {
+    return this.users;
+  }
 }

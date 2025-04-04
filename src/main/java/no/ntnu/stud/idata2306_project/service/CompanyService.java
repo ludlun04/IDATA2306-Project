@@ -1,6 +1,8 @@
 package no.ntnu.stud.idata2306_project.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -60,6 +62,7 @@ public class CompanyService {
 
     if (user != null && company != null) {
       company.addUser(user);
+      companyRepository.save(company);
     }
   }
 
@@ -74,6 +77,21 @@ public class CompanyService {
     Company company = companyRepository.findById(companyId).orElse(null);
     if (user != null && company != null) {
       company.removeUser(user);
+      companyRepository.save(company);
+    }
+  }
+
+  /**
+   * Get all users in a company
+   * 
+   * @param companyId the id of the company to get users from
+   */
+  public Set<User> getUsersInCompany(long companyId) {
+    Company company = companyRepository.findById(companyId).orElse(null);
+    if (company != null) {
+      return company.getUsers();
+    } else {
+      return new HashSet<>();
     }
   }
 }

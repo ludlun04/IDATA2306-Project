@@ -31,11 +31,10 @@ import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
 @Entity
 @Table(name = "app_user")
 public class User {
-
   @Schema(description = "The id of the user", example = "1")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+  long id;
 
   @Schema(description = "The username of the user", example = "username")
   @NotBlank
