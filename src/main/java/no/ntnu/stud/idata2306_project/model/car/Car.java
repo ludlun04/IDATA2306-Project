@@ -68,7 +68,7 @@ public class Car {
 
   public Car(int year, int numberOfSeats, int pricePerDay, CarModel model,
              FuelType fuelType, TransmissionType transmissionType, List<Addon> addons,
-             List<Feature> features) {
+             List<Feature> features, Company company) {
     this.year = year;
     this.numberOfSeats = numberOfSeats;
     this.pricePerDay = pricePerDay;
@@ -77,6 +77,7 @@ public class Car {
     this.transmissionType = transmissionType;
     this.addons = addons;
     this.features = features;
+    this.company = company;
   }
 
   /**
@@ -195,5 +196,4 @@ public class Car {
   public void setFeatures(List<Feature> features) {
     this.features = features;
   }
-
 }

@@ -8,6 +8,8 @@ import java.util.Optional;
 import no.ntnu.stud.idata2306_project.model.car.*;
 import no.ntnu.stud.idata2306_project.model.company.Company;
 import no.ntnu.stud.idata2306_project.repository.*;
+import no.ntnu.stud.idata2306_project.service.CompanyService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -36,8 +38,8 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private TransmissionTypeRepository transmissionTypeRepository;
   private AddonRepository addonRepository;
   private FeatureRepository featureRepository;
-  private CompanyRepository companyRepository;
   private RoleRepository roleRepository;
+  private CompanyService companyService;
 
   private Logger logger = LoggerFactory.getLogger(DummyDataInitializer.class);
 
@@ -53,7 +55,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     TransmissionTypeRepository transmissionTypeRepository,
     AddonRepository addonRepository,
     FeatureRepository featureRepository,
-    CompanyRepository companyRepository,
+    CompanyService companyService,
     RoleRepository roleRepository
     ) {
     this.userRepository = userRepository;
@@ -67,7 +69,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.transmissionTypeRepository = transmissionTypeRepository;
     this.addonRepository = addonRepository;
     this.featureRepository = featureRepository;
-    this.companyRepository = companyRepository;
+    this.companyService = companyService;
     this.roleRepository = roleRepository;
   }
 
@@ -134,16 +136,13 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     PhoneNumber companyPhoneNumber = new PhoneNumber("+47", "12345678");
     phoneNumberRepository.save(companyPhoneNumber);
 
-    //TODO: use address class when implemented
-    //Address address = new Address();
-
     Company company = new Company("Company", "Apple road", companyPhoneNumber);
-    this.companyRepository.save(company);
+    this.companyService.addCompany(company);
 
-    Car car1 = new Car(2010, 5, 500, toyotaCorolla, petrol, manual, List.of(gps), List.of(airConditioning, heatedSeats));
-    Car car2 = new Car(2015, 5, 550, volkswagenGolf, diesel, automatic, List.of(childSeat, gps), List.of(heatedSeats));
-    Car car3 = new Car(2018, 5, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning));
-    Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats));
+    Car car1 = new Car(2010, 5, 500, toyotaCorolla, petrol, manual, List.of(gps), List.of(airConditioning, heatedSeats), company);
+    Car car2 = new Car(2015, 5, 550, volkswagenGolf, diesel, automatic, List.of(childSeat, gps), List.of(heatedSeats), company);
+    Car car3 = new Car(2018, 5, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning), company);
+    Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats), company);
     this.carRepository.saveAll(List.of(car1, car2, car3, car4));
 
     logger.info("Dummy data initialized");
