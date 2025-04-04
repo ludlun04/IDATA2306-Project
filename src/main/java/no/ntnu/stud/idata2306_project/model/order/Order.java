@@ -23,7 +23,7 @@ public class Order {
   @Schema(description = "The id of the order")
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int orderId;
+  private long orderId;
 
   @Schema(description = "The id of the user who made the order")
   @NotBlank
@@ -58,7 +58,7 @@ public class Order {
    * Returns the id of the order
    * @return the id of the order
    */
-  public int getOrderId() {
+  public long getOrderId() {
     return orderId;
   }
 
