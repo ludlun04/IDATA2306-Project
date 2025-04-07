@@ -1,5 +1,6 @@
 package no.ntnu.stud.idata2306_project.controller;
 
+import no.ntnu.stud.idata2306_project.service.CarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,16 +31,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/cars")
 public class CarController {
 
-  private CarRepository carRepository;
+  private CarService carService;
   private Logger logger = LoggerFactory.getLogger(CarController.class);
 
   /**
    * Constructor for CarController
    *
-   * @param carRepository The repository for cars
+   * @param carService The service for cars
    */
-  public CarController(CarRepository carRepository) {
-    this.carRepository = carRepository;
+  public CarController(CarService carService) {
+    this.carService = carService;
   }
 
   /**
@@ -55,7 +56,7 @@ public class CarController {
   @GetMapping()
   public ResponseEntity<List<Car>> getAll() {
     logger.info("Getting all cars");
-    return ResponseEntity.ok(carRepository.findAll());
+    return ResponseEntity.ok(carService.getAllCars());
   }
 
   /**
@@ -70,8 +71,8 @@ public class CarController {
     @ApiResponse(responseCode = "404", description = "Car not found")
   })
   @GetMapping("/{id}")
-  public ResponseEntity<Car> getMethodName(@PathVariable Long id) {
-    Optional<Car> car = carRepository.findById(id);
+  public ResponseEntity<Car> getById(@PathVariable Long id) {
+    Optional<Car> car = this.carService.getCarById(id);
 
     if (car.isEmpty()) {
       logNotFound(id);
@@ -110,7 +111,7 @@ public class CarController {
   })
   @PostMapping("/")
   public ResponseEntity<String> addCar(@RequestBody Car car) {
-    carRepository.save(car);
+    this.carService.saveCar(car);
     logger.info("Car added with id {}", car.getId());
 
     return ResponseEntity.ok(String.valueOf(car.getId()));
@@ -129,14 +130,14 @@ public class CarController {
   })
   @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteCar(@PathVariable Long id) {
-    Optional<Car> car = carRepository.findById(id);
+    Optional<Car> car = carService.getCarById(id);
 
     if (car.isEmpty()) {
       logNotFound(id);
       return ResponseEntity.notFound().build();
     }
 
-    carRepository.delete(car.get());
+    carService.deleteCarById(car.get().getId());
     logger.info("Car with id {} deleted", id);
     return ResponseEntity.ok("Car deleted");
   }
