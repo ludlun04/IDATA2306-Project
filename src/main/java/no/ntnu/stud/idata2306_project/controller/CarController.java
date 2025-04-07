@@ -95,7 +95,9 @@ public class CarController {
   })
   @GetMapping("/search/{keyWord}")
   public ResponseEntity<List<Car>> getByKeyWord(@PathVariable String keyWord) {
-    return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
+    List<Car> cars = this.carService.getCarsByKeyword(keyWord);
+    logger.info("{} cars with keyword {} found", cars.size(), keyWord);
+    return ResponseEntity.ok(cars);
   }
 
   /**
