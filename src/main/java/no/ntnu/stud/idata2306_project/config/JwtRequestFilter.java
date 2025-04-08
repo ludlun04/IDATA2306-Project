@@ -1,8 +1,11 @@
 package no.ntnu.stud.idata2306_project.config;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +32,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
   UserDetailsService userDetailsService;
   JwtUtil jwtUtil;
+  private Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
 
   public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService) {
     super();
@@ -40,13 +44,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
       throws ServletException, IOException {
         String jwtToken = getJwtToken(request);
-        String username = jwtToken != null ? getUsernameFromToken(jwtToken) : null;
+        try {
+          String username = jwtToken != null ? getUsernameFromToken(jwtToken) : null;
 
-        if (username != null && !isContextAuthenticated()) {
-          UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-          if (userDetails != null && jwtUtil.validateToken(jwtToken, userDetails)) {
-            registerUserAsAuthenticated(request, userDetails);
+          if (username != null && !isContextAuthenticated()) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (userDetails != null && jwtUtil.validateToken(jwtToken, userDetails)) {
+              registerUserAsAuthenticated(request, userDetails);
+            }
           }
+        } catch (ExpiredJwtException e) {
+          logger.error("JWT token is expired: {}", e.getMessage());
         }
 
       filterChain.doFilter(request, response);
