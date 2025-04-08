@@ -38,7 +38,6 @@ public class Order {
   private Date startDate;
 
   @Schema(description = "The end date of the order")
-  @NotNull
   private Date endDate;
 
   @Schema(description = "The price the user paid for the order")

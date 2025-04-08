@@ -160,7 +160,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       Order order2 = new Order(user.getId(), car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 500, List.of(childSeat, gps));
       orderRepository.save(order2);
 
-      Order order3 = new Order(user.getId(), car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 500, List.of(childSeat, gps));
+      Order order3 = new Order(user.getId(), car2.getId(), new Date(System.currentTimeMillis() - 1000000), null, 500, List.of(childSeat, gps));
       orderRepository.save(order3);
 
       Order order4 = new Order(10L, car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 700, List.of(childSeat, gps));

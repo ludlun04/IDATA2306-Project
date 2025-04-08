@@ -7,4 +7,5 @@ import org.springframework.data.repository.ListCrudRepository;
 public interface OrderRepository extends ListCrudRepository<Order, Long> {
   public List<Order> findOrdersByUserId(Long userId);
   public Order findOrderByUserId(Long userId);
+  public List<Order> findOrdersByUserIdAndEndDateIsNull(Long userId);
 }
