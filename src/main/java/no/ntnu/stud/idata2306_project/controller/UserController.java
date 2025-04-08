@@ -44,6 +44,8 @@ public class UserController {
     return ResponseEntity.ok(userService.getUsers());
   }
 
+
+
   @Operation(summary = "Get a user", description = "Get a user by id")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User that was found"),

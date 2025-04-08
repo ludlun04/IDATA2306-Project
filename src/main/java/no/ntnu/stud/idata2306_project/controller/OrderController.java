@@ -1,5 +1,8 @@
 package no.ntnu.stud.idata2306_project.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.repository.OrderRepository;
@@ -42,6 +45,10 @@ public class OrderController {
    *
    * @return a list of all orders for the logged in user
    */
+  @Operation(summary = "Get all orders for the logged in user", description = "Get a list of all orders for the logged in user")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List of orders")
+  })
   @GetMapping("/history")
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<List<Order>> getAuthenticatedUserUserOrders() {
@@ -55,6 +62,10 @@ public class OrderController {
    *
    * @return a list of all active orders for the logged in user
    */
+  @Operation(summary = "Get all active orders for the logged in user", description = "Get a list of all active orders for the logged in user")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "List of active orders")
+  })
   @GetMapping("/active")
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<List<Order>> getAuthenticatedUserActiveOrders() {
