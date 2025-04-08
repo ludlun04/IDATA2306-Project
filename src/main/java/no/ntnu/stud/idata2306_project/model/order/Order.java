@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import no.ntnu.stud.idata2306_project.model.car.Addon;
@@ -26,23 +27,22 @@ public class Order {
   private long orderId;
 
   @Schema(description = "The id of the user who made the order")
-  @NotBlank
-  private int userId;
+  @NotNull
+  private Long userId;
 
   @Schema(description = "The id of the car that was ordered")
-  @NotBlank
-  private int carId;
+  @NotNull
+  private Long carId;
 
   @Schema(description = "The start date of the order")
-  @NotBlank
+  @NotNull
   private Date startDate;
 
   @Schema(description = "The end date of the order")
-  @NotBlank
+  @NotNull
   private Date endDate;
 
   @Schema(description = "The price the user paid for the order")
-  @NotBlank
   private int price;
 
   @Schema(description = "The addons that were included in the order")
@@ -53,6 +53,25 @@ public class Order {
    * Creates a new order
    */
   public Order() {}
+
+  /**
+   * Creates a new order
+   *
+   * @param userId the id of the user who made the order
+   * @param carId the id of the car that was ordered
+   * @param startDate the start date of the order
+   * @param endDate the end date of the order
+   * @param price the price the user paid for the order
+   * @param addons the addons that were included in the order
+   */
+  public Order(Long userId, Long carId, Date startDate, Date endDate, int price, List<Addon> addons) {
+    this.userId = userId;
+    this.carId = carId;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.price = price;
+    this.addons = addons;
+  }
 
   /**
    * Returns the id of the order
@@ -66,7 +85,7 @@ public class Order {
    * Returns the id of the user who made the order
    * @return the id of the user who made the order
    */
-  public int getUserId() {
+  public Long getUserId() {
       return userId;
   }
 
@@ -74,7 +93,7 @@ public class Order {
    * Returns the id of the car that was ordered
    * @return the id of the car that was ordered
    */
-  public int getCarId() {
+  public Long getCarId() {
       return carId;
   }
 

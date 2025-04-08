@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import no.ntnu.stud.idata2306_project.model.car.*;
 import no.ntnu.stud.idata2306_project.model.company.Company;
+import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.repository.*;
 import no.ntnu.stud.idata2306_project.service.CompanyService;
 
@@ -40,6 +41,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private FeatureRepository featureRepository;
   private RoleRepository roleRepository;
   private CompanyService companyService;
+  private OrderRepository orderRepository;
 
   private Logger logger = LoggerFactory.getLogger(DummyDataInitializer.class);
 
@@ -56,7 +58,8 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     AddonRepository addonRepository,
     FeatureRepository featureRepository,
     CompanyService companyService,
-    RoleRepository roleRepository
+    RoleRepository roleRepository,
+    OrderRepository orderRepository
     ) {
     this.userRepository = userRepository;
     this.carRepository = carRepository;
@@ -71,6 +74,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.featureRepository = featureRepository;
     this.companyService = companyService;
     this.roleRepository = roleRepository;
+    this.orderRepository = orderRepository;
   }
 
   @Override
@@ -146,6 +150,26 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.carRepository.saveAll(List.of(car1, car2, car3, car4));
 
     logger.info("Dummy data initialized");
+
+    Optional<User> optionalUser2 = userRepository.findByUsername("user");
+    if (optionalUser2.isPresent()) {
+      User user = optionalUser2.get();
+      Order order1 = new Order(user.getId(), car1.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 500, List.of(gps));
+      orderRepository.save(order1);
+
+      Order order2 = new Order(user.getId(), car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 500, List.of(childSeat, gps));
+      orderRepository.save(order2);
+
+      Order order3 = new Order(user.getId(), car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 500, List.of(childSeat, gps));
+      orderRepository.save(order3);
+
+      Order order4 = new Order(10L, car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 700, List.of(childSeat, gps));
+      orderRepository.save(order4);
+
+      Order order5 = new Order(10L, car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 700, List.of(childSeat, gps));
+      orderRepository.save(order5);
+
+    }
   }
 
 }
