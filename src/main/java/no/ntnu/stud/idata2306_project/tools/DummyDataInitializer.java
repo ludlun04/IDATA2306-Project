@@ -107,8 +107,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     Car car2 = new Car(2015, 5, 550, volkswagenGolf, diesel, automatic, List.of(childSeat, gps), List.of(heatedSeats),
         company);
     Car car3 = new Car(2018, 5, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning), company);
-    Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats),
-        company);
+    Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats), company);
     this.carRepository.saveAll(List.of(car1, car2, car3, car4));
 
     logger.info("Dummy data initialized");
@@ -124,8 +123,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
           new Date(System.currentTimeMillis() + 1000000), 500, List.of(childSeat, gps));
       orderRepository.save(order2);
 
-      Order order3 = new Order(user.getId(), car2.getId(), new Date(System.currentTimeMillis() - 1000000),
-          new Date(System.currentTimeMillis() + 1000000), 500, List.of(childSeat, gps));
+      Order order3 = new Order(user.getId(), car2.getId(), new Date(System.currentTimeMillis() - 1000000), null, 500, List.of(childSeat, gps));
       orderRepository.save(order3);
 
       Order order4 = new Order(10L, car2.getId(), new Date(System.currentTimeMillis() - 1000000),
