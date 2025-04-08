@@ -38,11 +38,8 @@ public class UserInitializer {
   }
 
   public void initializeUsers() {
-    Role adminRole = new Role("ADMIN");
-    Role userRole = new Role("USER");
-    roleRepository.save(adminRole);
-    roleRepository.save(userRole);
-    
+    Role adminRole = roleRepository.save(new Role("ADMIN"));
+    Role userRole = roleRepository.save(new Role("USER"));
     
     Address address = new Address("6009", "Norway", "Apple Road 2");
     addressRepository.save(address);
@@ -52,7 +49,8 @@ public class UserInitializer {
 
     // Create admin User
     User admin = new User();
-    admin.setRoles(new HashSet<>(List.of(userRole, adminRole)));
+    admin.addRole(userRole);
+    admin.addRole(adminRole);
     admin.setEmail("admin@driveio.no");
     admin.setFirstname("admin");
     admin.setLastName("admin");
@@ -65,7 +63,7 @@ public class UserInitializer {
 
     // Create normal User
     User user = new User();
-    user.setRoles(new HashSet<>(List.of(userRole)));
+    user.addRole(userRole);
     user.setUsername("user");
     user.setFirstname("user");
     user.setLastName("user");
@@ -76,8 +74,11 @@ public class UserInitializer {
     user.setDateOfBirth(new Date(System.currentTimeMillis() - 108273460));
     user.setEmail("user@emailprovider.domain");
 
+    
     // Save the users to the database
-    userService.addUser(admin);
+    User createdAdmin = userService.addUser(admin);
     userService.addUser(user);
+
+    System.out.println(createdAdmin.getRoles());
   }
 }

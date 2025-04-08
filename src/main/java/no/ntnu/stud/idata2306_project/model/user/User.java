@@ -118,6 +118,23 @@ public class User {
   }
 
   /**
+   * Adds a role to the user
+   * @param role the role to be added
+   */
+  public void addRole(Role role) {
+    this.roles.add(role);
+  }
+
+  /**
+   * Removes a role from the user
+   * @param role the role to be removed
+   */
+  public void removeRole(Role role) {
+    this.roles.remove(role);
+  }
+
+
+  /**
    * Returns the user's id.
    *
    * @return the user's id

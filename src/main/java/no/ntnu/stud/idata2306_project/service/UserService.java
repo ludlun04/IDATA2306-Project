@@ -89,12 +89,6 @@ public class UserService {
 
     user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-    Role role = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Role not found"));
-
-    HashSet<Role> roles = new HashSet<>();
-    roles.add(role);
-    user.setRoles(roles);
-
     this.logger.info("User with username {} created", username);
 
     return userRepository.save(user);
