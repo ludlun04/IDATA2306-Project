@@ -9,6 +9,7 @@ import java.util.List;
 
 import no.ntnu.stud.idata2306_project.exception.UserNotFoundException;
 import no.ntnu.stud.idata2306_project.model.user.User;
+import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306_project.service.UserService;
 
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +46,17 @@ public class UserController {
     return ResponseEntity.ok(userService.getUsers());
   }
 
-
+  @Operation(summary = "Get authenticated user", description = "Get the authenticated user")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Authenticated user")
+  })
+  @PreAuthorize("hasAnyAuthority('USER')")
+  @GetMapping("/details")
+  public ResponseEntity<User> getAuthenticatedUser() {
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = userService.getUserById(userDetails.getId());
+    return ResponseEntity.ok(user);
+  }
 
   @Operation(summary = "Get a user", description = "Get a user by id")
   @ApiResponses(value = {
