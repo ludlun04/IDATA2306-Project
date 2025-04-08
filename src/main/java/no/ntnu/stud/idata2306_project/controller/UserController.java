@@ -7,8 +7,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+import no.ntnu.stud.idata2306_project.exception.UserNotFoundException;
 import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.repository.UserRepository;
+import no.ntnu.stud.idata2306_project.service.UserService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,31 +26,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
   private final UserRepository userRepository;
+  private final UserService userService;
 
-  public UserController(UserRepository userRepository) {
+  public UserController(UserRepository userRepository, UserService userService) {
+    this.userService = userService;
     this.userRepository = userRepository;
   }
 
   @Operation(summary = "Get all users", description = "Get a list of all users")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "List of users")
+      @ApiResponse(responseCode = "200", description = "List of users")
   })
   @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping()
   public ResponseEntity<List<User>> getUsers() {
-    return ResponseEntity.ok(userRepository.findAll());
+    return ResponseEntity.ok(userService.getUsers());
   }
-
 
   @Operation(summary = "Get a user", description = "Get a user by id")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User that was found"),
       @ApiResponse(responseCode = "404", description = "User not found")
   })
+  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping("/{id}")
   public ResponseEntity<User> getUserById(@PathVariable long id) {
-    User user = userRepository.findById(id).orElse(null);
-    return ResponseEntity.status(user == null ? HttpStatus.NOT_FOUND : HttpStatus.OK).body(user);
+    try {
+      User user = userService.getUserById(id);
+      return ResponseEntity.ok().body(user);
+    } catch (UserNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
   }
 
   @Operation(summary = "Get users by name", description = "Get a list of users containing the given name")
@@ -56,7 +65,7 @@ public class UserController {
   })
   @GetMapping("/search/{name}")
   public ResponseEntity<List<User>> getUsersByName(@PathVariable String name) {
-    return ResponseEntity.ok(userRepository.findUsersByUsernameLike(name));
+    return ResponseEntity.ok(userService.getUsersByName(name));
   }
 
   @Operation(summary = "Add a user", description = "Add a new user")
@@ -64,9 +73,37 @@ public class UserController {
       @ApiResponse(responseCode = "201", description = "User that was added")
   })
   @GetMapping("/add")
-  public ResponseEntity<User> addUser(@RequestBody User user) {
-      User newUser = userRepository.save(user);
-      return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+  public ResponseEntity<String> addUser(@RequestBody User user) {
+    if (user.getAddress() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Address is required");
+    }
+    if (user.getUsername() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
+    }
+    if (user.getPassword() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password is required");
+    }
+    if (user.getEmail() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
+    }
+    if (user.getPhoneNumber() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number is required");
+    }
+    if (user.getFirstName() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name is required");
+    }
+    if (user.getLastName() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name is required");
+    }
+    if (user.getPassword() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password is required");
+    }
+
+    User newUser = userService.addUser(user);
+    if (newUser == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
+    }
+    return ResponseEntity.status(HttpStatus.CREATED).body("User Created: " + newUser.getId());
   }
 
   @Operation(summary = "Delete a user", description = "Delete a user by id")
@@ -75,11 +112,12 @@ public class UserController {
       @ApiResponse(responseCode = "404", description = "User not found")
   })
   @GetMapping("/delete/{id}")
-  public ResponseEntity<User> deleteUser(@PathVariable long id) {
-      User user = userRepository.findById(id).orElse(null);
-      if (user != null) {
-      userRepository.delete(user);
-      }
-      return ResponseEntity.status(user == null ? HttpStatus.NOT_FOUND : HttpStatus.OK).body(user);
+  public ResponseEntity<String> deleteUser(@PathVariable long id) {
+    try {
+      this.userService.deleteUser(id);
+      return ResponseEntity.status(HttpStatus.OK).body("User Removed: " + id);
+    } catch (UserNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found: " + id);
+    }
   }
 }
