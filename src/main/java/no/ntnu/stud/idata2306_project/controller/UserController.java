@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 
 import no.ntnu.stud.idata2306_project.exception.UserNotFoundException;
+import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306_project.service.UserService;
@@ -56,6 +57,18 @@ public class UserController {
     AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
     return ResponseEntity.ok(user);
+  }
+
+  @Operation(summary = "Get favorites", description = "Get the authenticated user's favorited cars")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List of authenticated users favorites")
+  })
+  @PreAuthorize("hasAnyAuthority('USER')")
+  @GetMapping("/favorites")
+  public ResponseEntity<List<Car>> getAuthenticatedUserFavorites() {
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = userService.getUserById(userDetails.getId());
+    return ResponseEntity.ok(user.getFavorites());
   }
 
   @Operation(summary = "Get a user", description = "Get a user by id")
