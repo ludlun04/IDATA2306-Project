@@ -47,12 +47,17 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .cors(withDefaults())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/authenticate").permitAll()
-            .requestMatchers("/swagger-ui/**").permitAll()
-            .requestMatchers("/v3/api-docs/**").permitAll()
-            .requestMatchers("/").permitAll()
+            .requestMatchers(
+              "/",
+              "/authenticate",
+              "/car",
+              "/car/search/**",
+              "/v3/api-docs/**",
+              "/swagger-ui/**"
+            ).permitAll()
             .anyRequest().authenticated())
         .addFilterBefore(this.jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+
         .formLogin(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .build();

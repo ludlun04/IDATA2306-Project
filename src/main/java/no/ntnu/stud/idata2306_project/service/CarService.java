@@ -8,15 +8,19 @@ import no.ntnu.stud.idata2306_project.repository.CarModelRepository;
 import no.ntnu.stud.idata2306_project.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CarService {
   private CarRepository carRepository;
   private CarModelRepository carModelRepository;
   private CarBrandRepository carBrandRepository;
+
+  public CarService(CarRepository carRepository, CarModelRepository carModelRepository, CarBrandRepository carBrandRepository) {
+    this.carRepository = carRepository;
+    this.carModelRepository = carModelRepository;
+    this.carBrandRepository = carBrandRepository;
+  }
 
   public List<Car> getAllCars() {
     return carRepository.findAll();
@@ -35,20 +39,20 @@ public class CarService {
   }
 
   public List<Car> getCarsByKeyword(String keyword) {
-    List<CarModel> matchingModels = carModelRepository.findByNameContainingIgnoreCase(keyword);
-    List<CarBrand> matchingBrands = carBrandRepository.findByNameContainingIgnoreCase(keyword);
-    List<Car> matchingCars = new ArrayList<>();
+    Set<CarModel> matchingModels = carModelRepository.findByNameContainingIgnoreCase(keyword);
+    Set<CarBrand> matchingBrands = carBrandRepository.findByNameContainingIgnoreCase(keyword);
+    Set<Car> matchingCars = new HashSet<>();
 
     for (CarBrand brand : matchingBrands) {
-      List<CarModel> matchingModelsFromBrand = carModelRepository.findByBrandNameContainingIgnoreCase(brand.getName());
+      Set<CarModel> matchingModelsFromBrand = carModelRepository.findByBrandNameContainingIgnoreCase(brand.getName());
       matchingModels.addAll(matchingModelsFromBrand);
     }
 
     for (CarModel model : matchingModels) {
-      List<Car> carsByModel = carRepository.findByModel(model);
+      Set<Car> carsByModel = carRepository.findByModel(model);
       matchingCars.addAll(carsByModel);
     }
-    return matchingCars;
+    return List.copyOf(matchingCars);
 
   }
 }
