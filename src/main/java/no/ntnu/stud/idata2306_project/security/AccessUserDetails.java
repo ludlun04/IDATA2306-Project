@@ -18,6 +18,7 @@ import no.ntnu.stud.idata2306_project.model.user.User;
 public class AccessUserDetails implements UserDetails {
   private String username;
   private String password;
+  private Long userId;
   private Set<GrantedAuthority> authorities;
 
   /**
@@ -28,6 +29,7 @@ public class AccessUserDetails implements UserDetails {
   public AccessUserDetails(User user) {
     this.username = user.getUsername();
     this.password = user.getPassword();
+    this.userId = user.getId();
     this.authorities = new HashSet<>();
     convertRolesToAuthorities(user.getRoles());
   }
@@ -56,5 +58,8 @@ public class AccessUserDetails implements UserDetails {
   public String getUsername() {
     return this.username;
   }
-  
+
+  public Long getId() {
+    return this.userId;
+  }
 }

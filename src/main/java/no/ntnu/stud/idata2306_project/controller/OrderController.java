@@ -1,9 +1,11 @@
 package no.ntnu.stud.idata2306_project.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.repository.OrderRepository;
+import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -25,17 +27,16 @@ public class OrderController {
       this.orderRepository = orderRepository;
   }
 
-  /**
   @GetMapping("/history")
   public ResponseEntity<List<Order>> getCompanyOrders() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    User user = (User) auth.getPrincipal();
-
+    AccessUserDetails user = (AccessUserDetails) auth.getPrincipal();
+    return ResponseEntity.ok(orderRepository.findOrdersByUserId(user.getId()));
   }
 
+  /**
   @GetMapping("/{userId}")
   public ResponseEntity<List<Order>> getUserOrders(SecurityContext securityContext) {
   }
-
   */
 }
