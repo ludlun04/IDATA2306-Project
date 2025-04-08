@@ -1,5 +1,7 @@
 package no.ntnu.stud.idata2306_project.controller;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.persistence.Access;
 import no.ntnu.stud.idata2306_project.service.CarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +54,7 @@ public class CarController {
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "List of cars"),
   })
-  @PreAuthorize("hasAuthority('USER')")
+  @PermitAll
   @GetMapping()
   public ResponseEntity<List<Car>> getAll() {
     logger.info("Getting all cars");
@@ -93,6 +95,7 @@ public class CarController {
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "List of cars that match the search term"),
   })
+  @PermitAll
   @GetMapping("/search/{keyWord}")
   public ResponseEntity<List<Car>> getByKeyWord(@PathVariable String keyWord) {
     List<Car> cars = this.carService.getCarsByKeyword(keyWord);

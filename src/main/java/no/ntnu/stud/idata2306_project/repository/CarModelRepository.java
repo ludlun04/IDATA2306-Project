@@ -8,5 +8,5 @@ import java.util.List;
 public interface CarModelRepository extends ListCrudRepository<CarModel, Long> {
   List<CarModel> findByNameContainingIgnoreCase(String keyword);
 
-  List<CarModel> findByBrandContainingIgnoreCase(String name);
+  List<CarModel> findByBrandNameContainingIgnoreCase(String name);
 }

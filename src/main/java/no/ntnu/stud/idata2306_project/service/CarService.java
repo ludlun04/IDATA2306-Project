@@ -40,7 +40,7 @@ public class CarService {
     List<Car> matchingCars = new ArrayList<>();
 
     for (CarBrand brand : matchingBrands) {
-      List<CarModel> matchingModelsFromBrand = carModelRepository.findByBrandContainingIgnoreCase(brand.getName());
+      List<CarModel> matchingModelsFromBrand = carModelRepository.findByBrandNameContainingIgnoreCase(brand.getName());
       matchingModels.addAll(matchingModelsFromBrand);
     }
 
