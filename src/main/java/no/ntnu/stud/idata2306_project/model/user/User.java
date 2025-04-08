@@ -91,6 +91,15 @@ public class User {
   public User() {}
 
   /**
+   * Returns the user's id.
+   *
+   * @return the user's id
+   */
+  public Long getId() {
+    return id;
+  }
+
+  /**
    * Returns roles assosiated with the current user.
    *
    * @return A set of roles
