@@ -23,21 +23,18 @@ public class UserInitializer {
   private final AddressRepository addressRepository;
   private final PhoneNumberRepository phoneNumberRepository;
   private final RoleRepository roleRepository;
-  private final PasswordEncoder passwordEncoder;
 
   private static final String DEFAULT_PASSWORD = "yes";
 
   public UserInitializer(UserService userService,
       AddressRepository addressRepository,
       PhoneNumberRepository phoneNumberRepository,
-      RoleRepository roleRepository,
-      PasswordEncoder passwordEncoder) {
+      RoleRepository roleRepository) {
     super();
     this.userService = userService;
     this.addressRepository = addressRepository;
     this.phoneNumberRepository = phoneNumberRepository;
     this.roleRepository = roleRepository;
-    this.passwordEncoder = passwordEncoder;
   }
 
   public void initializeUsers() {
