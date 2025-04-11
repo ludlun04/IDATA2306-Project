@@ -1,9 +1,7 @@
 package no.ntnu.stud.idata2306_project;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 import no.ntnu.stud.idata2306_project.model.car.*;
 import no.ntnu.stud.idata2306_project.model.company.Company;
@@ -154,19 +152,19 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     Optional<User> optionalUser2 = userRepository.findByUsername("user");
     if (optionalUser2.isPresent()) {
       User user = optionalUser2.get();
-      Order order1 = new Order(user.getId(), car1.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 500, List.of(gps));
+      Order order1 = new Order(user.getId(), car1.getId(), LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 20), 500, List.of(gps));
       orderRepository.save(order1);
 
-      Order order2 = new Order(user.getId(), car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 500, List.of(childSeat, gps));
+      Order order2 = new Order(user.getId(), car3.getId(), LocalDate.of(2025, 2, 19), LocalDate.of(2025, 3, 1), 500, List.of(childSeat, gps));
       orderRepository.save(order2);
 
-      Order order3 = new Order(user.getId(), car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 500, List.of(childSeat, gps));
+      Order order3 = new Order(user.getId(), car4.getId(), LocalDate.of(2025, 1, 10), LocalDate.of(2025, 1, 20), 500, List.of(childSeat, gps));
       orderRepository.save(order3);
 
-      Order order4 = new Order(10L, car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 700, List.of(childSeat, gps));
+      Order order4 = new Order(10L, car1.getId(), LocalDate.of(2025, 4, 2), LocalDate.of(2025, 4, 15), 700, List.of(childSeat, gps));
       orderRepository.save(order4);
 
-      Order order5 = new Order(10L, car2.getId(), new Date(System.currentTimeMillis() - 1000000), new Date(System.currentTimeMillis() + 1000000), 700, List.of(childSeat, gps));
+      Order order5 = new Order(10L, car4.getId(), LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 2), 700, List.of(childSeat, gps));
       orderRepository.save(order5);
 
     }

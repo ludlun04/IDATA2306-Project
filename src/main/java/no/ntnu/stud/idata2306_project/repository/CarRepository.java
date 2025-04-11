@@ -11,4 +11,5 @@ import java.util.Set;
 
 public interface CarRepository extends JpaRepository<Car, Long> {
   Set<Car> findByModel(CarModel model);
+
 }

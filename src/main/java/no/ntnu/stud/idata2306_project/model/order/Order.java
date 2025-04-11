@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import no.ntnu.stud.idata2306_project.model.car.Addon;
@@ -36,11 +38,11 @@ public class Order {
 
   @Schema(description = "The start date of the order")
   @NotNull
-  private Date startDate;
+  private LocalDate startDate;
 
   @Schema(description = "The end date of the order")
   @NotNull
-  private Date endDate;
+  private LocalDate endDate;
 
   @Schema(description = "The price the user paid for the order")
   private int price;
@@ -64,7 +66,7 @@ public class Order {
    * @param price the price the user paid for the order
    * @param addons the addons that were included in the order
    */
-  public Order(Long userId, Long carId, Date startDate, Date endDate, int price, List<Addon> addons) {
+  public Order(Long userId, Long carId, LocalDate startDate, LocalDate endDate, int price, List<Addon> addons) {
     this.userId = userId;
     this.carId = carId;
     this.startDate = startDate;
@@ -101,7 +103,7 @@ public class Order {
    * Returns the start date of the order
    * @return the start date of the order
    */
-  public Date getStartDate() {
+  public LocalDate getStartDate() {
       return startDate;
   }
 
@@ -109,7 +111,7 @@ public class Order {
    * Returns the end date of the order
    * @return the end date of the order
    */
-  public Date getEndDate() {
+  public LocalDate getEndDate() {
       return endDate;
   }
 

@@ -162,6 +162,14 @@ public class Car {
   }
 
   /**
+   * Returns the company that owns the car.
+   * @return the company that owns the car
+   */
+  public Company getCompany() {
+    return this.company;
+  }
+
+  /**
    * Returns the car's addons.
    *
    * @return the car's addons
