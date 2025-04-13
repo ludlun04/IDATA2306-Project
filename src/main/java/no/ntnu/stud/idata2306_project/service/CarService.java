@@ -17,6 +17,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Service
@@ -52,18 +53,23 @@ public class CarService {
           }
         } catch (NumberFormatException e) {
           // Handle the case where the value is not a number
-          logger.error("Invalid number format for filter: " + key + ", with value: " + filters.get(key));
+          logger.error("Invalid number format for filter: {}, with value: {}", key, filters.get(key));
           fulfillsAllConstraints = false;
           break;
         } catch (UnknownFilterException e) {
           // Handle the case where the filter is unknown
-          logger.error("Unknown filter: " + key + ", with value: " + filters.get(key));
+          logger.error("Unknown filter: {}, with value: {}", key, filters.get(key));
+          fulfillsAllConstraints = false;
+          break;
+        } catch (DateTimeParseException e) {
+          // Handle the case where the date format is invalid
+          logger.error("Invalid date format for filter: {}, with value: {}", key, filters.get(key));
           fulfillsAllConstraints = false;
           break;
         }
         catch (Exception e) {
           // Handle any other exceptions that may occur
-          logger.error("An error occurred while checking filter: " + key + ", with value: " + filters.get(key), e);
+          logger.error("An error occurred while checking filter: {}, with value: {}", key, filters.get(key), e);
           fulfillsAllConstraints = false;
           break;
         }
@@ -102,9 +108,11 @@ public class CarService {
           result = false;
         }
         break;
-      case "to_time":
-        LocalDate toDate = LocalDate.parse(value, formatter);
-        if (!orderRepository.isAvailableTo(car.getId(), toDate)) {
+      case "between_times":
+        String [] dates = value.split(",");
+        LocalDate startDate = LocalDate.parse(dates[0], formatter);
+        LocalDate endDate = LocalDate.parse(dates[1], formatter);
+        if (!orderRepository.isAvailableBetween(car.getId(), startDate, endDate)) {
           result = false;
         }
         break;
