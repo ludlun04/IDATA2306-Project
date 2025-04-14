@@ -23,24 +23,15 @@ import java.util.*;
 @Service
 public class CarService {
   private final CarRepository carRepository;
-  private final CarModelRepository carModelRepository;
-  private final CarBrandRepository carBrandRepository;
-
   private final Logger logger = LoggerFactory.getLogger(CarService.class);
 
-
-
-  public CarService(CarRepository carRepository, CarModelRepository carModelRepository, CarBrandRepository carBrandRepository, OrderRepository orderRepository) {
+  public CarService(CarRepository carRepository) {
     this.carRepository = carRepository;
-    this.carModelRepository = carModelRepository;
-    this.carBrandRepository = carBrandRepository;
   }
 
   public List<Car> getAllCars() {
     return carRepository.findAll();
   }
-
-
 
   public Optional<Car> getCarById(long id) {
     return carRepository.findById(id);
@@ -54,21 +45,4 @@ public class CarService {
     carRepository.deleteById(id);
   }
 
-  public List<Car> getCarsByKeyword(String keyword) {
-    Set<CarModel> matchingModels = carModelRepository.findByNameContainingIgnoreCase(keyword);
-    Set<CarBrand> matchingBrands = carBrandRepository.findByNameContainingIgnoreCase(keyword);
-    Set<Car> matchingCars = new HashSet<>();
-
-    for (CarBrand brand : matchingBrands) {
-      Set<CarModel> matchingModelsFromBrand = carModelRepository.findByBrandNameContainingIgnoreCase(brand.getName());
-      matchingModels.addAll(matchingModelsFromBrand);
-    }
-
-    for (CarModel model : matchingModels) {
-      Set<Car> carsByModel = carRepository.findByModel(model);
-      matchingCars.addAll(carsByModel);
-    }
-    return List.copyOf(matchingCars);
-
-  }
 }

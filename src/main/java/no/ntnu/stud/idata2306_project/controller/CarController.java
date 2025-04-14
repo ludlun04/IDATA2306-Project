@@ -2,6 +2,7 @@ package no.ntnu.stud.idata2306_project.controller;
 
 import jakarta.annotation.security.PermitAll;
 import no.ntnu.stud.idata2306_project.service.CarFilterService;
+import no.ntnu.stud.idata2306_project.service.CarSearchService;
 import no.ntnu.stud.idata2306_project.service.CarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,18 +26,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/car")
 public class CarController {
 
-  private CarService carService;
-  private CarFilterService carFilterService;
-  private Logger logger = LoggerFactory.getLogger(CarController.class);
+  private final CarService carService;
+  private final CarFilterService carFilterService;
+  private final CarSearchService carSearchService;
+  private final Logger logger = LoggerFactory.getLogger(CarController.class);
 
   /**
    * Constructor for CarController
    *
    * @param carService The service for cars
    */
-  public CarController(CarService carService, CarFilterService carFilterService) {
+  public CarController(CarService carService, CarFilterService carFilterService, CarSearchService carSearchService) {
     this.carService = carService;
     this.carFilterService = carFilterService;
+    this.carSearchService = carSearchService;
   }
 
   /**
@@ -99,7 +102,7 @@ public class CarController {
   @PermitAll
   @GetMapping("/search")
   public ResponseEntity<List<Car>> getByKeyWord(@RequestParam String keyWord) {
-    List<Car> cars = this.carService.getCarsByKeyword(keyWord);
+    List<Car> cars = this.carSearchService.getCarsByKeyword(keyWord);
     logger.info("{} cars with keyword {} found", cars.size(), keyWord);
     return ResponseEntity.ok(cars);
   }
