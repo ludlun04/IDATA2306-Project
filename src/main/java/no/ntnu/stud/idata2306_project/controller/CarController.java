@@ -90,24 +90,6 @@ public class CarController {
   }
 
   /**
-   * Endpoint for getting cars by name
-   *
-   * @param keyWord The search term
-   * @return List of cars that match the search term
-   */
-  @Operation(summary = "Get cars by name")
-  @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "List of cars that match the search term"),
-  })
-  @PermitAll
-  @GetMapping("/search")
-  public ResponseEntity<List<Car>> getByKeyWord(@RequestParam String keyWord) {
-    List<Car> cars = this.carSearchService.getCarsByKeyword(keyWord);
-    logger.info("{} cars with keyword {} found", cars.size(), keyWord);
-    return ResponseEntity.ok(cars);
-  }
-
-  /**
    * Endpoint for adding a new car
    *
    * @param car The car to add
