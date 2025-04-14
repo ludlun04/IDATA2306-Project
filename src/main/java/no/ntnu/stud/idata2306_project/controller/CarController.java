@@ -1,6 +1,7 @@
 package no.ntnu.stud.idata2306_project.controller;
 
 import jakarta.annotation.security.PermitAll;
+import no.ntnu.stud.idata2306_project.service.CarFilterService;
 import no.ntnu.stud.idata2306_project.service.CarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class CarController {
 
   private CarService carService;
+  private CarFilterService carFilterService;
   private Logger logger = LoggerFactory.getLogger(CarController.class);
 
   /**
@@ -32,8 +34,9 @@ public class CarController {
    *
    * @param carService The service for cars
    */
-  public CarController(CarService carService) {
+  public CarController(CarService carService, CarFilterService carFilterService) {
     this.carService = carService;
+    this.carFilterService = carFilterService;
   }
 
   /**
@@ -52,7 +55,7 @@ public class CarController {
     if (filters.isEmpty()) {
       return ResponseEntity.ok(carService.getAllCars());
     } else {
-      List<Car> cars = carService.getCarsByFilters(filters);
+      List<Car> cars = carFilterService.getCarsByFilters(filters);
       logger.info("{} cars found with filters: {}", cars.size(), filters);
       return ResponseEntity.ok(cars);
     }
