@@ -77,19 +77,17 @@ public class UserService {
    */
   public User addUser(User user) throws UsernameAlreadyInUser {
     String username = user.getUsername();
-    userRepository.findByUsername(username).orElseThrow(() -> new UsernameAlreadyInUser(username));
+    Optional<User> userWithUsername = userRepository.findByUsername(username);
+    if (userWithUsername.isPresent()) {
+      throw new UsernameAlreadyInUser(username);
+    }
 
-    userRepository.findByEmail(user.getEmail()).orElseThrow(() -> {
+    Optional<User> userWithEmail = userRepository.findByEmail(user.getEmail());
+    if (userWithEmail.isPresent()) {
       throw new UsernameAlreadyInUser(user.getEmail());
-    });
+    }
 
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-    Role role = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Role not found"));
-
-    HashSet<Role> roles = new HashSet<>();
-    roles.add(role);
-    user.setRoles(roles);
 
     this.logger.info("User with username {} created", username);
 

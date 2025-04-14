@@ -1,7 +1,10 @@
-package no.ntnu.stud.idata2306_project;
+package no.ntnu.stud.idata2306_project.tools;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import no.ntnu.stud.idata2306_project.model.car.*;
 import no.ntnu.stud.idata2306_project.model.company.Company;
@@ -14,13 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.lang.NonNull;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import no.ntnu.stud.idata2306_project.enums.Gender;
-import no.ntnu.stud.idata2306_project.model.contact.Address;
 import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
-import no.ntnu.stud.idata2306_project.model.user.Role;
 import no.ntnu.stud.idata2306_project.model.user.User;
 
 @Component
@@ -28,8 +27,6 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
 
   private UserRepository userRepository;
   private CarRepository carRepository;
-  private PasswordEncoder passwordEncoder;
-  private AddressRepository addressRepository;
   private PhoneNumberRepository phoneNumberRepository;
   private CarBrandRepository carBrandRepository;
   private CarModelRepository carModelRepository;
@@ -37,32 +34,28 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private TransmissionTypeRepository transmissionTypeRepository;
   private AddonRepository addonRepository;
   private FeatureRepository featureRepository;
-  private RoleRepository roleRepository;
   private CompanyService companyService;
   private OrderRepository orderRepository;
+  private UserInitializer userInitializer;
 
   private Logger logger = LoggerFactory.getLogger(DummyDataInitializer.class);
 
   public DummyDataInitializer(
-    UserRepository userRepository, 
-    CarRepository carRepository,
-    PasswordEncoder passwordEncoder,
-    AddressRepository addressRepository,
-    PhoneNumberRepository phoneNumberRepository,
-    CarBrandRepository carBrandRepository,
-    CarModelRepository carModelRepository,
-    FuelTypeRepository fuelTypeRepository,
-    TransmissionTypeRepository transmissionTypeRepository,
-    AddonRepository addonRepository,
-    FeatureRepository featureRepository,
-    CompanyService companyService,
-    RoleRepository roleRepository,
-    OrderRepository orderRepository
-    ) {
+      UserRepository userRepository,
+      CarRepository carRepository,
+      PhoneNumberRepository phoneNumberRepository,
+      CarBrandRepository carBrandRepository,
+      CarModelRepository carModelRepository,
+      FuelTypeRepository fuelTypeRepository,
+      TransmissionTypeRepository transmissionTypeRepository,
+      AddonRepository addonRepository,
+      FeatureRepository featureRepository,
+      CompanyService companyService,
+      OrderRepository orderRepository,
+      UserInitializer userInitializer) {
+    this.userInitializer = userInitializer;
     this.userRepository = userRepository;
     this.carRepository = carRepository;
-    this.passwordEncoder = passwordEncoder;
-    this.addressRepository = addressRepository;
     this.phoneNumberRepository = phoneNumberRepository;
     this.carBrandRepository = carBrandRepository;
     this.carModelRepository = carModelRepository;
@@ -71,42 +64,12 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.addonRepository = addonRepository;
     this.featureRepository = featureRepository;
     this.companyService = companyService;
-    this.roleRepository = roleRepository;
     this.orderRepository = orderRepository;
   }
 
   @Override
   public void onApplicationEvent(@NonNull ApplicationReadyEvent event) {
-    Optional<User> optionalUser = userRepository.findByUsername("user");
-
-    if (optionalUser.isEmpty()) {
-      User user = new User();
-
-      Address address = new Address("6009", "Norway", "Apple Road 2");
-      addressRepository.save(address);
-
-      PhoneNumber phoneNumber = new PhoneNumber("+47", "12345678");
-      phoneNumberRepository.save(phoneNumber);
-
-      Role role = new Role("USER");
-      roleRepository.save(role);
-
-      Role adminRole = new Role("ADMIN");
-      roleRepository.save(adminRole);
-
-      user.setRoles(new HashSet<>(List.of(role, adminRole)));
-      user.setUsername("user");
-      user.setFirstname("user");
-      user.setLastName("user");
-      user.setAddress(address);
-      user.setGender(Gender.FEMALE);
-      user.setPassword(passwordEncoder.encode("yes"));
-      user.setPhoneNumber(phoneNumber);
-      user.setDateOfBirth(new Date(System.currentTimeMillis() - 108273460));
-      user.setEmail("email@email.com");
-      
-      userRepository.save(user);
-    }
+    userInitializer.initializeUsers();
 
     CarBrand toyota = new CarBrand("Toyota");
     CarBrand volkswagen = new CarBrand("Volkswagen");
@@ -141,8 +104,10 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     Company company = new Company("Company", "Apple road", companyPhoneNumber);
     this.companyService.addCompany(company);
 
-    Car car1 = new Car(2010, 5, 500, toyotaCorolla, petrol, manual, List.of(gps), List.of(airConditioning, heatedSeats), company);
-    Car car2 = new Car(2015, 5, 550, volkswagenGolf, diesel, automatic, List.of(childSeat, gps), List.of(heatedSeats), company);
+    Car car1 = new Car(2010, 5, 500, toyotaCorolla, petrol, manual, List.of(gps), List.of(airConditioning, heatedSeats),
+        company);
+    Car car2 = new Car(2015, 5, 550, volkswagenGolf, diesel, automatic, List.of(childSeat, gps), List.of(heatedSeats),
+        company);
     Car car3 = new Car(2018, 5, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning), company);
     Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats), company);
     this.carRepository.saveAll(List.of(car1, car2, car3, car4));

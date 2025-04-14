@@ -8,13 +8,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 
 import no.ntnu.stud.idata2306_project.exception.UserNotFoundException;
+import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.user.User;
-import no.ntnu.stud.idata2306_project.repository.UserRepository;
+import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306_project.service.UserService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,12 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-  private final UserRepository userRepository;
   private final UserService userService;
 
-  public UserController(UserRepository userRepository, UserService userService) {
+  private Logger logger = LoggerFactory.getLogger(UserController.class);
+
+  public UserController(UserService userService) {
     this.userService = userService;
-    this.userRepository = userRepository;
   }
 
   @Operation(summary = "Get all users", description = "Get a list of all users")
@@ -43,6 +47,30 @@ public class UserController {
     return ResponseEntity.ok(userService.getUsers());
   }
 
+  @Operation(summary = "Get authenticated user", description = "Get the authenticated user")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Authenticated user")
+  })
+  @PreAuthorize("hasAnyAuthority('USER')")
+  @GetMapping("/details")
+  public ResponseEntity<User> getAuthenticatedUser() {
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = userService.getUserById(userDetails.getId());
+    return ResponseEntity.ok(user);
+  }
+
+  @Operation(summary = "Get favorites", description = "Get the authenticated user's favorited cars")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List of authenticated users favorites")
+  })
+  @PreAuthorize("hasAnyAuthority('USER')")
+  @GetMapping("/favorites")
+  public ResponseEntity<List<Car>> getAuthenticatedUserFavorites() {
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = userService.getUserById(userDetails.getId());
+    return ResponseEntity.ok(user.getFavorites());
+  }
+
   @Operation(summary = "Get a user", description = "Get a user by id")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User that was found"),
@@ -53,6 +81,7 @@ public class UserController {
   public ResponseEntity<User> getUserById(@PathVariable long id) {
     try {
       User user = userService.getUserById(id);
+      this.logger.info("User found with id {}", id);
       return ResponseEntity.ok().body(user);
     } catch (UserNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -65,6 +94,7 @@ public class UserController {
   })
   @GetMapping("/search/{name}")
   public ResponseEntity<List<User>> getUsersByName(@PathVariable String name) {
+    this.logger.info("Searching for users with name {}", name);
     return ResponseEntity.ok(userService.getUsersByName(name));
   }
 
@@ -74,6 +104,8 @@ public class UserController {
   })
   @GetMapping("/add")
   public ResponseEntity<String> addUser(@RequestBody User user) {
+    this.logger.info("Adding user {}", user.getUsername());
+
     if (user.getAddress() == null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Address is required");
     }
@@ -103,6 +135,8 @@ public class UserController {
     if (newUser == null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
     }
+
+    this.logger.info("User added with id {}", newUser.getId());
     return ResponseEntity.status(HttpStatus.CREATED).body("User Created: " + newUser.getId());
   }
 
@@ -113,8 +147,10 @@ public class UserController {
   })
   @GetMapping("/delete/{id}")
   public ResponseEntity<String> deleteUser(@PathVariable long id) {
+    this.logger.info("Deleting user with id {}", id);
     try {
       this.userService.deleteUser(id);
+      this.logger.info("User deleted with id {}", id);
       return ResponseEntity.status(HttpStatus.OK).body("User Removed: " + id);
     } catch (UserNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found: " + id);
