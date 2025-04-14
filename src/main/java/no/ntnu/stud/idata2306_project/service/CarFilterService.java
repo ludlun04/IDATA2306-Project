@@ -26,6 +26,16 @@ public class CarFilterService {
 
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+  private static final String FILTER_BRAND = "brand";
+  private static final String FILTER_FUEL_TYPE = "fuelType";
+  private static final String FILTER_SELLER = "seller";
+  private static final String FILTER_SEATS = "seats";
+  private static final String FILTER_FROM_TIME = "from_time";
+  private static final String FILTER_BETWEEN_TIMES = "between_times";
+  private static final String FILTER_FROM_PRICE = "from_price";
+  private static final String FILTER_TO_PRICE = "to_price";
+  private static final String FILTER_KEYWORD = "keyword";
+
   public CarFilterService(OrderRepository orderRepository, CarRepository carRepository, CarSearchService carSearchService) {
     this.orderRepository = orderRepository;
     this.carRepository = carRepository;
@@ -73,67 +83,66 @@ public class CarFilterService {
     }).toList();
   }
 
-  private boolean fulfillsConstraint(Car car, String key, String value) {
-    boolean result = true;
-    switch(key) {
-      case "brand":
-        if (!car.getModel().getBrand().getName().equalsIgnoreCase(value)) {
-          result = false;
-        }
-        break;
-      case "fuelType":
-        if (!car.getFuelType().getName().equalsIgnoreCase(value)) {
-          result = false;
-        }
-        break;
-      case "seller":
-        if (!car.getCompany().getName().equalsIgnoreCase(value)) {
-          result = false;
-        }
-        break;
-      case "seats":
-        if (car.getNumberOfSeats() != Integer.parseInt(value)) {
-          result = false;
-        }
-        break;
-      case "from_time":
-        LocalDate fromDate = LocalDate.parse(value, formatter);
-        if (!orderRepository.isAvailableFrom(car.getId(), fromDate)) {
-          result = false;
-        }
-        break;
-      case "between_times":
-        try {
-          String [] dates = value.split(",");
-          LocalDate startDate = LocalDate.parse(dates[0], formatter);
-          LocalDate endDate = LocalDate.parse(dates[1], formatter);
-          if (!orderRepository.isAvailableBetween(car.getId(), startDate, endDate)) {
-            result = false;
-          }
-        } catch (ArrayIndexOutOfBoundsException e) {
-          // Missing one of the dates
-          throw new MissingFilterParameterException(key, value);
-        }
-        break;
-      case "from_price":
-        if (car.getPricePerDay() < Double.parseDouble(value)) {
-          result = false;
-        }
-        break;
-      case "to_price":
-        if (car.getPricePerDay() > Double.parseDouble(value)) {
-          result = false;
-        }
-        break;
-      case "keyword":
-        List<Car> matchingCars = carSearchService.getCarsByKeyword(value);
-        if (!matchingCars.contains(car)) {
-          result = false;
-        }
-        break;
-      default:
-        throw new UnknownFilterException(key);
+  private boolean fulfillsConstraint(Car car, String filter, String filterParameter) {
+    return switch (filter) {
+      case FILTER_BRAND -> hasBrand(car, filterParameter);
+      case FILTER_FUEL_TYPE -> hasFuelType(car, filterParameter);
+      case FILTER_SELLER -> hasSeller(car, filterParameter);
+      case FILTER_SEATS -> hasNumberOfSeats(car, filterParameter);
+      case FILTER_FROM_TIME -> isAvailableFromTime(car, filterParameter);
+      case FILTER_BETWEEN_TIMES -> isAvailableBetweenTimes(car, filterParameter);
+      case FILTER_FROM_PRICE -> costsMoreThan(car, filterParameter);
+      case FILTER_TO_PRICE -> costsLessThan(car, filterParameter);
+      case FILTER_KEYWORD -> matchesKeyword(car, filterParameter);
+      default -> throw new UnknownFilterException(filter);
+    };
+  }
+
+  private boolean hasBrand(Car car, String value) {
+    return car.getModel().getBrand().getName().equalsIgnoreCase(value);
+  }
+
+  private boolean hasFuelType(Car car, String value) {
+    return car.getFuelType().getName().equalsIgnoreCase(value);
+  }
+
+  private boolean hasSeller(Car car, String value) {
+    return car.getCompany().getName().equalsIgnoreCase(value);
+  }
+
+  private boolean hasNumberOfSeats(Car car, String value) {
+    return car.getNumberOfSeats() == Integer.parseInt(value);
+  }
+
+  private boolean isAvailableFromTime(Car car, String value) {
+    LocalDate fromDate = LocalDate.parse(value, formatter);
+    return orderRepository.isAvailableFrom(car.getId(), fromDate);
+  }
+
+  private boolean isAvailableBetweenTimes(Car car, String value) {
+    try {
+      String[] dates = value.split(",");
+      LocalDate startDate = LocalDate.parse(dates[0], formatter);
+      LocalDate endDate = LocalDate.parse(dates[1], formatter);
+
+      return orderRepository.isAvailableBetween(car.getId(), startDate, endDate);
+    } catch (ArrayIndexOutOfBoundsException e) {
+      // Missing one of the dates
+      throw new MissingFilterParameterException(FILTER_BETWEEN_TIMES, value);
     }
-    return result;
+  }
+
+  private boolean costsMoreThan(Car car, String value) {
+    return car.getPricePerDay() >= Double.parseDouble(value);
+  }
+
+  private boolean costsLessThan(Car car, String value) {
+    return car.getPricePerDay() <= Double.parseDouble(value);
+  }
+
+  private boolean matchesKeyword(Car car, String keyword) {
+    List<Car> matchingCars = carSearchService.getCarsByKeyword(keyword);
+    return matchingCars.contains(car);
   }
 }
+
