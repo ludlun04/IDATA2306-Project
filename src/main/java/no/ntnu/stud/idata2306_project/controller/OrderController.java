@@ -71,6 +71,6 @@ public class OrderController {
   public ResponseEntity<List<Order>> getAuthenticatedUserActiveOrders() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     AccessUserDetails user = (AccessUserDetails) auth.getPrincipal();
-    return ResponseEntity.ok(orderRepository.findOrdersByUserIdAndEndDateIsNull(user.getId()));
+    return ResponseEntity.ok(orderRepository.findActiveOrdersByUserId(user.getId()));
   }
 }

@@ -3,6 +3,8 @@ package no.ntnu.stud.idata2306_project.repository;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+
+import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
@@ -18,7 +20,7 @@ public interface OrderRepository extends ListCrudRepository<Order, Long> {
     WHERE o.carId = :carId
     AND (o.startDate <= :startDate AND o.endDate > :startDate)
     """)
-boolean isAvailableFrom(Long carId, LocalDate startDate);
+  boolean isAvailableFrom(Long carId, LocalDate startDate);
 
   @Query("""
     SELECT CASE WHEN COUNT(o) = 0 THEN true ELSE false END
@@ -27,4 +29,12 @@ boolean isAvailableFrom(Long carId, LocalDate startDate);
         AND (o.startDate < :endDate AND o.endDate > :startDate)
     """)
   boolean isAvailableBetween(Long carId, LocalDate startDate, LocalDate endDate);
+
+  @Query("""
+    SELECT o
+    FROM Order o
+    WHERE o.userId = :userId
+        AND (o.startDate < CURRENT_DATE AND o.endDate > CURRENT_DATE)
+    """)
+  List<Order> findActiveOrdersByUserId(Long userId);
 }
