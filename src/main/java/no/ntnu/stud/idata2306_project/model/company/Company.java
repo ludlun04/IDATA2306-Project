@@ -6,12 +6,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import no.ntnu.stud.idata2306_project.model.car.Car;
@@ -26,6 +21,7 @@ public class Company {
 
   @Schema(description = "The id of the company", example = "1")
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
   @Schema(description = "The name of the company", example = "Company")
