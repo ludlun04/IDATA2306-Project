@@ -98,18 +98,22 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     Feature heatedSeats = new Feature("Heated seats");
     this.featureRepository.saveAll(List.of(airConditioning, heatedSeats));
 
-    PhoneNumber companyPhoneNumber = new PhoneNumber("+47", "12345678");
-    phoneNumberRepository.save(companyPhoneNumber);
+    PhoneNumber companyBoberPhoneNumber = new PhoneNumber("+47", "12345678");
+    PhoneNumber companyPaulPhoneNumber = new PhoneNumber("+47", "87654321");
+    phoneNumberRepository.save(companyBoberPhoneNumber);
+    phoneNumberRepository.save(companyPaulPhoneNumber);
 
-    Company company = new Company("Company", "Apple road", companyPhoneNumber);
-    this.companyService.addCompany(company);
+    Company companyBober = new Company("Bober Cars", "Apple road", companyBoberPhoneNumber);
+    Company companyPaul = new Company("Paul G. E. AS", "Banana road", companyPaulPhoneNumber);
+    this.companyService.addCompany(companyBober);
+    this.companyService.addCompany(companyPaul);
 
     Car car1 = new Car(2010, 5, 500, toyotaCorolla, petrol, manual, List.of(gps), List.of(airConditioning, heatedSeats),
-        company);
+        companyBober);
     Car car2 = new Car(2015, 5, 550, volkswagenGolf, diesel, automatic, List.of(childSeat, gps), List.of(heatedSeats),
-        company);
-    Car car3 = new Car(2018, 5, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning), company);
-    Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats), company);
+        companyBober);
+    Car car3 = new Car(2018, 5, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning), companyPaul);
+    Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats), companyPaul);
     this.carRepository.saveAll(List.of(car1, car2, car3, car4));
 
     logger.info("Dummy data initialized");
@@ -126,10 +130,10 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       Order order3 = new Order(user.getId(), car4.getId(), LocalDate.of(2025, 1, 10), LocalDate.of(2025, 1, 20), 500, List.of(childSeat, gps));
       orderRepository.save(order3);
 
-      Order order4 = new Order(10L, car1.getId(), LocalDate.of(2025, 4, 2), LocalDate.of(2025, 4, 15), 700, List.of(childSeat, gps));
+      Order order4 = new Order(user.getId(), car1.getId(), LocalDate.of(2025, 4, 2), LocalDate.of(2025, 4, 15), 700, List.of(childSeat, gps));
       orderRepository.save(order4);
 
-      Order order5 = new Order(10L, car2.getId(), LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 2), 700, List.of(childSeat, gps));
+      Order order5 = new Order(user.getId(), car2.getId(), LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 2), 700, List.of(childSeat, gps));
       orderRepository.save(order5);
 
     }

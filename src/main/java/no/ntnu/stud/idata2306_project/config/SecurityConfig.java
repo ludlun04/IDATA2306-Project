@@ -4,6 +4,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -38,29 +39,34 @@ public class SecurityConfig {
    * Configures the security filter chain.
    *
    * @param http the HttpSecurity object
-   * @throws Exception when security configuration fails
    * @return the SecurityFilterChain object
+   * @throws Exception when security configuration fails
    */
   @Bean
   public SecurityFilterChain configureAuthorizationFilterChain(HttpSecurity http) throws Exception {
     return http
-        .csrf(AbstractHttpConfigurer::disable)
-        .cors(withDefaults())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers(
-              "/",
-              "/authenticate",
-              "/car",
-              "/car/search/**",
-              "/v3/api-docs/**",
-              "/swagger-ui/**"
-            ).permitAll()
-            .anyRequest().authenticated())
-        .addFilterBefore(this.jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+      .csrf(AbstractHttpConfigurer::disable)
+      .cors(withDefaults())
+      .authorizeHttpRequests(auth -> auth
+        // Allow only GET requests
+        .requestMatchers(
+          HttpMethod.GET,
+          "/car"
+        ).permitAll()
+        // Allow all requests
+        .requestMatchers(
+          "/",
+          "/authenticate",
+          "/v3/api-docs/**",
+          "/swagger-ui/**"
+        ).permitAll()
 
-        .formLogin(AbstractHttpConfigurer::disable)
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .build();
+        .anyRequest().authenticated())
+      .addFilterBefore(this.jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+
+      .formLogin(AbstractHttpConfigurer::disable)
+      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .build();
   }
 
   /**

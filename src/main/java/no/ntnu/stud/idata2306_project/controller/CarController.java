@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,7 +29,6 @@ public class CarController {
 
   private final CarService carService;
   private final CarFilterService carFilterService;
-  private final CarSearchService carSearchService;
   private final Logger logger = LoggerFactory.getLogger(CarController.class);
 
   /**
@@ -36,10 +36,9 @@ public class CarController {
    *
    * @param carService The service for cars
    */
-  public CarController(CarService carService, CarFilterService carFilterService, CarSearchService carSearchService) {
+  public CarController(CarService carService, CarFilterService carFilterService) {
     this.carService = carService;
     this.carFilterService = carFilterService;
-    this.carSearchService = carSearchService;
   }
 
   /**
@@ -98,14 +97,15 @@ public class CarController {
   @Parameter(name = "car", description = "The car to add", required = true)
   @Operation(summary = "Add a new car")
   @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Car added"),
+    @ApiResponse(responseCode = "201", description = "Car added"),
   })
-  @PostMapping("/")
+  @PostMapping()
   public ResponseEntity<String> addCar(@RequestBody Car car) {
     this.carService.saveCar(car);
     logger.info("Car added with id {}", car.getId());
 
-    return ResponseEntity.ok(String.valueOf(car.getId()));
+    URI location = URI.create("/car/" + car.getId());
+    return ResponseEntity.created(location).body("Car added with id " + car.getId());
   }
 
   /**

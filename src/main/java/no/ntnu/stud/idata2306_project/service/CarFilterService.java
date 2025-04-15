@@ -27,7 +27,7 @@ public class CarFilterService {
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   private static final String FILTER_BRAND = "brand";
-  private static final String FILTER_FUEL_TYPE = "fuelType";
+  private static final String FILTER_FUEL_TYPE = "fuel_type";
   private static final String FILTER_SELLER = "seller";
   private static final String FILTER_SEATS = "seats";
   private static final String FILTER_FROM_TIME = "from_time";
@@ -107,6 +107,7 @@ public class CarFilterService {
   }
 
   private boolean hasSeller(Car car, String value) {
+    System.out.println(car.getCompany().getName());
     return car.getCompany().getName().equalsIgnoreCase(value);
   }
 
