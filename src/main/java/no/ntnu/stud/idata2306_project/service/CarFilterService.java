@@ -107,7 +107,6 @@ public class CarFilterService {
   }
 
   private boolean hasSeller(Car car, String value) {
-    System.out.println(car.getCompany().getName());
     return car.getCompany().getName().equalsIgnoreCase(value);
   }
 
