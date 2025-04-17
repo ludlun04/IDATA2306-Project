@@ -1,5 +1,6 @@
 package no.ntnu.stud.idata2306_project.service;
 
+import no.ntnu.stud.idata2306_project.exception.InvalidFilterException;
 import no.ntnu.stud.idata2306_project.exception.MissingFilterParameterException;
 import no.ntnu.stud.idata2306_project.exception.UnknownFilterException;
 import no.ntnu.stud.idata2306_project.model.car.Car;
@@ -46,36 +47,22 @@ public class CarFilterService {
     return carRepository.findAll().stream().filter((Car car) -> {
       boolean fulfillsAllConstraints = true;
       for (String key : filters.keySet()) {
+        String givenParameter = filters.get(key);
         try {
-          if (!fulfillsConstraint(car, key, filters.get(key))) {
+          if (!fulfillsConstraint(car, key, givenParameter)) {
             fulfillsAllConstraints = false;
             break;
           }
         } catch (NumberFormatException e) {
-          // Handle the case where the value is not a number
-          logger.error("Invalid number format for filter: {}, with value: {}", key, filters.get(key));
-          fulfillsAllConstraints = false;
-          break;
+          throw new InvalidFilterException(key, givenParameter, "Invalid number format");
         } catch (UnknownFilterException e) {
-          // Handle the case where the filter is unknown
-          logger.error("Unknown filter: {}, with value: {}", key, filters.get(key));
-          fulfillsAllConstraints = false;
-          break;
+          throw new InvalidFilterException(key, givenParameter, "Unknown filter");
         } catch (DateTimeParseException e) {
-          // Handle the case where the date format is invalid
-          logger.error("Invalid date format for filter: {}, with value: {}", key, filters.get(key));
-          fulfillsAllConstraints = false;
-          break;
+          throw new InvalidFilterException(key, givenParameter, "Invalid date format");
         } catch (MissingFilterParameterException e) {
-          // Handle the case where a required parameter is missing in filters with multiple values
-          logger.error("Missing filter parameter for filter: {}, with value: {}", key, filters.get(key));
-          fulfillsAllConstraints = false;
-          break;
+          throw new InvalidFilterException(key, givenParameter, "Missing filter parameter");
         } catch (Exception e) {
-          // Handle any other exceptions that may occur
-          logger.error("An error occurred while checking filter: {}, with value: {}", key, filters.get(key), e);
-          fulfillsAllConstraints = false;
-          break;
+          throw new InvalidFilterException(key, givenParameter, "Unknown");
         }
 
       }
@@ -94,7 +81,7 @@ public class CarFilterService {
       case FILTER_FROM_PRICE -> costsMoreThan(car, filterParameter);
       case FILTER_TO_PRICE -> costsLessThan(car, filterParameter);
       case FILTER_KEYWORD -> matchesKeyword(car, filterParameter);
-      default -> throw new UnknownFilterException(filter);
+      default -> throw new UnknownFilterException(filter, filterParameter);
     };
   }
 

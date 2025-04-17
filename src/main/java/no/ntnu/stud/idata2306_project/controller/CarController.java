@@ -1,11 +1,16 @@
 package no.ntnu.stud.idata2306_project.controller;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
+import no.ntnu.stud.idata2306_project.exception.InvalidFilterException;
 import no.ntnu.stud.idata2306_project.service.CarFilterService;
 import no.ntnu.stud.idata2306_project.service.CarSearchService;
 import no.ntnu.stud.idata2306_project.service.CarService;
+import org.hibernate.TransientPropertyValueException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,14 +60,25 @@ public class CarController {
   public ResponseEntity<List<Car>> getAll(@RequestParam Map<String, String> filters) {
 
     logger.info("Getting all cars{}", !filters.isEmpty() ? " with filters: " + filters : "");
-    if (filters.isEmpty()) {
-      return ResponseEntity.ok(carService.getAllCars());
-    } else {
-      List<Car> cars = carFilterService.getCarsByFilters(filters);
-      logger.info("{} cars found with filters: {}", cars.size(), filters);
-      return ResponseEntity.ok(cars);
-    }
 
+    ResponseEntity<List<Car>> response;
+
+    if (filters.isEmpty()) {
+      response = ResponseEntity.ok(carService.getAllCars());
+    } else {
+      try {
+        List<Car> cars = carFilterService.getCarsByFilters(filters);
+        logger.info("{} cars found with filters: {}", cars.size(), filters);
+        response = ResponseEntity.ok(cars);
+      } catch (InvalidFilterException e) {
+        logger.warn(e.getMessage());
+        response = ResponseEntity.badRequest().body(null);
+      } catch (Exception e) {
+        logger.error("Unknown error encountered while getting cars with filters. {}", e.getMessage());
+        response = ResponseEntity.internalServerError().body(null);
+      }
+    }
+    return response;
   }
 
   /**
@@ -100,12 +117,20 @@ public class CarController {
     @ApiResponse(responseCode = "201", description = "Car added"),
   })
   @PostMapping()
-  public ResponseEntity<String> addCar(@RequestBody Car car) {
-    this.carService.saveCar(car);
-    logger.info("Car added with id {}", car.getId());
+  public ResponseEntity<String> addCar(@RequestBody @Valid Car car) {
+    logger.info("Adding car with id: {}", car.getId());
+    ResponseEntity<String> response;
+    try {
+      this.carService.saveCar(car);
+      logger.info("Car added with id {}", car.getId());
 
-    URI location = URI.create("/car/" + car.getId());
-    return ResponseEntity.created(location).body("Car added with id " + car.getId());
+      URI location = URI.create("/car/" + car.getId());
+      response = ResponseEntity.created(location).body("Car added with id " + car.getId());
+    } catch (InvalidDataAccessApiUsageException e) {
+      logger.warn("Invalid car data: {}", e.getMessage());
+      response = ResponseEntity.badRequest().body("Given data conflicts with existing data");
+    }
+    return response;
   }
 
   /**
