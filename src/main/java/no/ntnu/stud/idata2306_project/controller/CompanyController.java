@@ -42,7 +42,7 @@ public class CompanyController {
   /**
    * Creates a new CompanyController.
    *
-   * @param companyRepository the repository to use
+   * @param companyService the service to use
    */
   public CompanyController(CompanyService companyService) {
     this.companyService = companyService;
