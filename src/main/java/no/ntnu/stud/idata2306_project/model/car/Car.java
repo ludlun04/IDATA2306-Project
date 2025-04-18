@@ -2,6 +2,7 @@ package no.ntnu.stud.idata2306_project.model.car;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import no.ntnu.stud.idata2306_project.model.company.Company;
@@ -63,12 +64,15 @@ public class Car {
   @ManyToOne
   private Company company;
 
+  @Schema(description = "The description of the car")
+  private String description = "";
+
   public Car() {
   }
 
   public Car(int year, int numberOfSeats, int pricePerDay, CarModel model,
              FuelType fuelType, TransmissionType transmissionType, List<Addon> addons,
-             List<Feature> features, Company company) {
+             List<Feature> features, Company company, String description) {
     this.year = year;
     this.numberOfSeats = numberOfSeats;
     this.pricePerDay = pricePerDay;
@@ -78,6 +82,25 @@ public class Car {
     this.addons = addons;
     this.features = features;
     this.company = company;
+    this.description = description;
+  }
+
+  /**
+   * Returns the car's description.
+   *
+   * @return the car's description
+   */
+  public String getDescription() {
+    return this.description;
+  }
+
+  /**
+   * Sets the car's description.
+   *
+   * @param description the car's description
+   */
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   /**

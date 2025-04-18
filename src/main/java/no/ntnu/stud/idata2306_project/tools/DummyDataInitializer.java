@@ -108,12 +108,17 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.companyService.addCompany(companyBober);
     this.companyService.addCompany(companyPaul);
 
+    String description1 = "This is a great car for city driving. It has a compact size and is easy to park.";
+    String description2 = "This car is perfect for long road trips. It has a spacious interior and a powerful engine.";
+    String description3 = "This car is great for families. It has plenty of space for kids and luggage.";
+    String description4 = "This car is perfect for off-road adventures. It has a rugged design and all-wheel drive.";
+
     Car car1 = new Car(2010, 4, 500, toyotaCorolla, petrol, manual, List.of(gps), List.of(airConditioning, heatedSeats),
-        companyBober);
+        companyBober, description1);
     Car car2 = new Car(2015, 4, 550, volkswagenGolf, diesel, automatic, List.of(childSeat, gps), List.of(heatedSeats),
-        companyBober);
-    Car car3 = new Car(2018, 6, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning), companyPaul);
-    Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats), companyPaul);
+        companyBober, description2);
+    Car car3 = new Car(2018, 6, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning), companyPaul, description3);
+    Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats), companyPaul, description4);
     this.carRepository.saveAll(List.of(car1, car2, car3, car4));
 
     logger.info("Dummy data initialized");
