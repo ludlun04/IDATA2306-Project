@@ -52,7 +52,7 @@ public class OrderController {
   })
   @GetMapping("/history")
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-  public ResponseEntity<List<Order>> getAuthenticatedUserUserOrders() {
+  public ResponseEntity<List<Order>> getAuthenticatedUserOrders() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     AccessUserDetails user = (AccessUserDetails) auth.getPrincipal();
     return ResponseEntity.ok(orderService.findOrdersByUserId(user.getId()));
