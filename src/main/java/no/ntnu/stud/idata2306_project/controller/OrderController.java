@@ -7,6 +7,7 @@ import java.util.List;
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.repository.OrderRepository;
 import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
+import no.ntnu.stud.idata2306_project.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -29,15 +30,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
-  private final OrderRepository orderRepository;
+  private final OrderService orderService;
 
   /**
    * Creates a new OrderController.
    *
-   * @param orderRepository the repository to use
+   * @param orderService the order service to use
    */
-  public OrderController(OrderRepository orderRepository) {
-      this.orderRepository = orderRepository;
+  public OrderController(OrderService orderService) {
+    this.orderService = orderService;
   }
 
   /**
@@ -54,7 +55,7 @@ public class OrderController {
   public ResponseEntity<List<Order>> getAuthenticatedUserUserOrders() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     AccessUserDetails user = (AccessUserDetails) auth.getPrincipal();
-    return ResponseEntity.ok(orderRepository.findOrdersByUserId(user.getId()));
+    return ResponseEntity.ok(orderService.findOrdersByUserId(user.getId()));
   }
 
   /**
@@ -71,6 +72,6 @@ public class OrderController {
   public ResponseEntity<List<Order>> getAuthenticatedUserActiveOrders() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     AccessUserDetails user = (AccessUserDetails) auth.getPrincipal();
-    return ResponseEntity.ok(orderRepository.findActiveOrdersByUserId(user.getId()));
+    return ResponseEntity.ok(orderService.findActiveOrdersByUserId(user.getId()));
   }
 }
