@@ -65,4 +65,8 @@ public class OrderService {
   public List<Order> findOrdersByUserId(Long userId) {
     return orderRepository.findOrdersByUserId(userId);
   }
+
+  public void saveOrder(Order order) {
+    orderRepository.save(order);
+  }
 }

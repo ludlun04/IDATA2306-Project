@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -90,6 +91,24 @@ public class OrderController {
       logger.error("Error casting authentication principal to AccessUserDetails", e);
       return ResponseEntity.badRequest().build();
     }
+  }
 
+  /**
+   * Add a new order.
+   *
+   * @param order the order to add
+   * @return the order that was added
+   */
+  @Operation(summary = "Add a new order", description = "Add a new order")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Order that was added")
+  })
+  @PreAuthorize("hasAnyAuthority('USER')")
+  @PostMapping("/create")
+  public ResponseEntity<Order> addOrder(Order order) {
+      logger.info("Adding order {}", order);
+      orderService.saveOrder(order);
+      logger.info("New order added");
+      return ResponseEntity.status(201).body(order);
   }
 }
