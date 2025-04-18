@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,6 +58,7 @@ public class CarController {
     @ApiResponse(responseCode = "200", description = "List of cars"),
   })
   @GetMapping()
+  @PreAuthorize("permitAll()")
   public ResponseEntity<List<Car>> getAll(@RequestParam Map<String, String> filters) {
 
     logger.info("Getting all cars{}", !filters.isEmpty() ? " with filters: " + filters : "");
@@ -92,6 +94,7 @@ public class CarController {
     @ApiResponse(responseCode = "200", description = "Car found"),
     @ApiResponse(responseCode = "404", description = "Car not found")
   })
+  @PreAuthorize("permitAll()")
   @GetMapping("/{id}")
   public ResponseEntity<Car> getById(@PathVariable Long id) {
     Optional<Car> car = this.carService.getCarById(id);
