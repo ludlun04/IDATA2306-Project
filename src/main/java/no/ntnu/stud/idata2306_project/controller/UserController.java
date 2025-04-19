@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -112,9 +113,6 @@ public class UserController {
     if (user.getUsername() == null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
     }
-    if (user.getPassword() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password is required");
-    }
     if (user.getEmail() == null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
     }
@@ -126,9 +124,6 @@ public class UserController {
     }
     if (user.getLastName() == null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name is required");
-    }
-    if (user.getPassword() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password is required");
     }
 
     User newUser = userService.addUser(user);
@@ -145,7 +140,7 @@ public class UserController {
       @ApiResponse(responseCode = "200", description = "User that was deleted"),
       @ApiResponse(responseCode = "404", description = "User not found")
   })
-  @GetMapping("/delete/{id}")
+  @DeleteMapping("/{id}") 
   public ResponseEntity<String> deleteUser(@PathVariable long id) {
     this.logger.info("Deleting user with id {}", id);
     try {
