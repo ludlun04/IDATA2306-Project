@@ -1,6 +1,5 @@
 package no.ntnu.stud.idata2306_project.service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,7 +79,7 @@ public class UserService {
    * @return the user with the given username
    * @throws UserNotFoundException if the user is not found
    */
-  public User addUser(User user) throws UsernameAlreadyInUser {
+  public User addUser(User user, String password) throws UsernameAlreadyInUser {
     String username = user.getUsername();
     Optional<User> userWithUsername = userRepository.findByUsername(username);
     if (userWithUsername.isPresent()) {
@@ -92,7 +91,7 @@ public class UserService {
       throw new UsernameAlreadyInUser(user.getEmail());
     }
 
-    user.setPassword(passwordEncoder.encode("yes"));
+    user.setPassword(passwordEncoder.encode(password));
 
     this.logger.info("User with username {} created", username);
 

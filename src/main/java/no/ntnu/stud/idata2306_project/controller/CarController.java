@@ -1,15 +1,11 @@
 package no.ntnu.stud.idata2306_project.controller;
 
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import no.ntnu.stud.idata2306_project.exception.InvalidFilterException;
 import no.ntnu.stud.idata2306_project.service.CarFilterService;
-import no.ntnu.stud.idata2306_project.service.CarSearchService;
 import no.ntnu.stud.idata2306_project.service.CarService;
-import org.hibernate.TransientPropertyValueException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

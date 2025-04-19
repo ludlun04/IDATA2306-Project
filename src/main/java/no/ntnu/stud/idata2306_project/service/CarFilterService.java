@@ -41,6 +41,7 @@ public class CarFilterService {
     this.orderRepository = orderRepository;
     this.carRepository = carRepository;
     this.carSearchService = carSearchService;
+    logger.info("CarFilterService initialized");
   }
 
   public List<Car> getCarsByFilters(Map<String, String> filters) {

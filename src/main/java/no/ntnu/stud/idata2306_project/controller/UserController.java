@@ -104,7 +104,7 @@ public class UserController {
       @ApiResponse(responseCode = "201", description = "User that was added")
   })
   @GetMapping("/add")
-  public ResponseEntity<String> addUser(@RequestBody User user) {
+  public ResponseEntity<String> addUser(@RequestBody User user, @RequestBody String password) {
     this.logger.info("Adding user {}", user.getUsername());
 
     if (user.getAddress() == null) {
@@ -126,7 +126,7 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name is required");
     }
 
-    User newUser = userService.addUser(user);
+    User newUser = userService.addUser(user, password);
     if (newUser == null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
     }

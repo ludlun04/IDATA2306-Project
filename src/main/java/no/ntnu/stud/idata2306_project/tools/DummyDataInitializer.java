@@ -1,8 +1,6 @@
 package no.ntnu.stud.idata2306_project.tools;
 
 import java.time.LocalDate;
-import java.util.*;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

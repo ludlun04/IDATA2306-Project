@@ -233,13 +233,20 @@
 			"name": "Cars",
 			"item": [
 				{
-					"name": "Get All Cars",
+					"name": "Get all cars",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.lengthOf(4);",
+									"});"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -253,12 +260,1092 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/cars",
+							"raw": "{{base_url}}/car",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"cars"
+								"car"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars with given brand",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(2);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?brand=volkswagen",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "brand",
+									"value": "volkswagen"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars with given fuel type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(2);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?fuel_type=petrol",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "fuel_type",
+									"value": "petrol"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars with given seller",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(2);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?seller=bober cars",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "seller",
+									"value": "bober cars"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars with given number of seats",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(1);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?seats=5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "seats",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars with invalid given number of seats",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?seats=fifty",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "seats",
+									"value": "fifty"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars available from a given time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(3);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?from_time=2025-01-20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "from_time",
+									"value": "2025-01-20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars available from an invalid given time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?from_time=today",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "from_time",
+									"value": "today"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars available between given times",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(1);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?between_times=2025-01-05,2025-02-10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "between_times",
+									"value": "2025-01-05,2025-02-10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars available between invalid given times",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?between_times=dontcare",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "between_times",
+									"value": "dontcare"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars available between given times missing one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?between_times=2025-01-05",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "between_times",
+									"value": "2025-01-05"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars from a given price",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(3);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?from_price=550",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "from_price",
+									"value": "550"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars from an invalid given price",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?from_price=onemillionbillion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "from_price",
+									"value": "onemillionbillion"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars to a given price",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(1);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?to_price=549",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "to_price",
+									"value": "549"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars to an invalid given price",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?to_price=onehundered",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "to_price",
+									"value": "onehundered"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars by keyword model",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(1);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?keyword=CoRol",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "CoRol"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars by keyword brand",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(2);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car?keyword=olKsWa",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "olKsWa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt get by id without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt insert without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"year\": 2016,\n    \"numberOfSeats\": 4,\n    \"pricePerDay\": 700,\n    \"model\": {\n        \"id\": 3,\n        \"name\": \"Polo\",\n        \"brand\": {\n            \"id\": 2,\n            \"name\": \"Volkswagen\"\n        }\n    },\n    \"fuelType\": {\n        \"id\": 2,\n        \"name\": \"Diesel\"\n    },\n    \"transmissionType\": {\n        \"id\": 1,\n        \"name\": \"Manual\"\n    },\n    \"addons\": [\n        {\n            \"id\": 1,\n            \"name\": \"GPS\"\n        }\n    ],\n    \"features\": [\n        {\n            \"id\": 1,\n            \"name\": \"Air conditioning\"\n        }\n    ],\n    \"company\": {\n        \"id\": 0,\n        \"name\": \"Company\",\n        \"address\": \"Apple road\",\n        \"phoneNumber\": {\n            \"id\": 2,\n            \"countryCode\": \"+47\",\n            \"number\": \"12345678\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/car",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt delete without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Valid get by existing id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Valid get by non-existing id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car/23453534353",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car",
+								"23453534353"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid insert",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"year\": 2016,\n    \"numberOfSeats\": 4,\n    \"pricePerDay\": 700,\n    \"model\": {\n        \"id\": 3,\n        \"name\": \"Polo\",\n        \"brand\": {\n            \"id\": 2,\n            \"name\": \"Volkswagen\"\n        }\n    },\n    \"fuelType\": {\n        \"id\": 2,\n        \"name\": \"Diesel\"\n    },\n    \"transmissionType\": {\n        \"id\": 1,\n        \"name\": \"Manual\"\n    },\n    \"addons\": [\n        {\n            \"id\": 1,\n            \"name\": \"GPS\"\n        }\n    ],\n    \"features\": [\n        {\n            \"id\": 1,\n            \"name\": \"Air conditioning\"\n        }\n    ],\n    \"company\": {\n        \"id\": 0,\n        \"name\": \"Company\",\n        \"address\": \"Apple road\",\n        \"phoneNumber\": {\n            \"id\": 2,\n            \"countryCode\": \"+47\",\n            \"number\": \"12345678\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/car",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Valid insert",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"year\": 2016,\n    \"numberOfSeats\": 4,\n    \"pricePerDay\": 700,\n    \"model\": {\n        \"id\": 3,\n        \"name\": \"Polo\",\n        \"brand\": {\n            \"id\": 2,\n            \"name\": \"Volkswagen\"\n        }\n    },\n    \"fuelType\": {\n        \"id\": 2,\n        \"name\": \"Diesel\"\n    },\n    \"transmissionType\": {\n        \"id\": 1,\n        \"name\": \"Manual\"\n    },\n    \"addons\": [\n        {\n            \"id\": 1,\n            \"name\": \"GPS\"\n        }\n    ],\n    \"features\": [\n        {\n            \"id\": 1,\n            \"name\": \"Air conditioning\"\n        }\n    ],\n    \"company\": {\n        \"id\": 1,\n        \"name\": \"Company\",\n        \"address\": \"Apple road\",\n        \"phoneNumber\": {\n            \"id\": 2,\n            \"countryCode\": \"+47\",\n            \"number\": \"12345678\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/car",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.lengthOf(5);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Valid delete existing id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Valid delete non-existing id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car/289348934599999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car",
+								"289348934599999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cars",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.lengthOf(4);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
 							]
 						}
 					},

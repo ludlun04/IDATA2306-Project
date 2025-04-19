@@ -1,11 +1,6 @@
 package no.ntnu.stud.idata2306_project.tools;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
-import no.ntnu.stud.idata2306_project.model.car.Car;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import no.ntnu.stud.idata2306_project.enums.Gender;
@@ -58,7 +53,6 @@ public class UserInitializer {
     admin.setUsername("admin");
     admin.setAddress(address);
     admin.setGender(Gender.MALE);
-    admin.setPassword(DEFAULT_PASSWORD);
     admin.setPhoneNumber(phoneNumber);
     admin.setDateOfBirth(new Date(System.currentTimeMillis() - 108273460));
 
@@ -70,16 +64,13 @@ public class UserInitializer {
     user.setLastName("user");
     user.setAddress(address);
     user.setGender(Gender.FEMALE);
-    user.setPassword(DEFAULT_PASSWORD);
     user.setPhoneNumber(phoneNumber);
     user.setDateOfBirth(new Date(System.currentTimeMillis() - 108273460));
     user.setEmail("user@emailprovider.domain");
 
     
     // Save the users to the database
-    User createdAdmin = userService.addUser(admin);
-    userService.addUser(user);
-
-    System.out.println(createdAdmin.getRoles());
+    userService.addUser(admin, DEFAULT_PASSWORD);
+    userService.addUser(user, DEFAULT_PASSWORD);
   }
 }

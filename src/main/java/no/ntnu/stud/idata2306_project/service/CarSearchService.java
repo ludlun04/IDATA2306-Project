@@ -27,6 +27,7 @@ public class CarSearchService {
     this.carRepository = carRepository;
     this.carModelRepository = carModelRepository;
     this.carBrandRepository = carBrandRepository;
+    logger.info("CarSearchService initialized");
   }
 
   public List<Car> getCarsByKeyword(String keyword) {
