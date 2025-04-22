@@ -19,15 +19,15 @@ public class Address {
 
   @Schema(description = "the zip code of the address", example = "6009")
   @NotBlank
-  String zipCode;
+  private String zipCode;
 
   @Schema(description = "the country of the address", example = "Norway")
   @NotBlank
-  String country;
+  private String country;
 
   @Schema(description = "the address", example = "Apple Road 2")
   @NotBlank
-  String streetAddress;
+  private String streetAddress;
 
   /**
    * Creates an address
@@ -70,7 +70,7 @@ public class Address {
    *
    * @return the address part of the address
    */
-  public String getAddress() {
+  public String getStreetAddress() {
     return this.streetAddress;
   }
 
@@ -88,7 +88,7 @@ public class Address {
    *
    * @param address the new address
    */
-  public void setAddress(String address) {
+  public void setStreetAddress(String address) {
     this.streetAddress = address;
   }
 
