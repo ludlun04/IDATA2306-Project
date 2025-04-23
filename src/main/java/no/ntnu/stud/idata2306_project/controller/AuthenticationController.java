@@ -79,7 +79,7 @@ public class AuthenticationController {
       String jwt = jwtUtil.generateToken(userDetails);
       return ResponseEntity.ok(jwt);
     } catch (BadCredentialsException e) {
-      logger.error("Incorrect username or passwor d", e);
+      logger.error("Incorrect username or password", e);
       return new ResponseEntity<>("Incorrect username or password", HttpStatus.UNAUTHORIZED);
     } catch (UsernameNotFoundException e) {
       logger.error("User not found", e);
