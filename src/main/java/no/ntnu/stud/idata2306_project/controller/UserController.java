@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+import no.ntnu.stud.idata2306_project.dto.UserCreationDto;
 import no.ntnu.stud.idata2306_project.exception.UserNotFoundException;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.user.User;
@@ -22,8 +23,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Users", description = "Endpoints for managing users")
@@ -103,36 +106,45 @@ public class UserController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "User that was added")
   })
-  @GetMapping("/add")
-  public ResponseEntity<String> addUser(@RequestBody User user, @RequestBody String password) {
-    this.logger.info("Adding user {}", user.getUsername());
+  @PostMapping("/add")
+  public ResponseEntity<String> addUser(@RequestBody UserCreationDto userDto) {
+      this.logger.info("Adding user {}", userDto.getUsername());
+  
+      if (userDto.getAddress() == null) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Address is required");
+      }
+      if (userDto.getUsername() == null) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
+      }
+      if (userDto.getEmail() == null) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
+      }
+      if (userDto.getPhoneNumber() == null) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number is required");
+      }
+      if (userDto.getFirstName() == null) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name is required");
+      }
+      if (userDto.getLastName() == null) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name is required");
+      }
+  
+      User user = new User();
+      user.setUsername(userDto.getUsername());
+      user.setFirstname(userDto.getFirstName());
+      user.setLastName(userDto.getLastName());
+      user.setEmail(userDto.getEmail());
+      user.setPhoneNumber(userDto.getPhoneNumber());
+      user.setAddress(userDto.getAddress());
+      user.setDateOfBirth(userDto.getDateOfBirth());
 
-    if (user.getAddress() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Address is required");
-    }
-    if (user.getUsername() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
-    }
-    if (user.getEmail() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
-    }
-    if (user.getPhoneNumber() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number is required");
-    }
-    if (user.getFirstName() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name is required");
-    }
-    if (user.getLastName() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name is required");
-    }
-
-    User newUser = userService.addUser(user, password);
-    if (newUser == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
-    }
-
-    this.logger.info("User added with id {}", newUser.getId());
-    return ResponseEntity.status(HttpStatus.CREATED).body("User Created: " + newUser.getId());
+      User newUser = userService.addUser(user, userDto.getPassword());
+      if (newUser == null) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
+      }
+  
+      this.logger.info("User added with id {}", newUser.getId());
+      return ResponseEntity.status(HttpStatus.CREATED).body("User Created: " + newUser.getId());
   }
 
   @Operation(summary = "Delete a user", description = "Delete a user by id")

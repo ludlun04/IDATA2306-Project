@@ -58,6 +58,7 @@ public class SecurityConfig {
         ).permitAll()
         // Allow all requests
         .requestMatchers(
+          "/users/add",
           "/",
           "/authenticate",
           "/v3/api-docs/**",
