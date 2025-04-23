@@ -53,7 +53,8 @@ public class SecurityConfig {
           HttpMethod.GET,
           "/car",
           "/car/{id}",
-          "/company/with_rentals"
+          "/company/with_rentals",
+          "/brand/with_rentals"
         ).permitAll()
         // Allow all requests
         .requestMatchers(
