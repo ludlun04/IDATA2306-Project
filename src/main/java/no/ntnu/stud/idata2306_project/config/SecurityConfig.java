@@ -51,7 +51,9 @@ public class SecurityConfig {
         // Allow only GET requests
         .requestMatchers(
           HttpMethod.GET,
-          "/car"
+          "/car",
+          "/car/{id}",
+          "/company/with_rentals"
         ).permitAll()
         // Allow all requests
         .requestMatchers(

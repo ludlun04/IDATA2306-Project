@@ -94,4 +94,8 @@ public class CompanyService {
       return new HashSet<>();
     }
   }
+
+  public Set<Company> getAllCompaniesUsedInCars() {
+    return this.companyRepository.findAllInUseOnCars();
+  }
 }

@@ -18,7 +18,6 @@ public class CarService {
   }
 
   public List<Car> getAllCars() {
-    logger.info("Getting all cars");
     return carRepository.findAll();
   }
 

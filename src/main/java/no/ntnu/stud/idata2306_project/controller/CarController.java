@@ -53,7 +53,6 @@ public class CarController {
     @ApiResponse(responseCode = "200", description = "List of cars"),
   })
   @GetMapping()
-  @PreAuthorize("permitAll()")
   public ResponseEntity<List<Car>> getAll(@RequestParam Map<String, String> filters) {
 
     logger.info("Getting all cars{}", !filters.isEmpty() ? " with filters: " + filters : "");
@@ -89,7 +88,6 @@ public class CarController {
     @ApiResponse(responseCode = "200", description = "Car found"),
     @ApiResponse(responseCode = "404", description = "Car not found")
   })
-  @PreAuthorize("permitAll()")
   @GetMapping("/{id}")
   public ResponseEntity<Car> getById(@PathVariable Long id) {
     Optional<Car> car = this.carService.getCarById(id);
