@@ -4,6 +4,9 @@ import no.ntnu.stud.idata2306_project.exception.InvalidFilterException;
 import no.ntnu.stud.idata2306_project.exception.MissingFilterParameterException;
 import no.ntnu.stud.idata2306_project.exception.UnknownFilterException;
 import no.ntnu.stud.idata2306_project.model.car.Car;
+import no.ntnu.stud.idata2306_project.model.car.CarBrand;
+import no.ntnu.stud.idata2306_project.model.car.FuelType;
+import no.ntnu.stud.idata2306_project.model.company.Company;
 import no.ntnu.stud.idata2306_project.repository.CarRepository;
 import no.ntnu.stud.idata2306_project.repository.OrderRepository;
 import org.slf4j.Logger;
@@ -44,7 +47,7 @@ public class CarFilterService {
     logger.info("CarFilterService initialized");
   }
 
-  public List<Car> getCarsByFilters(Map<String, String> filters) {
+  public List<Car> getCarsByFilters(Map<String, String> filters) throws Exception {
     return carRepository.findAll().stream().filter((Car car) -> {
       boolean fulfillsAllConstraints = true;
       for (String key : filters.keySet()) {
@@ -62,8 +65,6 @@ public class CarFilterService {
           throw new InvalidFilterException(key, givenParameter, "Invalid date format");
         } catch (MissingFilterParameterException e) {
           throw new InvalidFilterException(key, givenParameter, "Missing filter parameter");
-        } catch (Exception e) {
-          throw new InvalidFilterException(key, givenParameter, "Unknown");
         }
 
       }
@@ -87,19 +88,55 @@ public class CarFilterService {
   }
 
   private boolean hasBrand(Car car, String value) {
-    return car.getModel().getBrand().getName().equalsIgnoreCase(value);
+    boolean result = false;
+    String[] brandNames = value.split(",");
+    for (String brandName : brandNames) {
+      CarBrand brand = car.getModel().getBrand();
+      if (brand.getName().equalsIgnoreCase(brandName)) {
+        result = true;
+        break;
+      }
+    }
+    return result;
   }
 
   private boolean hasFuelType(Car car, String value) {
-    return car.getFuelType().getName().equalsIgnoreCase(value);
+    boolean result = false;
+    String[] fuelTypes = value.split(",");
+    for (String fuelType : fuelTypes) {
+      FuelType carFuelType = car.getFuelType();
+      if (carFuelType.getName().equalsIgnoreCase(fuelType)) {
+        result = true;
+        break;
+      }
+    }
+    return result;
   }
 
   private boolean hasSeller(Car car, String value) {
-    return car.getCompany().getName().equalsIgnoreCase(value);
+    boolean result = false;
+    String[] sellers = value.split(",");
+    for (String seller : sellers) {
+      Company company = car.getCompany();
+      if (company.getName().equalsIgnoreCase(seller)) {
+        result = true;
+        break;
+      }
+    }
+    return result;
   }
 
   private boolean hasNumberOfSeats(Car car, String value) {
-    return car.getNumberOfSeats() == Integer.parseInt(value);
+    boolean result = false;
+    String[] seats = value.split(",");
+    for (String seat : seats) {
+      int numberOfSeats = car.getNumberOfSeats();
+      if (Integer.parseInt(seat) == numberOfSeats) {
+        result = true;
+        break;
+      }
+    }
+    return result;
   }
 
   private boolean isAvailableFromTime(Car car, String value) {

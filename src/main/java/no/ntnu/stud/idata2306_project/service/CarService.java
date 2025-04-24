@@ -18,7 +18,6 @@ public class CarService {
   }
 
   public List<Car> getAllCars() {
-    logger.info("Getting all cars");
     return carRepository.findAll();
   }
 
@@ -32,6 +31,14 @@ public class CarService {
 
   public void deleteCarById(long id) {
     carRepository.deleteById(id);
+  }
+
+  public Set<Integer> getAllAmountOfSeatsInCars() {
+    Set<Integer> amountOfSeats = carRepository.findAllAmountOfSeatsInCars();
+    for (Integer amount : amountOfSeats) {
+      logger.info("Amount of seats: {}", amount);
+    }
+    return amountOfSeats;
   }
 
 }

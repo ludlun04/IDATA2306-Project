@@ -101,6 +101,12 @@ public class CarController {
     return ResponseEntity.ok(car.get());
   }
 
+  @GetMapping("/seats")
+  public ResponseEntity<List<Integer>> getAllAmountOfSeats() {
+    logger.info("Getting all amount of seats");
+    return ResponseEntity.ok(carService.getAllAmountOfSeatsInCars().stream().toList());
+  }
+
   /**
    * Endpoint for adding a new car
    *

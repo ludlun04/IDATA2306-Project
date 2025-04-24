@@ -191,4 +191,13 @@ public class CompanyController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
   }
+
+  @GetMapping("/with_rentals")
+  public ResponseEntity<Set<Company>> getAllCompaniesUsedInCars() {
+    Set<Company> companies = this.companyService.getAllCompaniesUsedInCars();
+
+    logger.info("Getting all companies used in cars");
+
+    return ResponseEntity.status(HttpStatus.OK).body(companies);
+  }
 }
