@@ -7,9 +7,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+import java.util.Set;
 import no.ntnu.stud.idata2306_project.dto.UserCreationDto;
 import no.ntnu.stud.idata2306_project.exception.UserNotFoundException;
 import no.ntnu.stud.idata2306_project.model.car.Car;
+import no.ntnu.stud.idata2306_project.model.user.Role;
 import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306_project.service.UserService;
@@ -73,6 +75,18 @@ public class UserController {
     AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
     return ResponseEntity.ok(user.getFavorites());
+  }
+
+  @Operation(summary = "Get roles", description = "Get the authenticated user's roles")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List of authenticated users roles")
+  })
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+  @GetMapping("/roles")
+  public ResponseEntity<Set<Role>> getCurrentAuthenticatedUserRoles() {
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = userService.getUserById(userDetails.getId());
+    return ResponseEntity.ok(user.getRoles());
   }
 
   @Operation(summary = "Get a user", description = "Get a user by id")
