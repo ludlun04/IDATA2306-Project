@@ -10,41 +10,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CarSearchService {
 
   private final CarRepository carRepository;
-  private final CarModelRepository carModelRepository;
-  private final CarBrandRepository carBrandRepository;
 
   private final Logger logger = LoggerFactory.getLogger(CarSearchService.class);
 
-  public CarSearchService(CarRepository carRepository, CarModelRepository carModelRepository, CarBrandRepository carBrandRepository) {
+  public CarSearchService(CarRepository carRepository) {
     this.carRepository = carRepository;
-    this.carModelRepository = carModelRepository;
-    this.carBrandRepository = carBrandRepository;
-    logger.info("CarSearchService initialized");
   }
 
   public List<Car> getCarsByKeyword(String keyword) {
-    Set<CarModel> matchingModels = carModelRepository.findByNameContainingIgnoreCase(keyword);
-    Set<CarBrand> matchingBrands = carBrandRepository.findByNameContainingIgnoreCase(keyword);
-    Set<Car> matchingCars = new HashSet<>();
+    String keywordCopy = keyword.toLowerCase();
 
-    for (CarBrand brand : matchingBrands) {
-      Set<CarModel> matchingModelsFromBrand = carModelRepository.findByBrandNameContainingIgnoreCase(brand.getName());
-      matchingModels.addAll(matchingModelsFromBrand);
+    List<Car> cars = this.carRepository.findAll();
+    Map<Car, String> carWithFullNames = new HashMap<>();
+    for (Car car : cars) {
+      CarModel model = car.getModel();
+      CarBrand brand = model.getBrand();
+      String fullName = brand.getName() + " " + model.getName();
+      carWithFullNames.put(car, fullName);
     }
 
-    for (CarModel model : matchingModels) {
-      Set<Car> carsByModel = carRepository.findByModel(model);
-      matchingCars.addAll(carsByModel);
-    }
-    return List.copyOf(matchingCars);
-
+    return carWithFullNames.entrySet().stream()
+        .filter(entry -> entry.getValue().toLowerCase().contains(keywordCopy))
+        .map(Map.Entry::getKey)
+        .toList();
   }
 }
