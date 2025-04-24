@@ -33,4 +33,12 @@ public class CarService {
     carRepository.deleteById(id);
   }
 
+  public Set<Integer> getAllAmountOfSeatsInCars() {
+    Set<Integer> amountOfSeats = carRepository.findAllAmountOfSeatsInCars();
+    for (Integer amount : amountOfSeats) {
+      logger.info("Amount of seats: {}", amount);
+    }
+    return amountOfSeats;
+  }
+
 }
