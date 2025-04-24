@@ -122,6 +122,9 @@ public class User {
    * @param role the role to be added
    */
   public void addRole(Role role) {
+    if (this.roles.stream().anyMatch(r -> r.getId() == role.getId())) {
+      return;
+    }
     this.roles.add(role);
   }
 

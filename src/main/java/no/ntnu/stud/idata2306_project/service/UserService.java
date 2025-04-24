@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import no.ntnu.stud.idata2306_project.exception.UserNotFoundException;
 import no.ntnu.stud.idata2306_project.exception.UsernameAlreadyInUser;
+import no.ntnu.stud.idata2306_project.model.user.Role;
 import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.repository.AddressRepository;
 import no.ntnu.stud.idata2306_project.repository.PhoneNumberRepository;
@@ -85,6 +86,11 @@ public class UserService {
     if (userWithUsername.isPresent()) {
       throw new UsernameAlreadyInUser(username);
     }
+
+    Role role = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Role not found"));
+    user.addRole(role);
+
+    logger.info(user.getRoles().toString());
 
     Optional<User> userWithEmail = userRepository.findByEmail(user.getEmail());
     if (userWithEmail.isPresent()) {
