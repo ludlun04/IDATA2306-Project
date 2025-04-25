@@ -66,7 +66,25 @@ public class OrderService {
     return orderRepository.findOrdersByUserId(userId);
   }
 
+
+  /**
+   * Save an order
+   *
+   * @param order the order to save
+   * @return the saved order
+   */
   public void saveOrder(Order order) {
     orderRepository.save(order);
+  }
+
+  /**
+   * Get an order by its id
+   *
+   * @param id the id of the order
+   * @return the order with the given id
+   */
+  public Order findOrderById(Long id) {
+    return orderRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + id));
   }
 }
