@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306_project.controller;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import no.ntnu.stud.idata2306_project.config.AuthenticationRequest;
 import no.ntnu.stud.idata2306_project.config.JwtUtil;
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
@@ -16,8 +17,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "Authentication", description = "Endpoints for authentication")
 @RestController
+@RequestMapping("/authenticate")
 public class AuthenticationController {
   private AuthenticationManager authenticationManager;
   private UserDetailsServiceImpl userDetailsService;
@@ -62,7 +66,7 @@ public class AuthenticationController {
       @ApiResponse(responseCode = "400", description = "Missing body"),
       @ApiResponse(responseCode = "401", description = "Incorrect username or password")
   })
-  @PostMapping("/authenticate")
+  @PostMapping()
   public ResponseEntity<String> authenticate(@RequestBody(required = false) AuthenticationRequest request) {
     if (request == null) {
       return new ResponseEntity<>("Missing body", HttpStatus.BAD_REQUEST);
@@ -87,6 +91,38 @@ public class AuthenticationController {
     } catch (Exception e) {
       logger.error("Error during authentication", e);
       return new ResponseEntity<>("Error during authentication", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  /**
+   * Validates a JWT token.
+   *
+   * @param request the HTTP request containing the JWT token
+   * @return a response entity indicating whether the token is valid or not
+   */
+  @GetMapping("/validate")
+  public ResponseEntity<String> validateJwt(HttpServletRequest request) {
+    String authorization = request.getHeader("Authorization");
+
+    if (authorization == null || !authorization.startsWith("Bearer ")) {
+      return new ResponseEntity<>("Missing or invalid Authorization header", HttpStatus.BAD_REQUEST);
+    }
+
+    String jwt = authorization.substring(7);
+    logger.info("Validating JWT token: {}", jwt);
+
+    try {
+      boolean isValid = jwtUtil.isTokenExpired(jwt);
+      if (isValid) {
+        logger.info("Token is valid");
+        return ResponseEntity.ok("Token is valid");
+      } else {
+        logger.warn("Token is invalid");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is invalid");
+      }
+    } catch (Exception e) {
+      logger.error("Error validating token", e);
+      return new ResponseEntity<>("Error validating token", HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
