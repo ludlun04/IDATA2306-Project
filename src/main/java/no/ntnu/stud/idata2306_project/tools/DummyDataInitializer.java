@@ -10,6 +10,7 @@ import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.repository.*;
 import no.ntnu.stud.idata2306_project.service.CompanyService;
 
+import no.ntnu.stud.idata2306_project.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -33,6 +34,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private AddonRepository addonRepository;
   private FeatureRepository featureRepository;
   private CompanyService companyService;
+  private UserService userService;
   private OrderRepository orderRepository;
   private UserInitializer userInitializer;
 
@@ -49,6 +51,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       AddonRepository addonRepository,
       FeatureRepository featureRepository,
       CompanyService companyService,
+      UserService userService,
       OrderRepository orderRepository,
       UserInitializer userInitializer) {
     this.userInitializer = userInitializer;
@@ -62,6 +65,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.addonRepository = addonRepository;
     this.featureRepository = featureRepository;
     this.companyService = companyService;
+    this.userService = userService;
     this.orderRepository = orderRepository;
   }
 
@@ -124,6 +128,9 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     Optional<User> optionalUser2 = userRepository.findByUsername("user");
     if (optionalUser2.isPresent()) {
       User user = optionalUser2.get();
+      this.userService.addFavoriteToUser(user, car1);
+      this.userService.addFavoriteToUser(user, car3);
+
       Order order1 = new Order(user.getId(), car1.getId(), LocalDate.of(2025, 1, 1), LocalDate.of(2025, 1, 20), 500, List.of(gps));
       orderRepository.save(order1);
 
