@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -129,10 +130,7 @@ public class OrderController {
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/{id}")
-  public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    AccessUserDetails user = (AccessUserDetails) auth.getPrincipal();
-
+  public ResponseEntity<Order> getOrderById(@PathVariable Long id, @AuthenticationPrincipal AccessUserDetails user) {
     // Check if the id is valid
     if (id == null || id <= 0) {
       logger.error("Invalid id: {}", id);
@@ -140,9 +138,10 @@ public class OrderController {
     }
 
     logger.info("Getting order with id {}", id);
-    Order order = orderService.findOrderById(id);
-    if (order == null) {
-      logger.error("Order with id {} not found", id);
+    Order order = null;
+    try {
+      order = orderService.findOrderById(id);
+    } catch (Exception e) {
       return ResponseEntity.notFound().build();
     }
 

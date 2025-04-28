@@ -4,7 +4,6 @@ import no.ntnu.stud.idata2306_project.model.car.CarBrand;
 import no.ntnu.stud.idata2306_project.repository.CarBrandRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 
 @Service

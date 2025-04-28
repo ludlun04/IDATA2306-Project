@@ -3,15 +3,12 @@ package no.ntnu.stud.idata2306_project.service;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.car.CarBrand;
 import no.ntnu.stud.idata2306_project.model.car.CarModel;
-import no.ntnu.stud.idata2306_project.repository.CarBrandRepository;
-import no.ntnu.stud.idata2306_project.repository.CarModelRepository;
 import no.ntnu.stud.idata2306_project.repository.CarRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class CarSearchService {
