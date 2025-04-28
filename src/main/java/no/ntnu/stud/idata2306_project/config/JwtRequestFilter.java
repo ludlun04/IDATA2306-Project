@@ -33,9 +33,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
   UserDetailsService userDetailsService;
   JwtUtil jwtUtil;
-  private static final List<String> PUBLIC_URLS = List.of(
-      "/authenticate/validate"
-  );
 
   private Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
 
@@ -49,15 +46,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
       throws ServletException, IOException {
         String jwtToken = getJwtToken(request);
-        String path = request.getRequestURI();
-
-        boolean isPublic = PUBLIC_URLS.stream()
-            .anyMatch(path::startsWith);
-        if (isPublic) {
-          logger.info("Public URL: {}, skipping filters", path);
-          filterChain.doFilter(request, response);
-          return;
-        }
 
         try {
           String username = jwtToken != null ? getUsernameFromToken(jwtToken) : null;

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -96,37 +97,17 @@ public class AuthenticationController {
   }
 
   /**
-   * Validates a JWT token.
+   * Validates the JWT token.
    *
-   * @param request the HTTP request containing the JWT token
-   * @return a response entity indicating whether the token is valid or not
+   * @return a response entity containing a message
    */
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Token is valid"),
+      @ApiResponse(responseCode = "401", description = "Token is invalid")
+  })
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/validate")
-  public ResponseEntity<String> validateJwt(HttpServletRequest request) {
-    String authorization = request.getHeader("Authorization");
-
-    if (authorization == null || !authorization.startsWith("Bearer ")) {
-      return new ResponseEntity<>("Missing or invalid Authorization header", HttpStatus.BAD_REQUEST);
-    }
-
-    String jwt = authorization.substring(7);
-    logger.info("Validating JWT token: {}", jwt);
-
-    try {
-      boolean isValid = jwtUtil.isTokenExpired(jwt);
-      if (isValid) {
-        logger.info("Token is valid");
-        return ResponseEntity.ok("Token is valid");
-      } else {
-        logger.warn("Token is invalid");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is invalid");
-      }
-    } catch (ExpiredJwtException e) {
-      logger.warn("Token is expired");
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is expired");
-    } catch (Exception e) {
-      logger.error("Error validating token", e);
-      return new ResponseEntity<>("Error validating token", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  public ResponseEntity<String> validateJwt() {
+    return ResponseEntity.ok("Token is valid");
   }
 }
