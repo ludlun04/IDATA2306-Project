@@ -55,8 +55,7 @@ public class SecurityConfig {
           "/car/{id}",
           "/company/with_rentals",
           "/brand/with_rentals",
-          "/fuel/with_rentals",
-            "/authenticate/validate"
+          "/fuel/with_rentals"
         ).permitAll()
         // Allow all requests
         .requestMatchers(
