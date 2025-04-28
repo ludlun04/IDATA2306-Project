@@ -77,7 +77,7 @@ public class User {
 
   @Schema(description = "The user's favorite cars")
   @JsonIgnore
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   List<Car> favorites;
 
   @Schema(description = "The user's roles")
@@ -305,6 +305,15 @@ public class User {
    */
   public void setFavorites(List<Car> favorites) {
     this.favorites = favorites;
+  }
+
+  /**
+   * Adds a car to the user's favorites.
+   *
+   * @param car the car to be added to the favorites
+   */
+  public void addFavorite(Car car) {
+    this.favorites.add(car);
   }
 
   /**

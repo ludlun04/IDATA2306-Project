@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306_project.service;
 import java.util.List;
 import java.util.Optional;
 
+import no.ntnu.stud.idata2306_project.model.car.Car;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -121,5 +122,10 @@ public class UserService {
     }
 
     userRepository.delete(user.get());
+  }
+
+  public void addFavoriteToUser(User user, Car car) {
+    user.addFavorite(car);
+    userRepository.save(user);
   }
 }

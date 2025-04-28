@@ -1,16 +1,22 @@
 package no.ntnu.stud.idata2306_project.tools;
 
+import java.io.File;
+import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import javax.sql.rowset.serial.SerialBlob;
+import no.ntnu.stud.idata2306_project.enums.ImageType;
 import no.ntnu.stud.idata2306_project.model.car.*;
 import no.ntnu.stud.idata2306_project.model.company.Company;
+import no.ntnu.stud.idata2306_project.model.image.CarImage;
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.repository.*;
 import no.ntnu.stud.idata2306_project.service.CompanyService;
 
+import no.ntnu.stud.idata2306_project.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -34,9 +40,11 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private AddonRepository addonRepository;
   private FeatureRepository featureRepository;
   private CompanyService companyService;
+  private UserService userService;
   private OrderRepository orderRepository;
   private UserInitializer userInitializer;
-  
+  private CarImageRepository carImageRepository;
+
   private Logger logger = LoggerFactory.getLogger(DummyDataInitializer.class);
   private Random random = new Random();
 
@@ -51,8 +59,10 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       AddonRepository addonRepository,
       FeatureRepository featureRepository,
       CompanyService companyService,
+      UserService userService,
       OrderRepository orderRepository,
-      UserInitializer userInitializer) {
+      UserInitializer userInitializer,
+      CarImageRepository carImageRepository) {
     this.userInitializer = userInitializer;
     this.userRepository = userRepository;
     this.carRepository = carRepository;
@@ -64,7 +74,9 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.addonRepository = addonRepository;
     this.featureRepository = featureRepository;
     this.companyService = companyService;
+    this.userService = userService;
     this.orderRepository = orderRepository;
+    this.carImageRepository = carImageRepository;
   }
 
   @Override
@@ -149,7 +161,24 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
         order.setCar(car);
         orderRepository.save(order);
       }
+      this.userService.addFavoriteToUser(user, car1);
+      this.userService.addFavoriteToUser(user, car3);
+
+      initiateImages();
     }
   }
 
+  public void initiateImages() {
+    File file = new File("src/main/resources/carImages/BlackTesla/BlackTesla-800.jpg");
+    byte[] imageData = new byte[(int) file.length()];
+    Blob image = null;
+    try {
+      imageData = java.nio.file.Files.readAllBytes(file.toPath());
+      image = new SerialBlob(imageData);
+    } catch (Exception e) {
+      logger.error("Error reading image file: {}", e.getMessage());
+    }
+    CarImage carImage = new CarImage(1, image, 800, ImageType.JPG);
+    carImageRepository.save(carImage);
+  }
 }

@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Filter class for handling JWT tokens.
  * Inspiration taken from:
- * girt
+ * https://github.com/strazdinsg/app-dev/tree/main/security-demos/05-jwt-authentication
  */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
