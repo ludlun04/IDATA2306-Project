@@ -5,7 +5,6 @@ import org.springframework.data.repository.ListCrudRepository;
 
 import no.ntnu.stud.idata2306_project.model.company.Company;
 
-import java.util.List;
 import java.util.Set;
 
 public interface CompanyRepository extends ListCrudRepository<Company, Long> {
