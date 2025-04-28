@@ -3,7 +3,6 @@ package no.ntnu.stud.idata2306_project.config;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 
-import java.util.List;
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

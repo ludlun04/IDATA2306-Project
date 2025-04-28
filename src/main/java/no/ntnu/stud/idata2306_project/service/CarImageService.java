@@ -17,6 +17,6 @@ public class CarImageService {
     logger.info("CarImageService initialized");
   }
   public CarImage getCarImage(long carId, ImageType imageType, long imageWidth) {
-    return carImageRepository.findCarImageByCarIdAndImageTypeAndImageWidth(carId, imageType.toString(), imageWidth);
+    return carImageRepository.findCarImageByCarIdAndImageTypeAndImageWidth(carId, imageType, imageWidth);
   }
 }

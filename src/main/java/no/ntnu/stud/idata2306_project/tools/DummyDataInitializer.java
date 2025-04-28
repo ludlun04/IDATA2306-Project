@@ -1,11 +1,17 @@
 package no.ntnu.stud.idata2306_project.tools;
 
+import java.io.File;
+import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
+import javax.sql.rowset.serial.SerialBlob;
+import no.ntnu.stud.idata2306_project.enums.ImageType;
 import no.ntnu.stud.idata2306_project.model.car.*;
 import no.ntnu.stud.idata2306_project.model.company.Company;
+import no.ntnu.stud.idata2306_project.model.image.CarImage;
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.repository.*;
 import no.ntnu.stud.idata2306_project.service.CompanyService;
@@ -37,8 +43,10 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private UserService userService;
   private OrderRepository orderRepository;
   private UserInitializer userInitializer;
+  private CarImageRepository carImageRepository;
 
   private Logger logger = LoggerFactory.getLogger(DummyDataInitializer.class);
+  private Random random = new Random();
 
   public DummyDataInitializer(
       UserRepository userRepository,
@@ -53,7 +61,8 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       CompanyService companyService,
       UserService userService,
       OrderRepository orderRepository,
-      UserInitializer userInitializer) {
+      UserInitializer userInitializer,
+      CarImageRepository carImageRepository) {
     this.userInitializer = userInitializer;
     this.userRepository = userRepository;
     this.carRepository = carRepository;
@@ -67,6 +76,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.companyService = companyService;
     this.userService = userService;
     this.orderRepository = orderRepository;
+    this.carImageRepository = carImageRepository;
   }
 
   @Override
@@ -119,34 +129,56 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
         companyBober, description1);
     Car car2 = new Car(2015, 4, 550, volkswagenGolf, diesel, automatic, List.of(childSeat, gps), List.of(heatedSeats),
         companyBober, description2);
-    Car car3 = new Car(2018, 6, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning), companyPaul, description3);
-    Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats), companyPaul, description4);
-    this.carRepository.saveAll(List.of(car1, car2, car3, car4));
+    Car car3 = new Car(2018, 6, 600, volkswagenPolo, diesel, manual, List.of(gps), List.of(airConditioning),
+        companyPaul, description3);
+    Car car4 = new Car(2019, 5, 650, fordFocus, petrol, automatic, List.of(childSeat, gps), List.of(heatedSeats),
+        companyPaul, description4);
+
+    List<Car> cars = List.of(car1, car2, car3, car4);
+    this.carRepository.saveAll(cars);
 
     logger.info("Dummy data initialized");
 
     Optional<User> optionalUser2 = userRepository.findByUsername("user");
     if (optionalUser2.isPresent()) {
       User user = optionalUser2.get();
+
+      for (Car car : cars) {
+        Order order = new Order();
+        order.setStartDate(LocalDate.of(
+          2025, 
+          random.nextInt(1, 6), 
+          random.nextInt(1, 20))
+        );
+        order.setEndDate(LocalDate.of(
+          2025, 
+          random.nextInt(7, 12), 
+          random.nextInt(1, 20))
+        );
+        order.setAddons(List.of(gps));
+        order.setPrice(500);
+        order.setUser(user);
+        order.setCar(car);
+        orderRepository.save(order);
+      }
       this.userService.addFavoriteToUser(user, car1);
       this.userService.addFavoriteToUser(user, car3);
 
-      Order order1 = new Order(user.getId(), car1.getId(), LocalDate.of(2025, 1, 1), LocalDate.of(2025, 1, 20), 500, List.of(gps));
-      orderRepository.save(order1);
-
-      Order order2 = new Order(user.getId(), car2.getId(), LocalDate.of(2025, 1, 20), LocalDate.of(2025, 2, 6), 550, List.of(childSeat, gps));
-      orderRepository.save(order2);
-
-      Order order3 = new Order(user.getId(), car3.getId(), LocalDate.of(2025, 1, 19), LocalDate.of(2025, 1, 20), 600, List.of(childSeat, gps));
-      orderRepository.save(order3);
-
-      Order order4 = new Order(user.getId(), car4.getId(), LocalDate.of(2025, 2, 10), LocalDate.of(2025, 2, 15), 700, List.of(childSeat, gps));
-      orderRepository.save(order4);
-
-      Order order5 = new Order(user.getId(), car1.getId(), LocalDate.of(2025, 2, 11), LocalDate.of(2025, 3, 2), 700, List.of(childSeat, gps));
-      orderRepository.save(order5);
-
+      initiateImages();
     }
   }
 
+  public void initiateImages() {
+    File file = new File("src/main/resources/carImages/BlackTesla/BlackTesla-800.jpg");
+    byte[] imageData = new byte[(int) file.length()];
+    Blob image = null;
+    try {
+      imageData = java.nio.file.Files.readAllBytes(file.toPath());
+      image = new SerialBlob(imageData);
+    } catch (Exception e) {
+      logger.error("Error reading image file: {}", e.getMessage());
+    }
+    CarImage carImage = new CarImage(1, image, 800, ImageType.JPG);
+    carImageRepository.save(carImage);
+  }
 }

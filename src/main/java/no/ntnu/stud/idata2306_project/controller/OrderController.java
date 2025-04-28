@@ -4,9 +4,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
+import java.util.Optional;
+
+import no.ntnu.stud.idata2306_project.dto.OrderDto;
+import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.order.Order;
+import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
+import no.ntnu.stud.idata2306_project.service.CarService;
 import no.ntnu.stud.idata2306_project.service.OrderService;
+import no.ntnu.stud.idata2306_project.service.UserService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,6 +46,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/order")
 public class OrderController {
   private final OrderService orderService;
+  private final CarService carService;
+  private final UserService userService;
   private Logger logger = LoggerFactory.getLogger(OrderController.class);
 
   /**
@@ -44,8 +55,10 @@ public class OrderController {
    *
    * @param orderService the order service to use
    */
-  public OrderController(OrderService orderService) {
+  public OrderController(OrderService orderService, UserService userService, CarService carService) {
     this.orderService = orderService;
+    this.userService = userService;
+    this.carService = carService;
   }
 
   /**
@@ -104,15 +117,31 @@ public class OrderController {
    */
   @Operation(summary = "Add a new order", description = "Add a new order")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Order that was added")
+      @ApiResponse(responseCode = "201", description = "Order that was added"),
+      @ApiResponse(responseCode = "400", description = "Invalid order"),
   })
   @PreAuthorize("hasAnyAuthority('USER')")
-  @PostMapping("/create")
-  public ResponseEntity<Order> addOrder(Order order) {
+  @PostMapping("/")
+  public ResponseEntity<Long> addOrder(@AuthenticationPrincipal AccessUserDetails accessUserDetails, @RequestBody OrderDto orderDto) {
+    User user = this.userService.getUserById(accessUserDetails.getId());
+    Optional<Car> optionalCar = this.carService.getCarById(orderDto.getCarId());
+
+    if (!optionalCar.isPresent()) {
+      logger.error("Car with id {} not found", orderDto.getCarId());
+      return ResponseEntity.badRequest().build();
+    }
+
+    Order order = new Order();
+    order.setUser(user);
+    order.setCar(optionalCar.get());
+    order.setStartDate(orderDto.getStartDate());
+    order.setEndDate(orderDto.getEndDate());
+    order.setPrice(20000);
+    
     logger.info("Adding order {}", order);
     orderService.saveOrder(order);
     logger.info("New order added");
-    return ResponseEntity.status(201).body(order);
+    return ResponseEntity.status(HttpStatus.CREATED).body(order.getOrderId());
   }
 
   /**
@@ -130,7 +159,7 @@ public class OrderController {
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/{id}")
-  public ResponseEntity<Order> getOrderById(@PathVariable Long id, @AuthenticationPrincipal AccessUserDetails user) {
+  public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id, @AuthenticationPrincipal AccessUserDetails user) {
     // Check if the id is valid
     if (id == null || id <= 0) {
       logger.error("Invalid id: {}", id);
@@ -150,12 +179,20 @@ public class OrderController {
         .anyMatch(predicate -> predicate.getAuthority().equals("ADMIN"));
 
     logger.info("User with id {} is admin: {}", user.getId(), isAdmin);
-    boolean isOwnerOfOrder = order.getUserId().equals(user.getId());
+    boolean isOwnerOfOrder = order.getUser().getId().equals(user.getId());
     if (!isAdmin && !isOwnerOfOrder) {
       logger.error("User with id {} is not authorized to access order with id {}", user.getId(), id);
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    return ResponseEntity.ok(order);
+    OrderDto orderDto = new OrderDto();
+    orderDto.setOrderId(order.getOrderId());
+    orderDto.setCarId(order.getCar().getId());
+    orderDto.setStartDate(order.getStartDate());
+    orderDto.setEndDate(order.getEndDate());
+    orderDto.setPrice(order.getPrice());
+    orderDto.setUserId(order.getUser().getId());
+
+    return ResponseEntity.ok(orderDto);
   }
 }

@@ -7,12 +7,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
 import no.ntnu.stud.idata2306_project.model.car.Addon;
+import no.ntnu.stud.idata2306_project.model.car.Car;
+import no.ntnu.stud.idata2306_project.model.user.User;
 
 /**
  * Represents an order
@@ -28,11 +31,13 @@ public class Order {
 
   @Schema(description = "The id of the user who made the order")
   @NotNull
-  private Long userId;
+  @ManyToOne
+  private User user;
 
   @Schema(description = "The id of the car that was ordered")
   @NotNull
-  private Long carId;
+  @ManyToOne
+  private Car car;
 
   @Schema(description = "The start date of the order")
   @NotNull
@@ -64,9 +69,9 @@ public class Order {
    * @param price the price the user paid for the order
    * @param addons the addons that were included in the order
    */
-  public Order(Long userId, Long carId, LocalDate startDate, LocalDate endDate, int price, List<Addon> addons) {
-    this.userId = userId;
-    this.carId = carId;
+  public Order(User user, Car car, LocalDate startDate, LocalDate endDate, int price, List<Addon> addons) {
+    this.user = user;
+    this.car = car;
     this.startDate = startDate;
     this.endDate = endDate;
     this.price = price;
@@ -85,16 +90,16 @@ public class Order {
    * Returns the id of the user who made the order
    * @return the id of the user who made the order
    */
-  public Long getUserId() {
-      return userId;
+  public User getUser() {
+      return this.user;
   }
 
   /**
    * Returns the id of the car that was ordered
    * @return the id of the car that was ordered
    */
-  public Long getCarId() {
-      return carId;
+  public Car getCar() {
+      return this.car;
   }
 
   /**
@@ -127,5 +132,37 @@ public class Order {
    */
   public List<Addon> getAddons() {
       return addons;
+  }
+
+  /**
+   * Sets the user id of the order
+   * @param userId the user id of the order
+   */
+  public void setUser(User user) {
+    if (user == null) {
+      throw new IllegalArgumentException("User cannot be null");
+    }
+
+    this.user = user;
+  }
+
+  public void setAddons(List<Addon> addons) {
+    this.addons = addons;
+  }
+
+  public void setCar(Car car) {
+    this.car = car;
+  }
+
+  public void setPrice(int price) {
+    this.price = price;
+  }
+
+  public void setStartDate(LocalDate startDate) {
+    this.startDate = startDate;
+  }
+
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
   }
 }

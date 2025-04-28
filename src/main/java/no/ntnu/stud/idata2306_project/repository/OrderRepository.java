@@ -8,14 +8,25 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
 public interface OrderRepository extends ListCrudRepository<Order, Long> {
-  public List<Order> findOrdersByUserId(Long userId);
+  @Query("""
+    SELECT o
+    FROM Order o
+    WHERE o.user.id = :id
+    """)
+  public List<Order> findOrdersByUserId(Long id);
 
-  public Order findOrderByUserId(Long userId);
+
+  @Query("""
+    SELECT o
+    FROM Order o
+    WHERE o.user.id = :id
+    """)
+  public Order findOrderByUserId(Long id);
 
   @Query("""
     SELECT CASE WHEN COUNT(o) = 0 THEN true ELSE false END
     FROM Order o
-    WHERE o.carId = :carId
+    WHERE o.car.id = :carId
     AND (o.startDate <= :startDate AND o.endDate > :startDate)
     """)
   boolean isAvailableFrom(Long carId, LocalDate startDate);
@@ -23,7 +34,7 @@ public interface OrderRepository extends ListCrudRepository<Order, Long> {
   @Query("""
     SELECT CASE WHEN COUNT(o) = 0 THEN true ELSE false END
     FROM Order o
-    WHERE o.carId = :carId
+    WHERE o.car.id = :carId
         AND (o.startDate < :endDate AND o.endDate > :startDate)
     """)
   boolean isAvailableBetween(Long carId, LocalDate startDate, LocalDate endDate);
@@ -31,7 +42,7 @@ public interface OrderRepository extends ListCrudRepository<Order, Long> {
   @Query("""
     SELECT o
     FROM Order o
-    WHERE o.userId = :userId
+    WHERE o.user.id = :userId
         AND (o.startDate < CURRENT_DATE AND o.endDate > CURRENT_DATE)
     """)
   List<Order> findActiveOrdersByUserId(Long userId);
