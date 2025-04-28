@@ -32,10 +32,16 @@ public class CarImage {
   private long imageWidth;
 
   @Schema(description = "The type of the image", example = "JPEG")
-  @NotNull
   private ImageType imageType;
 
   public CarImage() {
+  }
+
+  public CarImage(long carId, Blob image, long imageWidth, ImageType imageType) {
+    this.carId = carId;
+    this.image = image;
+    this.imageWidth = imageWidth;
+    this.imageType = imageType;
   }
 
   /**
