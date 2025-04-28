@@ -1,5 +1,6 @@
 package no.ntnu.stud.idata2306_project.controller;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -120,6 +121,9 @@ public class AuthenticationController {
         logger.warn("Token is invalid");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is invalid");
       }
+    } catch (ExpiredJwtException e) {
+      logger.warn("Token is expired");
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is expired");
     } catch (Exception e) {
       logger.error("Error validating token", e);
       return new ResponseEntity<>("Error validating token", HttpStatus.INTERNAL_SERVER_ERROR);

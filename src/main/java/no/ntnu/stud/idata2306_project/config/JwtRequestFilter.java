@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306_project.config;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 
+import java.util.List;
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
   UserDetailsService userDetailsService;
   JwtUtil jwtUtil;
+  private static final List<String> PUBLIC_URLS = List.of(
+      "/authenticate/validate"
+  );
+
   private Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
 
   public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService) {
@@ -44,6 +49,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
       throws ServletException, IOException {
         String jwtToken = getJwtToken(request);
+        String path = request.getRequestURI();
+
+        boolean isPublic = PUBLIC_URLS.stream()
+            .anyMatch(path::startsWith);
+        if (isPublic) {
+          logger.info("Public URL: {}, skipping filters", path);
+          filterChain.doFilter(request, response);
+          return;
+        }
+
         try {
           String username = jwtToken != null ? getUsernameFromToken(jwtToken) : null;
 
