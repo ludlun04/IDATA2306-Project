@@ -6,9 +6,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import java.util.Set;
+
+import jakarta.validation.Valid;
 import no.ntnu.stud.idata2306_project.dto.UserCreationDto;
 import no.ntnu.stud.idata2306_project.exception.UserNotFoundException;
 import no.ntnu.stud.idata2306_project.model.car.Car;
@@ -81,20 +84,19 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "List of authenticated users favorites among given cars")
   })
   @PreAuthorize("hasAnyAuthority('USER')")
-  @GetMapping("/favorites_within_list")
+  @PostMapping("/favorites")
   public ResponseEntity<List<Car>> getAuthenticatedUserFavoritesFromList(@RequestBody List<Car> cars) {
     AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
+    Set<Car> matching = new HashSet<>();
 
-    List<Car> matching = new ArrayList<>();
-
-    for (Car car : user.getFavorites()) {
-      if (cars.contains(car)) {
-        matching.add(car);
+    List<Long> carIds = cars.stream().map(Car::getId).toList();
+    for (Car favorite : user.getFavorites()) {
+      if (carIds.contains(favorite.getId())) {
+        matching.add(favorite);
       }
     }
-
-    return ResponseEntity.ok(matching);
+    return ResponseEntity.ok(matching.stream().toList());
   }
 
   @Operation(summary = "Get roles", description = "Get the authenticated user's roles")
