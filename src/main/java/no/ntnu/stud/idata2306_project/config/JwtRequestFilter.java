@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306_project.config;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 
+import java.util.List;
 import no.ntnu.stud.idata2306_project.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
       throws ServletException, IOException {
         String jwtToken = getJwtToken(request);
+
+        List<String> excludedPaths = List.of(
+            "/image/{carId}/{imageType}/{imageWidth}"
+        );
+
+        String requestURI = request.getRequestURI();
+        if (excludedPaths.stream().anyMatch(requestURI::startsWith)) {
+          filterChain.doFilter(request, response);
+          return;
+        }
 
         try {
           String username = jwtToken != null ? getUsernameFromToken(jwtToken) : null;

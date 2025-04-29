@@ -143,24 +143,51 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     if (optionalUser2.isPresent()) {
       User user = optionalUser2.get();
 
-      for (Car car : cars) {
-        Order order = new Order();
-        order.setStartDate(LocalDate.of(
-          2025, 
-          random.nextInt(1, 6), 
-          random.nextInt(1, 20))
-        );
-        order.setEndDate(LocalDate.of(
-          2025, 
-          random.nextInt(7, 12), 
-          random.nextInt(1, 20))
-        );
-        order.setAddons(List.of(gps));
-        order.setPrice(500);
-        order.setUser(user);
-        order.setCar(car);
-        orderRepository.save(order);
-      }
+      Order order1 = new Order();
+      order1.setStartDate(LocalDate.of(2025, 1, 1));
+      order1.setEndDate(LocalDate.of(2025, 1, 20));
+      order1.setAddons(List.of(gps));
+      order1.setPrice(500);
+      order1.setUser(user);
+      order1.setCar(car1);
+      orderRepository.save(order1);
+
+      Order order2 = new Order();
+      order2.setStartDate(LocalDate.of(2025, 1, 20));
+      order2.setEndDate(LocalDate.of(2025, 2, 6));
+      order2.setAddons(List.of(gps));
+      order2.setPrice(500);
+      order2.setUser(user);
+      order2.setCar(car1);
+      orderRepository.save(order2);
+
+      Order order3 = new Order();
+      order3.setStartDate(LocalDate.of(2025, 1, 19));
+      order3.setEndDate(LocalDate.of(2025, 1, 20));
+      order3.setAddons(List.of(gps));
+      order3.setPrice(500);
+      order3.setUser(user);
+      order3.setCar(car1);
+      orderRepository.save(order3);
+
+      Order order4 = new Order();
+      order4.setStartDate(LocalDate.of(2025, 2, 10));
+      order4.setEndDate(LocalDate.of(2025, 2, 15));
+      order4.setAddons(List.of(gps));
+      order4.setPrice(500);
+      order4.setUser(user);
+      order4.setCar(car1);
+      orderRepository.save(order4);
+
+      Order order5 = new Order();
+      order5.setStartDate(LocalDate.of(2025, 2, 11));
+      order5.setEndDate(LocalDate.of(2025, 3, 2));
+      order5.setAddons(List.of(gps));
+      order5.setPrice(500);
+      order5.setUser(user);
+      order5.setCar(car1);
+      orderRepository.save(order5);
+
       this.userService.addFavoriteToUser(user, car1);
       this.userService.addFavoriteToUser(user, car3);
 
@@ -168,17 +195,17 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     }
   }
 
+  //TODO: Fix quality
   public void initiateImages() {
     File file = new File("src/main/resources/carImages/BlackTesla/BlackTesla-800.jpg");
-    byte[] imageData = new byte[(int) file.length()];
-    Blob image = null;
+    byte[] imageData = null;
     try {
+      imageData = new byte[(int) file.length()];
       imageData = java.nio.file.Files.readAllBytes(file.toPath());
-      image = new SerialBlob(imageData);
     } catch (Exception e) {
       logger.error("Error reading image file: {}", e.getMessage());
     }
-    CarImage carImage = new CarImage(1, image, 800, ImageType.JPG);
+    CarImage carImage = new CarImage(1, imageData, 800, ImageType.JPG);
     carImageRepository.save(carImage);
   }
 }

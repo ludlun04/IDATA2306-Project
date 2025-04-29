@@ -2,6 +2,7 @@ package no.ntnu.stud.idata2306_project.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.sql.Blob;
+import java.util.Base64;
 import no.ntnu.stud.idata2306_project.enums.ImageType;
 import no.ntnu.stud.idata2306_project.model.image.CarImage;
 import no.ntnu.stud.idata2306_project.service.CarImageService;
@@ -16,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/image")
 public class CarImageController {
   private CarImageService carImageService;
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CarImageController.class);
 
   public CarImageController(CarImageService carImageService) {
     this.carImageService = carImageService;
   }
 
   @GetMapping("/{carId}/{imageType}/{imageWidth}")
-  public ResponseEntity<CarImage> getCarImage(@PathVariable long carId,
+  public ResponseEntity<String> getCarImage(@PathVariable long carId,
                                               @PathVariable String imageType,
                                               @PathVariable long imageWidth) {
     ImageType type;
@@ -43,6 +45,17 @@ public class CarImageController {
         return ResponseEntity.badRequest().build();
     }
 
-    return ResponseEntity.ok(carImageService.getCarImage(carId, type, imageWidth));
+    CarImage carImage = carImageService.getCarImage(carId, type, imageWidth);
+    if (carImage == null || carImage.getImage() == null) {
+      return ResponseEntity.ok().header("Content-Type", "text/plain").body("");
+    }
+
+    String base64Image = Base64.getEncoder().encodeToString(carImage.getImage());
+
+    logger.info("Returning image of type {} for car with id {}", type, carId);
+
+    return ResponseEntity.ok()
+        .header("Content-Type", "text/plain")
+        .body(base64Image);
   }
 }
