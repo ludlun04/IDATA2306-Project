@@ -46,6 +46,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
         String jwtToken = getJwtToken(request);
 
+        List<String> excludedPaths = List.of(
+            "/image/{carId}/{imageType}/{imageWidth}"
+        );
+
+        String requestURI = request.getRequestURI();
+        if (excludedPaths.stream().anyMatch(requestURI::startsWith)) {
+          filterChain.doFilter(request, response);
+          return;
+        }
+
         try {
           String username = jwtToken != null ? getUsernameFromToken(jwtToken) : null;
 

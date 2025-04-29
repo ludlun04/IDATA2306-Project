@@ -195,17 +195,17 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     }
   }
 
+  //TODO: Fix quality
   public void initiateImages() {
     File file = new File("src/main/resources/carImages/BlackTesla/BlackTesla-800.jpg");
-    byte[] imageData = new byte[(int) file.length()];
-    Blob image = null;
+    byte[] imageData = null;
     try {
+      imageData = new byte[(int) file.length()];
       imageData = java.nio.file.Files.readAllBytes(file.toPath());
-      image = new SerialBlob(imageData);
     } catch (Exception e) {
       logger.error("Error reading image file: {}", e.getMessage());
     }
-    CarImage carImage = new CarImage(1, image, 800, ImageType.JPG);
+    CarImage carImage = new CarImage(1, imageData, 800, ImageType.JPG);
     carImageRepository.save(carImage);
   }
 }
