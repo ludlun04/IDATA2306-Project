@@ -46,7 +46,6 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private CarImageRepository carImageRepository;
 
   private Logger logger = LoggerFactory.getLogger(DummyDataInitializer.class);
-  private Random random = new Random();
 
   public DummyDataInitializer(
       UserRepository userRepository,
