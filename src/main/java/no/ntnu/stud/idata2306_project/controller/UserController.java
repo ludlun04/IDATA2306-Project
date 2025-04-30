@@ -5,13 +5,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import java.util.Set;
 
-import jakarta.validation.Valid;
 import no.ntnu.stud.idata2306_project.dto.UserCreationDto;
 import no.ntnu.stud.idata2306_project.exception.UserNotFoundException;
 import no.ntnu.stud.idata2306_project.model.car.Car;

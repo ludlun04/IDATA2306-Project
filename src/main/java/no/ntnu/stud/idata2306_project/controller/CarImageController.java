@@ -1,7 +1,6 @@
 package no.ntnu.stud.idata2306_project.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.sql.Blob;
 import java.util.Base64;
 import no.ntnu.stud.idata2306_project.enums.ImageType;
 import no.ntnu.stud.idata2306_project.model.image.CarImage;
