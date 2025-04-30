@@ -24,26 +24,30 @@ public class UserService {
   PhoneNumberRepository phoneNumberRepository;
   AddressRepository addressRepository;
   RoleRepository roleRepository;
+  CarService carService;
   PasswordEncoder passwordEncoder;
 
   Logger logger = LoggerFactory.getLogger(UserService.class);
 
   /**
    * Constructor for UserService
-   * @param userRepository the user repository
-   * @param roleRepository the role repository
+   *
+   * @param userRepository  the user repository
+   * @param roleRepository  the role repository
    * @param passwordEncoder the password encoder
    */
-  public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PhoneNumberRepository phoneNumberRepository, AddressRepository addressRepository) {
+  public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PhoneNumberRepository phoneNumberRepository, AddressRepository addressRepository, CarService carService) {
     this.phoneNumberRepository = phoneNumberRepository;
     this.addressRepository = addressRepository;
     this.passwordEncoder = passwordEncoder;
     this.userRepository = userRepository;
-    this.roleRepository = roleRepository; 
+    this.roleRepository = roleRepository;
+    this.carService = carService;
   }
 
   /**
    * Get all users
+   *
    * @return a list of all users
    */
   public List<User> getUsers() {
@@ -52,6 +56,7 @@ public class UserService {
 
   /**
    * Get a user by id
+   *
    * @param id the id of the user
    * @return the user with the given id
    * @throws UserNotFoundException if the user is not found
@@ -67,6 +72,7 @@ public class UserService {
 
   /**
    * Get a user by username
+   *
    * @param username the username of the user
    * @return the user with the given username
    * @throws UserNotFoundException if the user is not found
@@ -77,6 +83,7 @@ public class UserService {
 
   /**
    * Get a user by username
+   *
    * @param username the username of the user
    * @return the user with the given username
    * @throws UserNotFoundException if the user is not found
@@ -103,14 +110,15 @@ public class UserService {
     this.logger.info("User with username {} created", username);
 
     phoneNumberRepository.save(user.getPhoneNumber());
-    addressRepository.save(user.getAddress()); 
+    addressRepository.save(user.getAddress());
 
     return userRepository.save(user);
   }
 
   /**
    * Update a user
-   * @param id the id of the user
+   *
+   * @param id   the id of the user
    * @param user the user to update
    * @return the updated user
    * @throws UserNotFoundException if the user is not found
@@ -127,5 +135,25 @@ public class UserService {
   public void addFavoriteToUser(User user, Car car) {
     user.addFavorite(car);
     userRepository.save(user);
+  }
+
+  public boolean setUserFavorite(User user, Long carId, Boolean isFavorite) {
+    boolean result;
+    Optional<Car> carOptional = carService.getCarById(carId);
+    if (carOptional.isPresent()) {
+      Car car = carOptional.get();
+      if (isFavorite) {
+        user.addFavorite(car);
+      } else {
+        user.removeFavorite(car);
+      }
+      userRepository.save(user);
+      result = isFavorite;
+    } else {
+      logger.warn("Car with id {} not found", carId);
+      throw new IllegalArgumentException("Car with id " + carId + " not found");
+    }
+    return result;
+
   }
 }

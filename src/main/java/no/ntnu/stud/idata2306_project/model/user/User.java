@@ -317,6 +317,15 @@ public class User {
   }
 
   /**
+   * Removes a car from the user's favorites.
+   *
+   * @param car the car to be removed from the favorites
+   */
+  public void removeFavorite(Car car) {
+    this.favorites.remove(car);
+  }
+
+  /**
    * Sets the users gender
    *
    * @param gender

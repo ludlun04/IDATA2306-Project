@@ -5,13 +5,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-import java.util.Set;
+import java.util.*;
 
 import jakarta.validation.Valid;
+import no.ntnu.stud.idata2306_project.dto.CarFavoriteRequestDto;
 import no.ntnu.stud.idata2306_project.dto.UserCreationDto;
 import no.ntnu.stud.idata2306_project.exception.UserNotFoundException;
 import no.ntnu.stud.idata2306_project.model.car.Car;
@@ -48,7 +45,7 @@ public class UserController {
 
   @Operation(summary = "Get all users", description = "Get a list of all users")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of users")
+    @ApiResponse(responseCode = "200", description = "List of users")
   })
   @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping()
@@ -58,7 +55,7 @@ public class UserController {
 
   @Operation(summary = "Get authenticated user", description = "Get the authenticated user")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Authenticated user")
+    @ApiResponse(responseCode = "200", description = "Authenticated user")
   })
   @PreAuthorize("hasAnyAuthority('USER')")
   @GetMapping("/details")
@@ -70,7 +67,7 @@ public class UserController {
 
   @Operation(summary = "Get favorites", description = "Get the authenticated user's favorited cars")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of authenticated users favorites")
+    @ApiResponse(responseCode = "200", description = "List of authenticated users favorites")
   })
   @PreAuthorize("hasAnyAuthority('USER')")
   @GetMapping("/favorites")
@@ -79,6 +76,7 @@ public class UserController {
     User user = userService.getUserById(userDetails.getId());
     return ResponseEntity.ok(user.getFavorites());
   }
+
   @Operation(summary = "Get favorites from given list", description = "Get the authenticated user's favorited cars among given cars")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "List of authenticated users favorites among given cars")
@@ -99,9 +97,38 @@ public class UserController {
     return ResponseEntity.ok(matching.stream().toList());
   }
 
+  @Operation(summary = "Set favorite on a given car", description = "Set favorite on a given car to a given status")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Favorite set on car"),
+    @ApiResponse(responseCode = "400", description = "Bad request")
+  })
+  @PreAuthorize("hasAnyAuthority('USER')")
+  @PostMapping("/favorites/alter")
+  public ResponseEntity<Boolean> setAuthenticatedUserFavorite(@RequestBody @Valid CarFavoriteRequestDto carFavorite) {
+    logger.info("Setting favorite on car");
+
+    ResponseEntity<Boolean> badRequest = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = userService.getUserById(userDetails.getId());
+
+    Long id = carFavorite.getCarId();
+    Boolean isFavorite = carFavorite.isFavorite();
+
+    ResponseEntity<Boolean> toReturn;
+    try {
+      boolean resultingFavorite = userService.setUserFavorite(user, id, isFavorite);
+      toReturn = ResponseEntity.ok(resultingFavorite);
+    } catch (IllegalArgumentException e) {
+      toReturn = badRequest;
+    }
+    logger.info("Setting favorite on car with id {} to {}", id, isFavorite);
+    return toReturn;
+  }
+
   @Operation(summary = "Get roles", description = "Get the authenticated user's roles")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of authenticated users roles")
+    @ApiResponse(responseCode = "200", description = "List of authenticated users roles")
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/roles")
@@ -113,8 +140,8 @@ public class UserController {
 
   @Operation(summary = "Get a user", description = "Get a user by id")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "User that was found"),
-      @ApiResponse(responseCode = "404", description = "User not found")
+    @ApiResponse(responseCode = "200", description = "User that was found"),
+    @ApiResponse(responseCode = "404", description = "User not found")
   })
   @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping("/{id}")
@@ -130,7 +157,7 @@ public class UserController {
 
   @Operation(summary = "Get users by name", description = "Get a list of users containing the given name")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of users")
+    @ApiResponse(responseCode = "200", description = "List of users")
   })
   @GetMapping("/search/{name}")
   public ResponseEntity<List<User>> getUsersByName(@PathVariable String name) {
@@ -140,55 +167,55 @@ public class UserController {
 
   @Operation(summary = "Add a user", description = "Add a new user")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "User that was added")
+    @ApiResponse(responseCode = "201", description = "User that was added")
   })
   @PostMapping("/add")
   public ResponseEntity<String> addUser(@RequestBody UserCreationDto userDto) {
-      this.logger.info("Adding user {}", userDto.getUsername());
-  
-      if (userDto.getAddress() == null) {
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Address is required");
-      }
-      if (userDto.getUsername() == null) {
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
-      }
-      if (userDto.getEmail() == null) {
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
-      }
-      if (userDto.getPhoneNumber() == null) {
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number is required");
-      }
-      if (userDto.getFirstName() == null) {
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name is required");
-      }
-      if (userDto.getLastName() == null) {
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name is required");
-      }
-  
-      User user = new User();
-      user.setUsername(userDto.getUsername());
-      user.setFirstname(userDto.getFirstName());
-      user.setLastName(userDto.getLastName());
-      user.setEmail(userDto.getEmail());
-      user.setPhoneNumber(userDto.getPhoneNumber());
-      user.setAddress(userDto.getAddress());
-      user.setDateOfBirth(userDto.getDateOfBirth());
+    this.logger.info("Adding user {}", userDto.getUsername());
 
-      User newUser = userService.addUser(user, userDto.getPassword());
-      if (newUser == null) {
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
-      }
-  
-      this.logger.info("User added with id {}", newUser.getId());
-      return ResponseEntity.status(HttpStatus.CREATED).body("User Created: " + newUser.getId());
+    if (userDto.getAddress() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Address is required");
+    }
+    if (userDto.getUsername() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
+    }
+    if (userDto.getEmail() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
+    }
+    if (userDto.getPhoneNumber() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number is required");
+    }
+    if (userDto.getFirstName() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name is required");
+    }
+    if (userDto.getLastName() == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name is required");
+    }
+
+    User user = new User();
+    user.setUsername(userDto.getUsername());
+    user.setFirstname(userDto.getFirstName());
+    user.setLastName(userDto.getLastName());
+    user.setEmail(userDto.getEmail());
+    user.setPhoneNumber(userDto.getPhoneNumber());
+    user.setAddress(userDto.getAddress());
+    user.setDateOfBirth(userDto.getDateOfBirth());
+
+    User newUser = userService.addUser(user, userDto.getPassword());
+    if (newUser == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
+    }
+
+    this.logger.info("User added with id {}", newUser.getId());
+    return ResponseEntity.status(HttpStatus.CREATED).body("User Created: " + newUser.getId());
   }
 
   @Operation(summary = "Delete a user", description = "Delete a user by id")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "User that was deleted"),
-      @ApiResponse(responseCode = "404", description = "User not found")
+    @ApiResponse(responseCode = "200", description = "User that was deleted"),
+    @ApiResponse(responseCode = "404", description = "User not found")
   })
-  @DeleteMapping("/{id}") 
+  @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteUser(@PathVariable long id) {
     this.logger.info("Deleting user with id {}", id);
     try {
