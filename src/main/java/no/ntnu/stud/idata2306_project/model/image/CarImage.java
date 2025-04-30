@@ -21,7 +21,7 @@ public class CarImage {
   @Schema(description = "The image of the car")
   @NotNull
   @Lob
-  private Blob image;
+  private byte[] image;
 
   @Schema(description = "The id of the car", example = "1")
   @NotNull
@@ -37,7 +37,7 @@ public class CarImage {
   public CarImage() {
   }
 
-  public CarImage(long carId, Blob image, long imageWidth, ImageType imageType) {
+  public CarImage(long carId, byte[] image, long imageWidth, ImageType imageType) {
     this.carId = carId;
     this.image = image;
     this.imageWidth = imageWidth;
@@ -54,7 +54,7 @@ public class CarImage {
   /**
    * Returns the image of the car.
    */
-  public Blob getImage() {
+  public byte[] getImage() {
     return image;
   }
 
