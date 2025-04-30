@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotNull;
-import java.sql.Blob;
 import no.ntnu.stud.idata2306_project.enums.ImageType;
 
 @Entity
