@@ -19,6 +19,10 @@ public class Addon {
   @Column(name = "addon_name", nullable = false)
   String name;
 
+  @Schema(description = "The price of the addon, in NOK", example = "100")
+  @Column(name = "addon_price", nullable = false)
+  int price;
+
   /**
    * Creates a new addon.
    */
@@ -29,8 +33,9 @@ public class Addon {
    *
    * @param name the addon's name
    */
-  public Addon(String name) {
+  public Addon(String name, int price) {
     this.name = name;
+    this.price = price;
   }
 
   /**
@@ -49,5 +54,14 @@ public class Addon {
    */
   public String getName() {
     return this.name;
+  }
+
+  /**
+   * Returns the addon's price.
+   * 
+   * @return the addon's price
+   */
+  public int getPrice() {
+    return price;
   }
 }
