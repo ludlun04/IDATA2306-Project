@@ -13,6 +13,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import no.ntnu.stud.idata2306_project.model.car.Addon;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.user.User;
@@ -32,6 +35,7 @@ public class Order {
   @Schema(description = "The id of the user who made the order")
   @NotNull
   @ManyToOne
+  @JsonIgnore
   private User user;
 
   @Schema(description = "The id of the car that was ordered")
@@ -48,7 +52,7 @@ public class Order {
   private LocalDate endDate;
 
   @Schema(description = "The price the user paid for the order")
-  private int price;
+  private long price;
 
   @Schema(description = "The addons that were included in the order")
   @ManyToMany(fetch = FetchType.EAGER)
@@ -69,7 +73,7 @@ public class Order {
    * @param price the price the user paid for the order
    * @param addons the addons that were included in the order
    */
-  public Order(User user, Car car, LocalDate startDate, LocalDate endDate, int price, List<Addon> addons) {
+  public Order(User user, Car car, LocalDate startDate, LocalDate endDate, long price, List<Addon> addons) {
     this.user = user;
     this.car = car;
     this.startDate = startDate;
@@ -122,7 +126,7 @@ public class Order {
    * Returns the price the user paid for the order
    * @return the price the user paid for the order
    */
-  public int getPrice() {
+  public long getPrice() {
       return price;
   }
 
@@ -154,7 +158,7 @@ public class Order {
     this.car = car;
   }
 
-  public void setPrice(int price) {
+  public void setPrice(long price) {
     this.price = price;
   }
 

@@ -3,13 +3,17 @@ package no.ntnu.stud.idata2306_project.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import java.util.List;
 import java.util.Optional;
 
-import no.ntnu.stud.idata2306_project.dto.OrderDto;
+import no.ntnu.stud.idata2306_project.dto.OrderRequestDto;
+import no.ntnu.stud.idata2306_project.dto.OrderResponseDto;
+import no.ntnu.stud.idata2306_project.model.car.Addon;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.model.user.User;
+import no.ntnu.stud.idata2306_project.repository.AddonRepository;
 import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306_project.service.CarService;
 import no.ntnu.stud.idata2306_project.service.OrderService;
@@ -48,6 +52,7 @@ public class OrderController {
   private final OrderService orderService;
   private final CarService carService;
   private final UserService userService;
+  private final AddonRepository addonRepository;
   private Logger logger = LoggerFactory.getLogger(OrderController.class);
 
   /**
@@ -55,7 +60,9 @@ public class OrderController {
    *
    * @param orderService the order service to use
    */
-  public OrderController(OrderService orderService, UserService userService, CarService carService) {
+  public OrderController(OrderService orderService, UserService userService, CarService carService,
+      AddonRepository addonRepository) {
+    this.addonRepository = addonRepository;
     this.orderService = orderService;
     this.userService = userService;
     this.carService = carService;
@@ -122,7 +129,7 @@ public class OrderController {
   })
   @PreAuthorize("hasAnyAuthority('USER')")
   @PostMapping("/")
-  public ResponseEntity<Long> addOrder(@AuthenticationPrincipal AccessUserDetails accessUserDetails, @RequestBody OrderDto orderDto) {
+  public ResponseEntity<Long> addOrder(@AuthenticationPrincipal AccessUserDetails accessUserDetails, @RequestBody OrderRequestDto orderDto) {
     User user = this.userService.getUserById(accessUserDetails.getId());
     Optional<Car> optionalCar = this.carService.getCarById(orderDto.getCarId());
 
@@ -131,12 +138,35 @@ public class OrderController {
       return ResponseEntity.badRequest().build();
     }
 
+    List<Addon> addons = orderDto.getAddonIds().stream()
+        .map((Long addonId) -> {
+          Optional<Addon> optionalAddon = this.addonRepository.findById(addonId);
+          if (optionalAddon.isPresent()) {
+            return optionalAddon.get();
+          } else {
+            return null;
+          }
+        }).toList();
+
     Order order = new Order();
     order.setUser(user);
     order.setCar(optionalCar.get());
     order.setStartDate(orderDto.getStartDate());
     order.setEndDate(orderDto.getEndDate());
-    order.setPrice(20000);
+    order.setAddons(addons);
+
+    long numberOfDays = order.getEndDate().toEpochDay() - order.getStartDate().toEpochDay();
+    if (numberOfDays <= 0) {
+      logger.error("Start date is after end date");
+      return ResponseEntity.badRequest().build();
+    }
+    long carPrice = order.getCar().getPricePerDay() * numberOfDays;
+
+    long addonPrices = addons.stream()
+        .mapToLong(Addon::getPrice)
+        .sum();
+    
+    order.setPrice(carPrice + addonPrices);
     
     logger.info("Adding order {}", order);
     orderService.saveOrder(order);
@@ -159,7 +189,8 @@ public class OrderController {
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/{id}")
-  public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id, @AuthenticationPrincipal AccessUserDetails user) {
+  public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long id,
+      @AuthenticationPrincipal AccessUserDetails user) {
     // Check if the id is valid
     if (id == null || id <= 0) {
       logger.error("Invalid id: {}", id);
@@ -185,14 +216,15 @@ public class OrderController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    OrderDto orderDto = new OrderDto();
-    orderDto.setOrderId(order.getOrderId());
-    orderDto.setCarId(order.getCar().getId());
-    orderDto.setStartDate(order.getStartDate());
-    orderDto.setEndDate(order.getEndDate());
-    orderDto.setPrice(order.getPrice());
-    orderDto.setUserId(order.getUser().getId());
+    OrderResponseDto orderResponseDto = new OrderResponseDto();
+    orderResponseDto.setOrderId(order.getOrderId());
+    orderResponseDto.setUserId(order.getUser().getId());
+    orderResponseDto.setCarId(order.getCar().getId());
+    orderResponseDto.setStartDate(order.getStartDate());
+    orderResponseDto.setEndDate(order.getEndDate());
+    orderResponseDto.setPrice(order.getPrice());
+    orderResponseDto.setAddonIds(order.getAddons());
 
-    return ResponseEntity.ok(orderDto);
+    return ResponseEntity.ok(orderResponseDto);
   }
 }
