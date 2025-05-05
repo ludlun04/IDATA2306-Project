@@ -16,7 +16,7 @@ import no.ntnu.stud.idata2306_project.model.user.User;
  * Class representing the user details for security
  */
 public class AccessUserDetails implements UserDetails {
-  private String username;
+  private String email;
   private String password;
   private Long userId;
   private Set<GrantedAuthority> authorities;
@@ -27,6 +27,7 @@ public class AccessUserDetails implements UserDetails {
    * @param user The user to create the details for
    */
   public AccessUserDetails(User user) {
+    this.email = user.getEmail();
     this.password = user.getPassword();
     this.userId = user.getId();
     this.authorities = new HashSet<>();
@@ -55,7 +56,7 @@ public class AccessUserDetails implements UserDetails {
 
   @Override
   public String getUsername() {
-    return this.username;
+    return this.email;
   }
 
   public Long getId() {
