@@ -27,7 +27,6 @@ public class AccessUserDetails implements UserDetails {
    * @param user The user to create the details for
    */
   public AccessUserDetails(User user) {
-    this.username = user.getUsername();
     this.password = user.getPassword();
     this.userId = user.getId();
     this.authorities = new HashSet<>();

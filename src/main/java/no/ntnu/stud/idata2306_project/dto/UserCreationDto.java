@@ -6,7 +6,6 @@ import no.ntnu.stud.idata2306_project.model.contact.Address;
 import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
 
 public class UserCreationDto {
-  private String username;
   private String password;
   private String firstName;
   private String lastName;
@@ -15,9 +14,6 @@ public class UserCreationDto {
   private Address address;
   private Date dateOfBirth;
 
-  public String getUsername() {
-    return username;
-  }
   public String getPassword() {
     return password;
   }

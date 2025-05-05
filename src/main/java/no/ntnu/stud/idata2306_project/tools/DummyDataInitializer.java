@@ -330,7 +330,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
 
     logger.info("Dummy data initialized");
 
-    Optional<User> optionalUser2 = userRepository.findByUsername("user");
+    Optional<User> optionalUser2 = userRepository.findByEmail("user@emailprovider.domain");
     if (optionalUser2.isPresent()) {
       User user = optionalUser2.get();
 

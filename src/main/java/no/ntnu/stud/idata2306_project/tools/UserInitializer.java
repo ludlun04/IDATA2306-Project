@@ -50,7 +50,6 @@ public class UserInitializer {
     admin.setEmail("admin@driveio.no");
     admin.setFirstname("admin");
     admin.setLastName("admin");
-    admin.setUsername("admin");
     admin.setAddress(address);
     admin.setGender(Gender.MALE);
     admin.setPhoneNumber(phoneNumber);
@@ -59,7 +58,6 @@ public class UserInitializer {
     // Create normal User
     User user = new User();
     user.addRole(userRole);
-    user.setUsername("user");
     user.setFirstname("user");
     user.setLastName("user");
     user.setAddress(address);
