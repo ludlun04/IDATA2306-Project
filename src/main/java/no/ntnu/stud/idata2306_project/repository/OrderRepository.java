@@ -43,7 +43,7 @@ public interface OrderRepository extends ListCrudRepository<Order, Long> {
     SELECT o
     FROM Order o
     WHERE o.user.id = :userId
-        AND (o.startDate < CURRENT_DATE AND o.endDate > CURRENT_DATE)
+        AND (CURRENT_DATE between o.startDate AND o.endDate)
     """)
   List<Order> findActiveOrdersByUserId(Long userId);
 }

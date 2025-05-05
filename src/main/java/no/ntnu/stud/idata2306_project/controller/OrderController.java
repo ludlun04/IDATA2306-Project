@@ -155,7 +155,7 @@ public class OrderController {
     order.setEndDate(orderDto.getEndDate());
     order.setAddons(addons);
 
-    long numberOfDays = order.getEndDate().toEpochDay() - order.getStartDate().toEpochDay();
+    long numberOfDays = order.getEndDate().toEpochDay() - order.getStartDate().toEpochDay() + 1;
     if (numberOfDays <= 0) {
       logger.error("Start date is after end date");
       return ResponseEntity.badRequest().build();
