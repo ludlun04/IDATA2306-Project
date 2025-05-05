@@ -3,9 +3,11 @@ package no.ntnu.stud.idata2306_project.service;
 import java.util.List;
 import java.util.Optional;
 
+import no.ntnu.stud.idata2306_project.exception.EmailAlreadyInUser;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -71,29 +73,13 @@ public class UserService {
   }
 
   /**
-   * Get a user by username
-   *
-   * @param username the username of the user
-   * @return the user with the given username
-   * @throws UserNotFoundException if the user is not found
+   * Add a user
+   * @param user the user to add
+   * @param password the password of the user
+   * @return the added user
+   * @throws UsernameAlreadyInUser if the email is already in use
    */
-  public List<User> getUsersByName(String name) {
-    return userRepository.findUsersByUsernameLike(name);
-  }
-
-  /**
-   * Get a user by username
-   *
-   * @param username the username of the user
-   * @return the user with the given username
-   * @throws UserNotFoundException if the user is not found
-   */
-  public User addUser(User user, String password) throws UsernameAlreadyInUser {
-    String username = user.getUsername();
-    Optional<User> userWithUsername = userRepository.findByUsername(username);
-    if (userWithUsername.isPresent()) {
-      throw new UsernameAlreadyInUser(username);
-    }
+  public User addUser(User user, String password) throws EmailAlreadyInUser {
 
     Role role = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Role not found"));
     user.addRole(role);
@@ -102,12 +88,12 @@ public class UserService {
 
     Optional<User> userWithEmail = userRepository.findByEmail(user.getEmail());
     if (userWithEmail.isPresent()) {
-      throw new UsernameAlreadyInUser(user.getEmail());
+      throw new EmailAlreadyInUser(user.getEmail());
     }
 
     user.setPassword(passwordEncoder.encode(password));
 
-    this.logger.info("User with username {} created", username);
+    this.logger.info("User with email {} created", user.getEmail());
 
     phoneNumberRepository.save(user.getPhoneNumber());
     addressRepository.save(user.getAddress());
@@ -119,10 +105,9 @@ public class UserService {
    * Update a user
    *
    * @param id   the id of the user
-   * @param user the user to update
-   * @return the updated user
    * @throws UserNotFoundException if the user is not found
    */
+  @PreAuthorize("hasAnyAuthority('ADMIN')")
   public void deleteUser(Long id) throws UserNotFoundException {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {

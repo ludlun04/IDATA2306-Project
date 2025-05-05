@@ -36,11 +36,6 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   long id;
 
-  @Schema(description = "The username of the user", example = "username")
-  @NotBlank
-  @Column(unique = true)
-  String username;
-
   @Schema(description = "The password of the user", example = "password")
   @JsonIgnore
   @NotBlank
@@ -147,15 +142,6 @@ public class User {
   }
 
   /**
-   * Returns the user's username.
-   *
-   * @return the user's username
-   */
-  public String getUsername() {
-    return username;
-  }
-
-  /**
    * Returns whether the user's account has expired.
    *
    * @return whether the user's account has expired
@@ -225,15 +211,6 @@ public class User {
    */
   public List<Car> getFavorites() {
     return this.favorites;
-  }
-
-  /**
-   * Sets the user's username.
-   *
-   * @param username
-   */
-  public void setUsername(String username) {
-    this.username = username;
   }
 
   /**

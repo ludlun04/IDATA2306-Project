@@ -158,29 +158,16 @@ public class UserController {
     }
   }
 
-  @Operation(summary = "Get users by name", description = "Get a list of users containing the given name")
-  @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "List of users")
-  })
-  @GetMapping("/search/{name}")
-  public ResponseEntity<List<User>> getUsersByName(@PathVariable String name) {
-    this.logger.info("Searching for users with name {}", name);
-    return ResponseEntity.ok(userService.getUsersByName(name));
-  }
-
   @Operation(summary = "Add a user", description = "Add a new user")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "201", description = "User that was added")
   })
   @PostMapping("/add")
   public ResponseEntity<String> addUser(@RequestBody UserCreationDto userDto) {
-    this.logger.info("Adding user {}", userDto.getUsername());
+    this.logger.info("Adding user {}", userDto.getFirstName());
 
     if (userDto.getAddress() == null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Address is required");
-    }
-    if (userDto.getUsername() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is required");
     }
     if (userDto.getEmail() == null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
@@ -196,7 +183,6 @@ public class UserController {
     }
 
     User user = new User();
-    user.setUsername(userDto.getUsername());
     user.setFirstname(userDto.getFirstName());
     user.setLastName(userDto.getLastName());
     user.setEmail(userDto.getEmail());
