@@ -98,4 +98,8 @@ public class CompanyService {
   public Set<Company> getAllCompaniesUsedInCars() {
     return this.companyRepository.findAllInUseOnCars();
   }
+
+  public Set<Company> getAllCompaniesByUserId(long userId) {
+      return this.companyRepository.findAllByUsers_Id(userId);
+  }
 }

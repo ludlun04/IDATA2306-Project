@@ -236,6 +236,13 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     Company smidigBilforhandler = new Company("Smidig Bilforhandler", "Bislettgata 18",
         companySmidigBilforhandlerPhoneNumber);
 
+    millerBil.addUser(userService.getUserById(3));
+    billerBil.addUser(userService.getUserById(3));
+    biggernesTesla.addUser(userService.getUserById(3));
+    teslaTomPrivate.addUser(userService.getUserById(3));
+    auto99.addUser(userService.getUserById(3));
+    auto1010.addUser(userService.getUserById(3));
+
     this.companyService.addCompany(millerBil);
     this.companyService.addCompany(billerBil);
     this.companyService.addCompany(biggernesTesla);
