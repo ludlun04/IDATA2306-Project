@@ -1,7 +1,6 @@
 package no.ntnu.stud.idata2306_project.model.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -83,7 +82,7 @@ public class User {
    * Default constructor for User
    *
    */
-  public User() {}
+  public User() {/** */}
 
   /**
    * Returns the user's id.

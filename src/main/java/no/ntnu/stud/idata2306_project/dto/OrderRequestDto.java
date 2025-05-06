@@ -1,7 +1,6 @@
 package no.ntnu.stud.idata2306_project.dto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderRequestDto {

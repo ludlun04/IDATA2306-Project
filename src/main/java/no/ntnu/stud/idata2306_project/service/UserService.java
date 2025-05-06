@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306_project.service;
 import java.util.List;
 import java.util.Optional;
 
+import no.ntnu.stud.idata2306_project.dto.UserDto;
 import no.ntnu.stud.idata2306_project.exception.EmailAlreadyInUser;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import org.slf4j.Logger;
@@ -84,8 +85,6 @@ public class UserService {
     Role role = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Role not found"));
     user.addRole(role);
 
-    logger.info(user.getRoles().toString());
-
     Optional<User> userWithEmail = userRepository.findByEmail(user.getEmail());
     if (userWithEmail.isPresent()) {
       throw new EmailAlreadyInUser(user.getEmail());
@@ -139,6 +138,39 @@ public class UserService {
       throw new IllegalArgumentException("Car with id " + carId + " not found");
     }
     return result;
+  }
 
+
+  /**
+   * Overwrites values of a user if different from the given userDto
+   * @param userid
+   * @param userDto
+   * @throws UserNotFoundException
+   */
+  public void updateUser(long userid, UserDto userDto) throws UserNotFoundException {
+    Optional<User> userOptional = userRepository.findById(userid);
+    if (userOptional.isPresent()) {
+      User user = userOptional.get();
+
+      if (userDto.getFirstName() != null && !userDto.getFirstName().isEmpty()) {
+        user.setFirstname(userDto.getFirstName());
+      }
+      if (userDto.getLastName() != null && !userDto.getLastName().isEmpty()) {
+        user.setLastName(userDto.getLastName());
+      }
+      if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) {
+        user.setEmail(userDto.getEmail());
+      }
+      if (userDto.getDateOfBirth() != null) {
+        user.setDateOfBirth(userDto.getDateOfBirth());
+      }
+
+      phoneNumberRepository.save(user.getPhoneNumber());
+      addressRepository.save(user.getAddress());
+
+      userRepository.save(user);
+    } else {
+      throw new UserNotFoundException("User with id " + userid + " not found");
+    }
   }
 }

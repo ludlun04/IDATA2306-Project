@@ -1,13 +1,10 @@
 package no.ntnu.stud.idata2306_project.tools;
 
 import java.io.File;
-import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
-import javax.sql.rowset.serial.SerialBlob;
 import no.ntnu.stud.idata2306_project.enums.ImageType;
 import no.ntnu.stud.idata2306_project.model.car.*;
 import no.ntnu.stud.idata2306_project.model.company.Company;
