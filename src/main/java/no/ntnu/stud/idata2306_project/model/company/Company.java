@@ -1,5 +1,6 @@
 package no.ntnu.stud.idata2306_project.model.company;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -45,7 +46,7 @@ public class Company {
   @Schema(description = "The list of users that are associated with the company")
   @JsonIgnore
   @ManyToMany(fetch = FetchType.EAGER)
-  private Set<User> users;
+  private Set<User> users = new HashSet<>();
 
   public Company() {
   }

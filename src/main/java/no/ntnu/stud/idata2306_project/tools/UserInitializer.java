@@ -47,7 +47,7 @@ public class UserInitializer {
     User admin = new User();
     admin.addRole(userRole);
     admin.addRole(adminRole);
-    admin.setEmail("admin@driveio.no");
+    admin.setEmail("admin@user.no");
     admin.setFirstname("admin");
     admin.setLastName("admin");
     admin.setAddress(address);
@@ -64,11 +64,23 @@ public class UserInitializer {
     user.setGender(Gender.FEMALE);
     user.setPhoneNumber(phoneNumber);
     user.setDateOfBirth(new Date(System.currentTimeMillis() - 108273460));
-    user.setEmail("user@emailprovider.domain");
+    user.setEmail("user@user.no");
+
+    // Create user with company
+    User companyUser = new User();
+    companyUser.addRole(userRole);
+    companyUser.setFirstname("company");
+    companyUser.setLastName("user");
+    companyUser.setAddress(address);
+    companyUser.setGender(Gender.MALE);
+    companyUser.setPhoneNumber(phoneNumber);
+    companyUser.setDateOfBirth(new Date(System.currentTimeMillis() - 108273460));
+    companyUser.setEmail("company@user.no");
 
     
     // Save the users to the database
     userService.addUser(admin, DEFAULT_PASSWORD);
     userService.addUser(user, DEFAULT_PASSWORD);
+    userService.addUser(companyUser, DEFAULT_PASSWORD);
   }
 }

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.ntnu.stud.idata2306_project.model.company.Company;
 import no.ntnu.stud.idata2306_project.model.user.User;
+import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306_project.service.CompanyService;
 
 import org.slf4j.Logger;
@@ -14,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -192,6 +195,15 @@ public class CompanyController {
     }
   }
 
+  /**
+   * Get all companies used in cars.
+   *
+   * @return a set of all companies used in cars
+   */
+  @Operation(summary = "Get all companies used in cars", description = "Get a set of all companies used in cars")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Set of companies used in cars")
+  })
   @GetMapping("/with_rentals")
   public ResponseEntity<Set<Company>> getAllCompaniesUsedInCars() {
     Set<Company> companies = this.companyService.getAllCompaniesUsedInCars();
@@ -199,5 +211,18 @@ public class CompanyController {
     logger.info("Getting all companies used in cars");
 
     return ResponseEntity.status(HttpStatus.OK).body(companies);
+  }
+
+  /**
+   * Get all companies associated with the current user.
+   *
+   * @return a set of all companies associated with the current user
+   */
+  @Operation(summary = "Get all companies associated with the current user", description = "Get a set of all companies associated with the current user")
+  @PreAuthorize("hasAnyAuthority('USER')")
+  @GetMapping("/current_user_companies")
+  public ResponseEntity<Set<Company>> getCurrentUserCompanies() {
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return ResponseEntity.status(HttpStatus.OK).body(companyService.getAllCompaniesByUserId(userDetails.getId()));
   }
 }
