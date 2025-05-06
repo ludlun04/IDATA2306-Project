@@ -48,6 +48,7 @@ public class UserController {
     this.userService = userService;
   }
 
+
   @Operation(summary = "Get all users", description = "Get a list of all users")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of users")
@@ -57,6 +58,7 @@ public class UserController {
   public ResponseEntity<List<User>> getUsers() {
     return ResponseEntity.ok(userService.getUsers());
   }
+
 
   @Operation(summary = "Get authenticated user", description = "Get the authenticated user")
   @ApiResponses(value = {
@@ -71,6 +73,7 @@ public class UserController {
     return ResponseEntity.ok(user);
   }
 
+
   @Operation(summary = "Get favorites", description = "Get the authenticated user's favorited cars")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of authenticated users favorites")
@@ -83,6 +86,7 @@ public class UserController {
     User user = userService.getUserById(userDetails.getId());
     return ResponseEntity.ok(user.getFavorites());
   }
+
 
   @Operation(summary = "Get favorites from given list", description = "Get the authenticated user's favorited cars among given cars")
   @ApiResponses(value = {
@@ -104,6 +108,7 @@ public class UserController {
     }
     return ResponseEntity.ok(matching.stream().toList());
   }
+
 
   @Operation(summary = "Set favorite on a given car", description = "Set favorite on a given car to a given status")
   @ApiResponses(value = {
@@ -135,6 +140,7 @@ public class UserController {
     return toReturn;
   }
 
+
   @Operation(summary = "Get roles", description = "Get the authenticated user's roles")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of authenticated users roles")
@@ -147,6 +153,7 @@ public class UserController {
     User user = userService.getUserById(userDetails.getId());
     return ResponseEntity.ok(user.getRoles());
   }
+
 
   @Operation(summary = "Get a user", description = "Get a user by id")
   @ApiResponses(value = {
@@ -164,6 +171,7 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
   }
+
 
   @Operation(summary = "Add a user", description = "Add a new user")
   @ApiResponses(value = {
@@ -223,6 +231,7 @@ public class UserController {
     }
   }
 
+  
   @Operation(summary = "Updates a user", description = "Updates a user by id") 
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "User that was updated"),

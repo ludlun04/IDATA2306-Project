@@ -6,6 +6,9 @@ import java.util.Optional;
 import no.ntnu.stud.idata2306_project.dto.UserDto;
 import no.ntnu.stud.idata2306_project.exception.EmailAlreadyInUser;
 import no.ntnu.stud.idata2306_project.model.car.Car;
+import no.ntnu.stud.idata2306_project.model.contact.Address;
+import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -165,8 +168,39 @@ public class UserService {
         user.setDateOfBirth(userDto.getDateOfBirth());
       }
 
-      phoneNumberRepository.save(user.getPhoneNumber());
-      addressRepository.save(user.getAddress());
+      
+      if (userDto.getPhoneNumber() != null) {
+        PhoneNumber userOhoneNumber = user.getPhoneNumber();
+        PhoneNumber dtoPhoneNumber = userDto.getPhoneNumber();
+
+        if (dtoPhoneNumber.getNumber() != null && !dtoPhoneNumber.getNumber().isEmpty()) {
+          userOhoneNumber.setNumber(dtoPhoneNumber.getNumber());
+        }
+        if (dtoPhoneNumber.getCountryCode() != null && !dtoPhoneNumber.getCountryCode().isEmpty()) {
+          userOhoneNumber.setCountryCode(dtoPhoneNumber.getCountryCode());
+        }
+        
+        phoneNumberRepository.save(userOhoneNumber);
+      }
+
+      if (userDto.getAddress() != null) {
+        Address userAddress = user.getAddress();
+        Address dtoAddress = userDto.getAddress();
+
+        if (dtoAddress.getStreetAddress() != null && !dtoAddress.getStreetAddress().isEmpty()) {
+          userAddress.setStreetAddress(dtoAddress.getStreetAddress());
+        }
+
+        if (dtoAddress.getCountry() != null && !dtoAddress.getCountry().isEmpty()) {
+          userAddress.setCountry(dtoAddress.getCountry());
+        }
+
+        if (dtoAddress.getZipCode() != null && !dtoAddress.getZipCode().isEmpty()) {
+          userAddress.setZipCode(dtoAddress.getZipCode());
+        }
+
+        this.addressRepository.save(userAddress);
+      }
 
       userRepository.save(user);
     } else {
