@@ -3,7 +3,7 @@ name: Build and Push Docker Image to GHCR (Spring Boot)
 on:
   push:
     branches:
-      - setupcd
+      - main
 
 jobs:
   build-and-push:
