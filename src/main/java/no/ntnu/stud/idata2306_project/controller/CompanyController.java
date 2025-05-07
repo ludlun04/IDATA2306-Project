@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,19 +80,30 @@ public class CompanyController {
     @ApiResponse(responseCode = "200", description = "Company that was found"),
     @ApiResponse(responseCode = "404", description = "Company not found")
   })
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/{id}")
-  public ResponseEntity<Company> getCompany(@PathVariable long id) {
+  public ResponseEntity<Company> getCompany(@PathVariable long id, @AuthenticationPrincipal AccessUserDetails userDetails) {
+    boolean isAdmin = userDetails.getAuthorities().stream()
+            .anyMatch(predicate -> predicate.getAuthority().equals("ADMIN"));
+
     Company company = companyService.getCompanyById(id);
-    this.logger.info("Company found with id {}", id);
+
+    boolean isUserInCompany = false;
+
     if (company != null) {
-      this.logger.info("Company found with id {}", id);
-      return ResponseEntity.status( HttpStatus.OK).body(company);
+      isUserInCompany = company.getUsers().stream()
+              .anyMatch(user -> user.getId().equals(userDetails.getId()));
+    }
+
+    if (isAdmin && company != null) {
+      this.logger.info("Company found with id {} by admin user", id);
+      return ResponseEntity.status(HttpStatus.OK).body(company);
+    } else if (isUserInCompany) {
+      return ResponseEntity.status(HttpStatus.OK).body(company);
     } else {
-      this.logger.error("Company not found with id {}", id);
+      this.logger.error("Company not found with id {} by user {}", id, userDetails.getId());
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
-    
   }
 
   /**
