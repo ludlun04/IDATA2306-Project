@@ -1509,6 +1509,48 @@
 			"name": "Order",
 			"item": [
 				{
+					"name": "Create Car",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.collectionVariables.set(\"order_created_car\", pm.response.text())"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"year\": 2016,\r\n    \"numberOfSeats\": 4,\r\n    \"pricePerDay\": 700,\r\n    \"model\": {\r\n        \"id\": 3,\r\n        \"name\": \"Polo\",\r\n        \"brand\": {\r\n            \"id\": 2,\r\n            \"name\": \"Volkswagen\"\r\n        }\r\n    },\r\n    \"fuelType\": {\r\n        \"id\": 2,\r\n        \"name\": \"Diesel\"\r\n    },\r\n    \"transmissionType\": {\r\n        \"id\": 1,\r\n        \"name\": \"Manual\"\r\n    },\r\n    \"addons\": [\r\n        {\r\n            \"id\": 1,\r\n            \"name\": \"GPS\"\r\n        }\r\n    ],\r\n    \"features\": [\r\n        {\r\n            \"id\": 1,\r\n            \"name\": \"Air conditioning\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/car",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Order",
 					"event": [
 						{
@@ -1651,6 +1693,45 @@
 					"response": []
 				},
 				{
+					"name": "Get orders on car",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test(\"Car 1 has 7 orders\", () => {\r",
+									"    const data = pm.response.json()\r",
+									"    pm.expect(data.length).to.equal(7)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/car/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"car",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Non owner user or admin user cannot delete order",
 					"event": [
 						{
@@ -1752,6 +1833,23 @@
 							"path": [
 								"order",
 								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveCar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/car",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car"
 							]
 						}
 					},
@@ -2304,6 +2402,10 @@
 			"key": "created_order",
 			"value": "1",
 			"type": "string"
+		},
+		{
+			"key": "order_created_car",
+			"value": ""
 		}
 	]
 }
