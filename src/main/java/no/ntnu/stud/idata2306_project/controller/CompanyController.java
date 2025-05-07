@@ -226,6 +226,26 @@ public class CompanyController {
   }
 
   /**
+   * Get all companies.
+   *
+   * @return a set of all companies
+   */
+  @Operation(summary = "Get all companies", description = "Get a set of all companies")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Set of all companies"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")
+  })
+  @PreAuthorize("hasAnyAuthority('ADMIN')")
+  @GetMapping("/all")
+  public ResponseEntity<List<Company>> getAllCompanies() {
+      List<Company> companies = this.companyService.getCompanies();
+
+      logger.info("Getting all companies");
+
+      return ResponseEntity.status(HttpStatus.OK).body(companies);
+  }
+
+  /**
    * Get all companies associated with the current user.
    *
    * @return a set of all companies associated with the current user

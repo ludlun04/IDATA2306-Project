@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import no.ntnu.stud.idata2306_project.model.car.Car;
+import no.ntnu.stud.idata2306_project.model.contact.Address;
 import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
 import no.ntnu.stud.idata2306_project.model.user.User;
 
@@ -31,7 +32,8 @@ public class Company {
 
   @Schema(description = "The address of the company", example = "Borgundveien 14")
   @NotNull
-  private String address;
+  @ManyToOne
+  private Address address;
 
   @Schema(description = "The phone number for the company")
   @NotNull
@@ -58,7 +60,7 @@ public class Company {
    * @param address     the company's address
    * @param phoneNumber the company's phone number
    */
-  public Company(String name, String address, PhoneNumber phoneNumber) {
+  public Company(String name, Address address, PhoneNumber phoneNumber) {
     this.name = name;
     this.address = address;
     this.phoneNumber = phoneNumber;
@@ -87,12 +89,8 @@ public class Company {
    *
    * @return the company's address.
    */
-  public String getAddress() {
-    if (address != null) {
+  public Address getAddress() {
       return this.address;
-    } else {
-      return "";
-    }
   }
 
   /**
