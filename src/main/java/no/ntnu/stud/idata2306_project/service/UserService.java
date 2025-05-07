@@ -1,5 +1,6 @@
 package no.ntnu.stud.idata2306_project.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -200,6 +201,17 @@ public class UserService {
         }
 
         this.addressRepository.save(userAddress);
+      }
+
+      if (userDto.getRoles() != null) {
+        HashSet<Role> roles = new HashSet<>();
+        for (String roleName : userDto.getRoles()) {
+          this.logger.info("Updated user {}", roleName);
+          Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException("Role not found"));
+          roles.add(role);
+        }
+
+        user.setRoles(roles);
       }
 
       userRepository.save(user);

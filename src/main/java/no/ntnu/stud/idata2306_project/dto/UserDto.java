@@ -1,6 +1,7 @@
 package no.ntnu.stud.idata2306_project.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import no.ntnu.stud.idata2306_project.model.contact.Address;
 import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
@@ -13,6 +14,7 @@ public class UserDto {
   private PhoneNumber phoneNumber;
   private Address address;
   private Date dateOfBirth;
+  private List<String> roles;
 
   public String getPassword() {
     return password;
@@ -34,5 +36,8 @@ public class UserDto {
   }
   public Date getDateOfBirth() {
     return dateOfBirth;
+  }
+  public List<String> getRoles() {
+    return roles;
   }
 }
