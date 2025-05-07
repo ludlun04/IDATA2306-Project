@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "343c4e18-36ba-4c15-b038-9759f47d4293",
+		"_postman_id": "f0bdc152-0aa9-4c6d-b2e9-9763cc9c6b7d",
 		"name": "IDATA2301-06-Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27024266"
@@ -31,7 +31,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"yes\"\r\n}",
+							"raw": "{\r\n    \"username\":\"admin@user.no\",\r\n    \"password\":\"yes\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -72,7 +72,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"user\",\r\n    \"password\": \"yes\"\r\n}",
+							"raw": "{\r\n    \"username\": \"user@user.no\",\r\n    \"password\": \"yes\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -114,8 +114,11 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"packages": {},
-								"type": "text/javascript"
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -127,7 +130,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"yes\"\r\n}",
+							"raw": "{\r\n    \"username\":\"admin@user.no\",\r\n    \"password\":\"yes\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -245,7 +248,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.have.lengthOf(4);",
+									"    pm.expect(jsonData).to.have.lengthOf(26);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -284,7 +287,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(2);",
+									"    pm.expect(jsonData.length).to.equal(4);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -329,7 +332,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(2);",
+									"    pm.expect(jsonData.length).to.equal(8);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -389,7 +392,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/car?seller=bober cars",
+							"raw": "{{base_url}}/car?seller=Miller Bil",
 							"host": [
 								"{{base_url}}"
 							],
@@ -399,7 +402,7 @@
 							"query": [
 								{
 									"key": "seller",
-									"value": "bober cars"
+									"value": "Miller Bil"
 								}
 							]
 						}
@@ -419,7 +422,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(1);",
+									"    pm.expect(jsonData.length).to.equal(15);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1504,7 +1507,257 @@
 		},
 		{
 			"name": "Order",
-			"item": []
+			"item": [
+				{
+					"name": "Create Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.collectionVariables.set(\"created_order\", pm.response.text())"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Current time\r",
+									"let now = new Date();\r",
+									"\r",
+									"// Start date = now\r",
+									"let startDate = now.toISOString();\r",
+									"\r",
+									"// End date = 24 hours later\r",
+									"let tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);\r",
+									"let endDate = tomorrow.toISOString();\r",
+									"\r",
+									"// Set them as environment or local variables\r",
+									"pm.variables.set(\"startDate\", startDate);\r",
+									"pm.variables.set(\"endDate\", endDate);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"carId\": 1,\r\n    \"addonIds\": [\r\n        1\r\n    ],\r\n    \"startDate\": \"{{startDate}}\",\r\n    \"endDate\": \"{{endDate}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/order",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Created",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Getting the correct order\", () => {\r",
+									"    pm.expect(pm.response.json()[\"orderId\"]).to.equal(3)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/{{created_order}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cannot get other users order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/{{created_order}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Non owner user or admin user cannot delete order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/{{created_order}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/{{created_order}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Removed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/{{created_order}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "User",
@@ -1894,16 +2147,13 @@
 					"response": []
 				},
 				{
-					"name": "Add User [WIP]",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "Add User",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"username\" : \"JohnDoe\",\r\n   \"password\" : \"Okay\",\r\n   \"firstName\" : \"John\",\r\n   \"lastName\" : \"Doe\",\r\n   \"dateOfBirth\" : 21290124,\r\n   \"email\" : \"yes@yes.com\",\r\n   \"address\": {\r\n    \"zipCode\" : 1,\r\n    \"country\" : \"Norway\",\r\n    \"streetAddress\" : \"Okay\"\r\n   },\r\n   \"phoneNumber\": {\r\n    \"countryCode\" : \"+47\",\r\n    \"number\" : \"43243242\"\r\n   }\r\n}",
+							"raw": "{\r\n   \"password\" : \"Okay\",\r\n   \"firstName\" : \"John\",\r\n   \"lastName\" : \"Doe\",\r\n   \"email\" : \"yes@yes.com\",\r\n   \"address\": {\r\n    \"zipCode\" : 1,\r\n    \"country\" : \"Norway\",\r\n    \"streetAddress\" : \"Okay\"\r\n   },\r\n   \"phoneNumber\": {\r\n    \"countryCode\" : \"+47\",\r\n    \"number\" : \"43243242\"\r\n   },\r\n   \"dateOfBirth\" : 21290124\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1972,6 +2222,47 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Edit User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"address\" : {\r\n        \"country\" : \"Norway\",\r\n        \"zipCode\" : \"Some thing\",\r\n        \"streetAddress\" : \"Gata\"\r\n   }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
@@ -2006,6 +2297,13 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "created_order",
+			"value": "1",
+			"type": "string"
 		}
 	]
 }
