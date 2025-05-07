@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import no.ntnu.stud.idata2306_project.exception.OrderNotFoundException;
+
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.repository.OrderRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 
   private final OrderRepository orderRepository;
+  private final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
   /**
    * Creates an instance of OrderService.
@@ -98,5 +102,9 @@ public class OrderService {
    */
   public void deleteOrderById(Long id) throws OrderNotFoundException {
     orderRepository.deleteById(id);
+  }
+
+  public List<Order> getOrdersByCarId(Long carId) {
+    return orderRepository.findAllByCar_Id(carId);
   }
 }

@@ -234,7 +234,7 @@ public class OrderController {
 
   /**
    * Removes an order by its id.
-   * 
+   *
    * @param id the id of the order to remove
    */
   @Operation(summary = "Remove an order by its id", description = "Remove an order by its id")
@@ -278,5 +278,11 @@ public class OrderController {
     orderService.deleteOrderById(id);
 
     return ResponseEntity.ok("Order removed");
+  }
+
+  @GetMapping("car/{carId}")
+  public List<Order> getOrdersByCarId(@PathVariable Long carId) {
+    logger.info("Getting orders for car with id {}", carId);
+    return orderService.getOrdersByCarId(carId);
   }
 }
