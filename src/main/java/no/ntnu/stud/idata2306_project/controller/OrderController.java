@@ -227,4 +227,10 @@ public class OrderController {
 
     return ResponseEntity.ok(orderResponseDto);
   }
+
+  @GetMapping("car/{carId}")
+  public List<Order> getOrdersByCarId(@PathVariable Long carId) {
+    logger.info("Getting orders for car with id {}", carId);
+    return orderService.getOrdersByCarId(carId);
+  }
 }

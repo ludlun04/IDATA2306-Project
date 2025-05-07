@@ -46,4 +46,6 @@ public interface OrderRepository extends ListCrudRepository<Order, Long> {
         AND (CURRENT_DATE between o.startDate AND o.endDate)
     """)
   List<Order> findActiveOrdersByUserId(Long userId);
+
+  List<Order> findAllByCar_Id(long carId);
 }

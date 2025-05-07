@@ -56,7 +56,8 @@ public class SecurityConfig {
           "/company/with_rentals",
           "/brand/with_rentals",
           "/fuel/with_rentals",
-            "/image/{carId}/{imageType}/{imageWidth}"
+          "/image/{carId}/{imageType}/{imageWidth}",
+          "/order/car/{carId}"
         ).permitAll()
         // Allow all requests
         .requestMatchers(

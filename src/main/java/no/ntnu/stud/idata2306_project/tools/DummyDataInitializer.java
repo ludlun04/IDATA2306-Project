@@ -334,7 +334,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
 
     logger.info("Dummy data initialized");
 
-    Optional<User> optionalUser2 = userRepository.findByEmail("user@emailprovider.domain");
+    Optional<User> optionalUser2 = userRepository.findById(2L);
     if (optionalUser2.isPresent()) {
       User user = optionalUser2.get();
 
@@ -383,11 +383,21 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       order5.setCar(car1);
       orderRepository.save(order5);
 
+      Order order6 = new Order();
+      order6.setStartDate(LocalDate.of(2025, 6, 10));
+      order6.setEndDate(LocalDate.of(2025, 6, 20));
+      order6.setAddons(List.of(gpsAddon));
+      order6.setPrice(500);
+      order6.setUser(user);
+      order6.setCar(car1);
+      orderRepository.save(order6);
+
       this.userService.addFavoriteToUser(user, car1);
       this.userService.addFavoriteToUser(user, car3);
 
-      initiateImages();
+
     }
+    initiateImages();
   }
 
   // TODO: Fix quality
