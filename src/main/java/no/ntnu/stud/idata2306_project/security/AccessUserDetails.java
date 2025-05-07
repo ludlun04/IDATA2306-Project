@@ -62,4 +62,9 @@ public class AccessUserDetails implements UserDetails {
   public Long getId() {
     return this.userId;
   }
+
+  public boolean isAdmin() {
+    return this.getAuthorities().stream()
+        .anyMatch(authority -> authority.getAuthority().equals("ADMIN"));
+  }
 }
