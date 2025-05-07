@@ -8,6 +8,7 @@ import java.util.Optional;
 import no.ntnu.stud.idata2306_project.enums.ImageType;
 import no.ntnu.stud.idata2306_project.model.car.*;
 import no.ntnu.stud.idata2306_project.model.company.Company;
+import no.ntnu.stud.idata2306_project.model.contact.Address;
 import no.ntnu.stud.idata2306_project.model.image.CarImage;
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.repository.*;
@@ -27,6 +28,7 @@ import no.ntnu.stud.idata2306_project.model.user.User;
 @Component
 public class DummyDataInitializer implements ApplicationListener<ApplicationReadyEvent> {
 
+  private final AddressRepository addressRepository;
   private UserRepository userRepository;
   private CarRepository carRepository;
   private PhoneNumberRepository phoneNumberRepository;
@@ -45,20 +47,20 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
   private Logger logger = LoggerFactory.getLogger(DummyDataInitializer.class);
 
   public DummyDataInitializer(
-      UserRepository userRepository,
-      CarRepository carRepository,
-      PhoneNumberRepository phoneNumberRepository,
-      CarBrandRepository carBrandRepository,
-      CarModelRepository carModelRepository,
-      FuelTypeRepository fuelTypeRepository,
-      TransmissionTypeRepository transmissionTypeRepository,
-      AddonRepository addonRepository,
-      FeatureRepository featureRepository,
-      CompanyService companyService,
-      UserService userService,
-      OrderRepository orderRepository,
-      UserInitializer userInitializer,
-      CarImageRepository carImageRepository) {
+          UserRepository userRepository,
+          CarRepository carRepository,
+          PhoneNumberRepository phoneNumberRepository,
+          CarBrandRepository carBrandRepository,
+          CarModelRepository carModelRepository,
+          FuelTypeRepository fuelTypeRepository,
+          TransmissionTypeRepository transmissionTypeRepository,
+          AddonRepository addonRepository,
+          FeatureRepository featureRepository,
+          CompanyService companyService,
+          UserService userService,
+          OrderRepository orderRepository,
+          UserInitializer userInitializer,
+          CarImageRepository carImageRepository, AddressRepository addressRepository) {
     this.userInitializer = userInitializer;
     this.userRepository = userRepository;
     this.carRepository = carRepository;
@@ -73,6 +75,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.userService = userService;
     this.orderRepository = orderRepository;
     this.carImageRepository = carImageRepository;
+    this.addressRepository = addressRepository;
   }
 
   @Override
@@ -213,27 +216,34 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
         companyBetrelOsteinPhoneNumber,
         companySmidigBilforhandlerPhoneNumber));
 
+    Address address1 = new Address("2345", "Norway", "Borgundveien 4");
+    Address address2 = new Address("33056", "USA", "342 Don Shula Dr Suite 102");
+    Address address3 = new Address("2386", "Rzqå", "Abc123");
+    Address address4 = new Address("0010", "Norway", "Slotsplassen 1");
+    addressRepository.saveAll(List.of(address1, address2, address3, address4));
+
+
     // Create companies from phone numbers
-    Company millerBil = new Company("Miller Bil", "Akersgata 1", companyMillerBilPhoneNumber);
-    Company billerBil = new Company("Biller Bil", "Karl Johans gate 2", companyBillerBilPhoneNumber);
-    Company biggernesTesla = new Company("Biggernes Tesla", "Storgata 3", companyBiggernesTeslaPhoneNumber);
-    Company teslaTomPrivate = new Company("Tesla Tom Private", "Torggata 4", companyTeslaTomPrivatePhoneNumber);
-    Company auto99 = new Company("Auto 99", "Bislettgata 5", companyAuto99PhoneNumber);
-    Company auto1010 = new Company("Auto 1010", "Bislettgata 6", companyAuto1010PhoneNumber);
-    Company bilikist = new Company("Bilikist", "Bislettgata 7", companyBilikistPhoneNumber);
-    Company ørstaKommune = new Company("Ørsta Kommune", "Bislettgata 8", companyØrstaKommunePhoneNumber);
-    Company sirkelsliperen = new Company("Sirkelsliperen", "Bislettgata 9", companySirkelsliperenPhoneNumber);
-    Company peacePer = new Company("Peace Per", "Bislettgata 10", companyPeacePerPhoneNumber);
-    Company bilverksted = new Company("Bilverksted", "Bislettgata 11", companyBilverkstedPhoneNumber);
-    Company grabes = new Company("Grabes", "Bislettgata 12", companyGrabesPhoneNumber);
-    Company djarney = new Company("Djarney", "Bislettgata 13", companyDjarneyPhoneNumber);
-    Company sprekksaver = new Company("Sprekksaver", "Bislettgata 14", companySprekksaverPhoneNumber);
-    Company simidigBilforhandler = new Company("Simidig Bilforhandler", "Bislettgata 15",
+    Company millerBil = new Company("Miller Bil", address1, companyMillerBilPhoneNumber);
+    Company billerBil = new Company("Biller Bil", address2, companyBillerBilPhoneNumber);
+    Company biggernesTesla = new Company("Biggernes Tesla", address3, companyBiggernesTeslaPhoneNumber);
+    Company teslaTomPrivate = new Company("Tesla Tom Private", address4, companyTeslaTomPrivatePhoneNumber);
+    Company auto99 = new Company("Auto 99", address1, companyAuto99PhoneNumber);
+    Company auto1010 = new Company("Auto 1010", address2, companyAuto1010PhoneNumber);
+    Company bilikist = new Company("Bilikist", address3, companyBilikistPhoneNumber);
+    Company ørstaKommune = new Company("Ørsta Kommune", address4, companyØrstaKommunePhoneNumber);
+    Company sirkelsliperen = new Company("Sirkelsliperen", address1, companySirkelsliperenPhoneNumber);
+    Company peacePer = new Company("Peace Per", address2, companyPeacePerPhoneNumber);
+    Company bilverksted = new Company("Bilverksted", address3, companyBilverkstedPhoneNumber);
+    Company grabes = new Company("Grabes", address4, companyGrabesPhoneNumber);
+    Company djarney = new Company("Djarney", address1, companyDjarneyPhoneNumber);
+    Company sprekksaver = new Company("Sprekksaver", address2, companySprekksaverPhoneNumber);
+    Company simidigBilforhandler = new Company("Simidig Bilforhandler", address3,
         companySimidigBilforhandlerPhoneNumber);
-    Company fossefallBilforhandler = new Company("Fossefall Bilforhandler", "Bislettgata 16",
+    Company fossefallBilforhandler = new Company("Fossefall Bilforhandler", address3,
         companyFossefallBilforhandlerPhoneNumber);
-    Company betrelOstein = new Company("Betrel Østein", "Bislettgata 17", companyBetrelOsteinPhoneNumber);
-    Company smidigBilforhandler = new Company("Smidig Bilforhandler", "Bislettgata 18",
+    Company betrelOstein = new Company("Betrel Østein", address4, companyBetrelOsteinPhoneNumber);
+    Company smidigBilforhandler = new Company("Smidig Bilforhandler", address1,
         companySmidigBilforhandlerPhoneNumber);
 
     millerBil.addUser(userService.getUserById(3));

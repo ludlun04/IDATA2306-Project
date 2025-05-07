@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import no.ntnu.stud.idata2306_project.dto.OrderRequestDto;
 import no.ntnu.stud.idata2306_project.dto.OrderResponseDto;
+import no.ntnu.stud.idata2306_project.exception.OrderNotFoundException;
 import no.ntnu.stud.idata2306_project.model.car.Addon;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.order.Order;
@@ -27,6 +28,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -128,7 +130,7 @@ public class OrderController {
       @ApiResponse(responseCode = "400", description = "Invalid order"),
   })
   @PreAuthorize("hasAnyAuthority('USER')")
-  @PostMapping("/")
+  @PostMapping("")
   public ResponseEntity<Long> addOrder(@AuthenticationPrincipal AccessUserDetails accessUserDetails, @RequestBody OrderRequestDto orderDto) {
     User user = this.userService.getUserById(accessUserDetails.getId());
     Optional<Car> optionalCar = this.carService.getCarById(orderDto.getCarId());
@@ -226,6 +228,56 @@ public class OrderController {
     orderResponseDto.setAddonIds(order.getAddons());
 
     return ResponseEntity.ok(orderResponseDto);
+  }
+
+
+
+  /**
+   * Removes an order by its id.
+   *
+   * @param id the id of the order to remove
+   */
+  @Operation(summary = "Remove an order by its id", description = "Remove an order by its id")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Order removed"),
+      @ApiResponse(responseCode = "404", description = "Order not found"),
+      @ApiResponse(responseCode = "403", description = "Not authorized"),
+      @ApiResponse(responseCode = "400", description = "Invalid id")
+  })
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> removeOrder(@PathVariable Long id,
+      @AuthenticationPrincipal AccessUserDetails user) {
+    // Check if the id is valid
+    if (id == null || id <= 0) {
+      logger.error("Invalid id: {}", id);
+      return ResponseEntity.badRequest().build();
+    }
+
+    logger.info("Removing order with id {}", id);
+    Order order = null;
+    try {
+      order = orderService.findOrderById(id);
+    } catch (OrderNotFoundException e) {
+      logger.error("Order with id {} not found", id);
+      return ResponseEntity.notFound().build();
+    } catch (Exception e) {
+      return ResponseEntity.internalServerError().build();
+    }
+
+    // Check if the order belongs to the user or they are admin
+    boolean isAdmin = user.isAdmin();
+
+    logger.info("User with id {} is admin: {}", user.getId(), isAdmin);
+
+    boolean isOwnerOfOrder = order.getUser().getId().equals(user.getId());
+    if (!isAdmin && !isOwnerOfOrder) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    orderService.deleteOrderById(id);
+
+    return ResponseEntity.ok("Order removed");
   }
 
   @GetMapping("car/{carId}")

@@ -2,6 +2,9 @@ package no.ntnu.stud.idata2306_project.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
+import no.ntnu.stud.idata2306_project.exception.OrderNotFoundException;
 
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.repository.OrderRepository;
@@ -89,7 +92,16 @@ public class OrderService {
    */
   public Order findOrderById(Long id) {
     return orderRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + id));
+        .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + id));
+  }
+
+  /**
+   * Delete an order by its id
+   *
+   * @param id the id of the order
+   */
+  public void deleteOrderById(Long id) throws OrderNotFoundException {
+    orderRepository.deleteById(id);
   }
 
   public List<Order> getOrdersByCarId(Long carId) {

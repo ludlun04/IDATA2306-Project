@@ -243,7 +243,7 @@ public class UserController {
   public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserDto userDto, @AuthenticationPrincipal AccessUserDetails userDetails) {
     boolean isAdmin = userDetails.getAuthorities().stream()
         .anyMatch(predicate -> predicate.getAuthority().equals("ADMIN"));
-
+    
     boolean hasSameId = userDetails.getId().equals(id);  
     
     this.logger.info("{} {}", isAdmin, hasSameId);
