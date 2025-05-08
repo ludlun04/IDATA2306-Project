@@ -7,7 +7,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.company.Company;
+import no.ntnu.stud.idata2306_project.model.contact.Address;
+import no.ntnu.stud.idata2306_project.model.contact.PhoneNumber;
 import no.ntnu.stud.idata2306_project.model.user.User;
+import no.ntnu.stud.idata2306_project.repository.AddressRepository;
+import no.ntnu.stud.idata2306_project.repository.PhoneNumberRepository;
 import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306_project.service.CompanyService;
 
@@ -41,6 +45,8 @@ import java.util.Set;
 public class CompanyController {
 
   private final CompanyService companyService;
+  private final PhoneNumberRepository phoneNumberRepository;
+  private final AddressRepository addressRepository;
 
   private Logger logger = LoggerFactory.getLogger(CompanyController.class);
 
@@ -49,8 +55,10 @@ public class CompanyController {
    *
    * @param companyService the service to use
    */
-  public CompanyController(CompanyService companyService) {
+  public CompanyController(CompanyService companyService, PhoneNumberRepository phoneNumberRepository, AddressRepository addressRepository) {
     this.companyService = companyService;
+    this.phoneNumberRepository = phoneNumberRepository;
+    this.addressRepository = addressRepository;
   }
 
   /**
@@ -131,9 +139,24 @@ public class CompanyController {
     if (isAdmin || isUserInCompany) {
         if (updatedCompany != null) {
             this.logger.info("Updating company with id {}", company.getId());
-            updatedCompany.setName(company.getName());
-            updatedCompany.setAddress(company.getAddress());
-            updatedCompany.setPhoneNumber(company.getPhoneNumber());
+            PhoneNumber phoneNumber = company.getPhoneNumber();
+            Address address = company.getAddress();
+
+            if (phoneNumber != null && phoneNumber.getNumber() != null && phoneNumber.getCountryCode() != null && !phoneNumber.getNumber().isEmpty() && !phoneNumber.getCountryCode().isEmpty()) {
+              phoneNumberRepository.save(phoneNumber);
+              company.setPhoneNumber(phoneNumber);
+            }
+            if (address != null && address.getStreetAddress() != null && address.getCountry() != null && address.getZipCode() != null && !address.getStreetAddress().isEmpty() && !address.getCountry().isEmpty() && !address.getZipCode().isEmpty()) {
+              addressRepository.save(address);
+              company.setPhoneNumber(phoneNumber);
+            }
+
+            if (company.getName() != null && !company.getName().isEmpty()) {
+              updatedCompany.setName(company.getName());
+            }
+
+            companyService.addCompany(updatedCompany);
+
             this.logger.info("Company updated with id {}", company.getId());
             return ResponseEntity.status(HttpStatus.OK).body(updatedCompany);
         } else {
