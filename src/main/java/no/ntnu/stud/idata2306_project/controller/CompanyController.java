@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.company.Company;
 import no.ntnu.stud.idata2306_project.model.user.User;
 import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
@@ -256,5 +257,11 @@ public class CompanyController {
   public ResponseEntity<Set<Company>> getCurrentUserCompanies() {
     AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     return ResponseEntity.status(HttpStatus.OK).body(companyService.getAllCompaniesByUserId(userDetails.getId()));
+  }
+
+  @GetMapping("/cars/{companyId}")
+  public ResponseEntity<List<Car>> getCarsBelongingToCompany(@PathVariable Long companyId) {
+    logger.info("Getting all cars belonging to company with id {}", companyId);
+    return ResponseEntity.ok(companyService.getCarsBelongingToCompany(companyId));
   }
 }

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import no.ntnu.stud.idata2306_project.model.car.Car;
 import org.springframework.stereotype.Service;
 
 import no.ntnu.stud.idata2306_project.model.company.Company;
@@ -101,5 +102,9 @@ public class CompanyService {
 
   public Set<Company> getAllCompaniesByUserId(long userId) {
       return this.companyRepository.findAllByUsers_Id(userId);
+  }
+
+  public List<Car> getCarsBelongingToCompany(Long companyId) {
+    return this.companyRepository.getCarsBelongingToCompany(companyId);
   }
 }

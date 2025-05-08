@@ -1,5 +1,6 @@
 package no.ntnu.stud.idata2306_project.repository;
 
+import no.ntnu.stud.idata2306_project.model.car.Car;
 import no.ntnu.stud.idata2306_project.model.user.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
@@ -20,4 +21,12 @@ public interface CompanyRepository extends ListCrudRepository<Company, Long> {
 
   Set<Company> findAllByUsers_Id(long usersId);
 
+  @Query(
+    """
+      SELECT DISTINCT car
+                  FROM Company company JOIN Car car ON company.id = car.company.id
+                  WHERE company.id = :companyId
+      """
+  )
+  List<Car> getCarsBelongingToCompany(Long companyId);
 }
