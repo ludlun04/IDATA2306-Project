@@ -121,7 +121,7 @@ public class CompanyController {
       @ApiResponse(responseCode = "403", description = "Forbidden")
   })
   @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-  @PutMapping("/update/")
+  @PutMapping("/update")
   public ResponseEntity<Company> updateCompany(@RequestBody Company company, @AuthenticationPrincipal AccessUserDetails userDetails) {
     Company updatedCompany = companyService.getCompanyById(company.getId());
     boolean isAdmin = userDetails.isAdmin();
