@@ -108,6 +108,45 @@ public class CompanyController {
   }
 
   /**
+   * Update a company.
+   *
+   * @param company the company to update
+   * @return the company that was updated
+   */
+  @Operation(summary = "Update a company", description = "Update a company")
+  @Parameter(name = "company", description = "The company to update", required = true)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Company that was updated"),
+      @ApiResponse(responseCode = "404", description = "Company not found"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")
+  })
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+  @PutMapping("/update/")
+  public ResponseEntity<Company> updateCompany(@RequestBody Company company, @AuthenticationPrincipal AccessUserDetails userDetails) {
+    Company updatedCompany = companyService.getCompanyById(company.getId());
+    boolean isAdmin = userDetails.isAdmin();
+    Set<User> companyUsers = companyService.getUsersInCompany(company.getId());
+    boolean isUserInCompany = companyUsers.stream().anyMatch(companyUser -> companyUser.getId().equals(userDetails.getId()));
+
+    if (isAdmin || isUserInCompany) {
+        if (updatedCompany != null) {
+            this.logger.info("Updating company with id {}", company.getId());
+            updatedCompany.setName(company.getName());
+            updatedCompany.setAddress(company.getAddress());
+            updatedCompany.setPhoneNumber(company.getPhoneNumber());
+            this.logger.info("Company updated with id {}", company.getId());
+            return ResponseEntity.status(HttpStatus.OK).body(updatedCompany);
+        } else {
+            this.logger.error("Company not found with id {}", company.getId());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        } else {
+        this.logger.error("User {} is not authorized to update company with id {}", userDetails.getId(), company.getId());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+    }
+  }
+
+  /**
    * Add a new company.
    *
    * @param company the company to add
