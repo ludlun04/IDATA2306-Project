@@ -39,16 +39,18 @@ public class CarFilterService {
   private static final String FILTER_FROM_PRICE = "from_price";
   private static final String FILTER_TO_PRICE = "to_price";
   private static final String FILTER_KEYWORD = "keyword";
+  private final CarService carService;
 
-  public CarFilterService(OrderRepository orderRepository, CarRepository carRepository, CarSearchService carSearchService) {
+  public CarFilterService(OrderRepository orderRepository, CarRepository carRepository, CarSearchService carSearchService, CarService carService) {
     this.orderRepository = orderRepository;
     this.carRepository = carRepository;
     this.carSearchService = carSearchService;
     logger.info("CarFilterService initialized");
+    this.carService = carService;
   }
 
   public List<Car> getCarsByFilters(Map<String, String> filters) throws Exception {
-    return carRepository.findAll().stream().filter((Car car) -> {
+    return carService.getAllVisibleCars().stream().filter((Car car) -> {
       boolean fulfillsAllConstraints = true;
       for (String key : filters.keySet()) {
         String givenParameter = filters.get(key);

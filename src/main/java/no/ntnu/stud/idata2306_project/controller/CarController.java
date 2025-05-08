@@ -16,7 +16,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import no.ntnu.stud.idata2306_project.model.car.Car;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -60,7 +59,7 @@ public class CarController {
     ResponseEntity<List<Car>> response;
 
     if (filters.isEmpty()) {
-      response = ResponseEntity.ok(carService.getAllCars());
+      response = ResponseEntity.ok(carService.getAllVisibleCars());
     } else {
       try {
         List<Car> cars = carFilterService.getCarsByFilters(filters);
