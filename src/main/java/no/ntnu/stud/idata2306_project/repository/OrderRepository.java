@@ -48,4 +48,13 @@ public interface OrderRepository extends ListCrudRepository<Order, Long> {
   List<Order> findActiveOrdersByUserId(Long userId);
 
   List<Order> findAllByCar_Id(long carId);
+
+  @Query(
+    """
+    SELECT o
+        FROM Order o JOIN Car car ON o.car.id = car.id JOIN Company c ON car.company.id = c.id
+        WHERE c.id = :companyId
+    """
+  )
+  List<Order> findAllOrdersByCompany_Id(Long companyId);
 }

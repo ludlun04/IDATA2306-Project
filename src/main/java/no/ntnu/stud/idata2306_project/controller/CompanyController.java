@@ -131,6 +131,7 @@ public class CompanyController {
   @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
   @PutMapping("/update")
   public ResponseEntity<Company> updateCompany(@RequestBody Company company, @AuthenticationPrincipal AccessUserDetails userDetails) {
+    this.logger.info("Updating company with id {}", company.getId());
     Company updatedCompany = companyService.getCompanyById(company.getId());
     boolean isAdmin = userDetails.isAdmin();
     Set<User> companyUsers = companyService.getUsersInCompany(company.getId());

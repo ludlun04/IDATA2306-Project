@@ -35,7 +35,6 @@ public class Order {
   @Schema(description = "The id of the user who made the order")
   @NotNull
   @ManyToOne
-  @JsonIgnore
   private User user;
 
   @Schema(description = "The id of the car that was ordered")

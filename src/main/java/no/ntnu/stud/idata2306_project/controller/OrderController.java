@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -281,8 +282,27 @@ public class OrderController {
   }
 
   @GetMapping("car/{carId}")
-  public List<Order> getOrdersByCarId(@PathVariable Long carId) {
+  public ResponseEntity<List<Order>> getOrdersByCarId(@PathVariable Long carId) {
     logger.info("Getting orders for car with id {}", carId);
-    return orderService.getOrdersByCarId(carId);
+    return ResponseEntity.ok(orderService.getOrdersByCarId(carId));
+  }
+
+  @GetMapping("company/{companyId}")
+  @PreAuthorize("hasAnyAuthority('USER')")
+  public ResponseEntity<List<Order>> getOrdersByCompanyId(@PathVariable Long companyId, @AuthenticationPrincipal AccessUserDetails accessUserDetails) {
+    logger.info("Getting orders for company with id {}", companyId);
+    User user = this.userService.getUserById(accessUserDetails.getId());
+    try {
+      return ResponseEntity.ok(orderService.getOrdersByCompanyId(companyId, user.getId()));
+    } catch (InsufficientAuthenticationException e) {
+      logger.info("User with id {} does not belong to company with id {}", user.getId(), companyId);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    } catch (IllegalArgumentException e) {
+      logger.error("Company with id {} not found", companyId);
+      return ResponseEntity.notFound().build();
+    } catch (Exception e) {
+      logger.error("Unknown error encountered while getting orders for company with id {}. {}", companyId, e.getMessage());
+      return ResponseEntity.internalServerError().build();
+    }
   }
 }

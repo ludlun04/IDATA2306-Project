@@ -2,14 +2,17 @@ package no.ntnu.stud.idata2306_project.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import no.ntnu.stud.idata2306_project.exception.OrderNotFoundException;
 
+import no.ntnu.stud.idata2306_project.model.company.Company;
 import no.ntnu.stud.idata2306_project.model.order.Order;
 import no.ntnu.stud.idata2306_project.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 
   private final OrderRepository orderRepository;
+  private final CompanyService companyService;
   private final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
   /**
@@ -26,8 +30,9 @@ public class OrderService {
    *
    * @param orderRepository the order repository
    */
-  public OrderService(OrderRepository orderRepository) {
+  public OrderService(OrderRepository orderRepository, CompanyService companyService) {
     this.orderRepository = orderRepository;
+    this.companyService = companyService;
   }
 
   /**
@@ -106,5 +111,20 @@ public class OrderService {
 
   public List<Order> getOrdersByCarId(Long carId) {
     return orderRepository.findAllByCar_Id(carId);
+  }
+
+  public List<Order> getOrdersByCompanyId(Long companyId, Long userId) {
+    Company company = companyService.getCompanyById(companyId);
+    if (company == null) {
+      logger.error("Company with id {} not found", companyId);
+      throw new IllegalArgumentException("Company with id " + companyId + " not found");
+    }
+    boolean userBelongsToCompany = company.getUsers().stream()
+        .anyMatch(user -> Objects.equals(user.getId(), userId));
+    if (!userBelongsToCompany) {
+      logger.error("User with id {} does not belong to company with id {}", userId, companyId);
+      throw new InsufficientAuthenticationException("User with id " + userId + " does not belong to company with id " + companyId);
+    }
+    return orderRepository.findAllOrdersByCompany_Id(companyId);
   }
 }
