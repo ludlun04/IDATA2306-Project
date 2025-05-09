@@ -2,11 +2,15 @@ package no.ntnu.stud.idata2306_project.controller;
 
 import jakarta.validation.Valid;
 import no.ntnu.stud.idata2306_project.exception.InvalidFilterException;
+import no.ntnu.stud.idata2306_project.model.company.Company;
+import no.ntnu.stud.idata2306_project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306_project.service.CarFilterService;
 import no.ntnu.stud.idata2306_project.service.CarService;
+import no.ntnu.stud.idata2306_project.service.CompanyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +22,7 @@ import no.ntnu.stud.idata2306_project.model.car.Car;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -30,6 +35,7 @@ public class CarController {
 
   private final CarService carService;
   private final CarFilterService carFilterService;
+  private final CompanyService companyService;
   private final Logger logger = LoggerFactory.getLogger(CarController.class);
 
   /**
@@ -37,9 +43,10 @@ public class CarController {
    *
    * @param carService The service for cars
    */
-  public CarController(CarService carService, CarFilterService carFilterService) {
+  public CarController(CarService carService, CarFilterService carFilterService, CompanyService companyService) {
     this.carService = carService;
     this.carFilterService = carFilterService;
+    this.companyService = companyService;
   }
 
   /**
@@ -74,6 +81,49 @@ public class CarController {
       }
     }
     return response;
+  }
+
+  /**
+   * Endpoint for updating a cars visibility. User must be logged in and be a part of the company that owns the car.
+   *
+   * @param id The id of the car
+   * @return ResponseEntity with the car if it is found
+   */
+  @Operation(summary = "Update a car's visibility")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Car found"),
+      @ApiResponse(responseCode = "403", description = "User not authorized to update car"),
+      @ApiResponse(responseCode = "404", description = "Car not found")
+  })
+  @PutMapping("/{id}/visibility")
+  public ResponseEntity<Car> updateCarVisibility(@PathVariable Long id, @RequestBody boolean visible) {
+    Optional<Car> car = this.carService.getCarById(id);
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+    if (car.isEmpty()) {
+      logger.info("No car found with id {}", id);
+      return ResponseEntity.notFound().build();
+    }
+
+    Company company = this.companyService.findCompanyThatOwnsCar(car);
+    if (company == null) {
+      logger.info("No company found that owns car with id {}", id);
+        return ResponseEntity.notFound().build();
+    }
+
+    boolean isUserInCompany = company.getUsers().stream()
+        .anyMatch(user -> Objects.equals(user.getId(), userDetails.getId()));
+
+    if (!isUserInCompany) {
+      logger.warn("User with id {} is not authorized to update car with id {}", userDetails.getId(), id);
+        return ResponseEntity.status(403).build();
+    }
+
+    logger.info("Updating car visibility with id {}", id);
+    carService.setVisible(id, visible);
+
+    return ResponseEntity.ok(car.get());
   }
 
   /**

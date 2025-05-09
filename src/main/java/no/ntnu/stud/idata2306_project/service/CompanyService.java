@@ -2,6 +2,7 @@ package no.ntnu.stud.idata2306_project.service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import no.ntnu.stud.idata2306_project.model.car.Car;
@@ -46,6 +47,12 @@ public class CompanyService {
     companyRepository.save(company);
   }
 
+  /**
+   * Find company that owns the car
+   */
+  public Company findCompanyThatOwnsCar(Optional<Car> car) {
+      return car.map(value -> companyRepository.findCompanyThatOwnsCar(value.getId())).orElse(null);
+  }
 
   /**
    * Delete a company by its id
