@@ -23,7 +23,6 @@ import java.util.Map;
 public class CarFilterService {
 
   private final OrderRepository orderRepository;
-  private final CarRepository carRepository;
   private final CarSearchService carSearchService;
 
   private final Logger logger = LoggerFactory.getLogger(CarFilterService.class);
@@ -39,16 +38,16 @@ public class CarFilterService {
   private static final String FILTER_FROM_PRICE = "from_price";
   private static final String FILTER_TO_PRICE = "to_price";
   private static final String FILTER_KEYWORD = "keyword";
+  private final CarService carService;
 
-  public CarFilterService(OrderRepository orderRepository, CarRepository carRepository, CarSearchService carSearchService) {
+  public CarFilterService(OrderRepository orderRepository, CarSearchService carSearchService, CarService carService) {
     this.orderRepository = orderRepository;
-    this.carRepository = carRepository;
     this.carSearchService = carSearchService;
-    logger.info("CarFilterService initialized");
+    this.carService = carService;
   }
 
   public List<Car> getCarsByFilters(Map<String, String> filters) {
-    return carRepository.findAll().stream().filter((Car car) -> fulfillsAllConstraints(filters, car)).toList();
+    return carService.getAllVisibleCars().stream().filter((Car car) -> fulfillsAllConstraints(filters, car)).toList();
   }
 
   private boolean fulfillsAllConstraints(Map<String, String> filters, Car car) {

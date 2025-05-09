@@ -192,7 +192,7 @@ public class OrderController {
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/{id}")
-  public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long id,
+  public ResponseEntity<Order> getOrderById(@PathVariable Long id,
       @AuthenticationPrincipal AccessUserDetails user) {
     // Check if the id is valid
     if (id == null || id <= 0) {
@@ -219,16 +219,7 @@ public class OrderController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    OrderResponseDto orderResponseDto = new OrderResponseDto();
-    orderResponseDto.setOrderId(order.getOrderId());
-    orderResponseDto.setUserId(order.getUser().getId());
-    orderResponseDto.setCarId(order.getCar().getId());
-    orderResponseDto.setStartDate(order.getStartDate());
-    orderResponseDto.setEndDate(order.getEndDate());
-    orderResponseDto.setPrice(order.getPrice());
-    orderResponseDto.setAddonIds(order.getAddons());
-
-    return ResponseEntity.ok(orderResponseDto);
+    return ResponseEntity.ok(order);
   }
 
 

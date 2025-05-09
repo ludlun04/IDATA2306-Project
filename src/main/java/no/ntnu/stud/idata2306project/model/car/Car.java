@@ -66,6 +66,9 @@ public class Car {
   @Schema(description = "The description of the car")
   private String description = "";
 
+  @Schema(description = "Whether the car is visible to users", example = "true")
+  private boolean visible = true;
+
   public Car() {
   }
 
@@ -82,6 +85,24 @@ public class Car {
     this.features = features;
     this.company = company;
     this.description = description;
+  }
+
+  /**
+   * Returns whether the car is visible to users.
+   *
+   * @return true if the car is visible, false otherwise
+   */
+  public boolean isVisible() {
+      return visible;
+  }
+
+  /**
+   * Sets whether the car is visible to users.
+   *
+   * @param visible true if the car should be visible, false otherwise
+   */
+  public void setVisible(boolean visible) {
+      this.visible = visible;
   }
 
   /**

@@ -7,6 +7,7 @@ import org.springframework.data.repository.ListCrudRepository;
 import no.ntnu.stud.idata2306project.model.company.Company;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface CompanyRepository extends ListCrudRepository<Company, Long> {
@@ -28,4 +29,13 @@ public interface CompanyRepository extends ListCrudRepository<Company, Long> {
       """
   )
   List<Car> getCarsBelongingToCompany(Long companyId);
+
+  @Query(
+    """
+      SELECT DISTINCT company
+                  FROM Company company JOIN Car car ON company.id = car.company.id
+                  WHERE car.id = :carId
+      """
+  )
+  Company findCompanyThatOwnsCar(Long carId);
 }

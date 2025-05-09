@@ -17,8 +17,8 @@ public class CarService {
     this.carRepository = carRepository;
   }
 
-  public List<Car> getAllCars() {
-    return carRepository.findAll();
+  public List<Car> getAllVisibleCars() {
+    return carRepository.findAllByVisible(true);
   }
 
   public Optional<Car> getCarById(long id) {
@@ -39,5 +39,17 @@ public class CarService {
       logger.info("Amount of seats: {}", amount);
     }
     return amountOfSeats;
+  }
+
+  public boolean getVisibility(long carId) {
+    return carRepository.findById(carId).map(Car::isVisible).orElse(false);
+  }
+
+  public void setVisible(long carId, boolean visibility) {
+    carRepository.findById(carId).ifPresent(car -> {
+        car.setVisible(visibility);
+        carRepository.save(car);
+        logger.info("Car with id {} is now {}", carId, visibility ? "available" : "not available");
+    });
   }
 }

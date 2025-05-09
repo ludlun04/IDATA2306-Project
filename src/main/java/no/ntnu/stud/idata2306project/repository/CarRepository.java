@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import no.ntnu.stud.idata2306project.model.car.Car;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Set;
 
 public interface CarRepository extends JpaRepository<Car, Long> {
@@ -19,4 +20,6 @@ public interface CarRepository extends JpaRepository<Car, Long> {
       """
   )
   Set<Integer> findAllAmountOfSeatsInCars();
+
+  List<Car> findAllByVisible(boolean visible);
 }

@@ -338,6 +338,10 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     Car car26 = new Car(2015, 4, 201, peugeotiOne, electric, automatic, List.of(childSeatAddon),
         List.of(fiveDoors, ecoFriendly), auto1010, description12);
 
+    car5.setVisible(false);
+    car9.setVisible(false);
+    car17.setVisible(false);
+
     List<Car> cars = List.of(car1, car2, car3, car4, car5, car6, car7, car8, car9, car10, car11, car12, car13, car14,
         car15, car16, car17, car18, car19, car20, car21, car22, car23, car24, car25, car26);
     this.carRepository.saveAll(cars);
