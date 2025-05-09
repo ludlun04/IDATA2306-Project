@@ -1,12 +1,12 @@
 package no.ntnu.stud.idata2306project.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.ntnu.stud.idata2306project.config.AuthenticationRequest;
 import no.ntnu.stud.idata2306project.config.JwtUtil;
 import no.ntnu.stud.idata2306project.service.UserDetailsServiceImpl;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,16 +26,19 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Represents a controller for authentication.
  *
- * <p>
- * Contains the endpoint used for authenticating users.
+ * <p>Contains the following endpoints:
+ * <ul>
+ *   <li> Authenticate user
+ *   <li> Validate Jwt
+ * </ul>
  */
 @Tag(name = "Authentication", description = "Endpoints for authentication")
 @RestController
 @RequestMapping("/authenticate")
 public class AuthenticationController {
-  private AuthenticationManager authenticationManager;
-  private UserDetailsServiceImpl userDetailsService;
-  private JwtUtil jwtUtil;
+  private final AuthenticationManager authenticationManager;
+  private final UserDetailsServiceImpl userDetailsService;
+  private final JwtUtil jwtUtil;
 
   Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
@@ -61,14 +64,19 @@ public class AuthenticationController {
    * @param request the authentication request
    * @return a response entity containing the JWT token
    */
+  @Operation(summary = "Authenticate user",
+      description = "Authenticates a user and returns a JWT token")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "JWT"),
       @ApiResponse(responseCode = "400", description = "Missing body"),
-      @ApiResponse(responseCode = "401", description = "Incorrect username or password")
+      @ApiResponse(responseCode = "401", description = "Incorrect username or password"),
+      @ApiResponse(responseCode = "500", description = "Error during authentication")
   })
   @PostMapping()
-  public ResponseEntity<String> authenticate(@RequestBody(required = false) AuthenticationRequest request) {
+  public ResponseEntity<String> authenticate(
+      @RequestBody(required = false) AuthenticationRequest request) {
     if (request == null) {
+      logger.warn("Missing body in authenticate request");
       return new ResponseEntity<>("Missing body", HttpStatus.BAD_REQUEST);
     }
 
@@ -97,11 +105,12 @@ public class AuthenticationController {
   /**
    * Validates the JWT token.
    *
-   * @return a response entity containing a message
+   * @return a response entity containing a message indicating whether the token is valid
    */
+  @Operation(summary = "Validate JWT token", description = "Validates the JWT token")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Token is valid"),
-      @ApiResponse(responseCode = "401", description = "Token is invalid")
+      @ApiResponse(responseCode = "403", description = "Token is invalid")
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/validate")
