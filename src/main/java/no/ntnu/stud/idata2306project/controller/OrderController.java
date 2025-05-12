@@ -251,8 +251,7 @@ public class OrderController {
 
     return ResponseEntity.ok(order);
   }
-
-
+  
 
   /**
    * Removes an order by its id.
