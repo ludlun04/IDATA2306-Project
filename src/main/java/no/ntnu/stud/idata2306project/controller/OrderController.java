@@ -203,12 +203,12 @@ public class OrderController {
   }
 
   /**
-   * Get a order by its id.
+   * Get an order by its id.
    *
    * @param id the id of the order to get
    * @return the order with the given id
    */
-  @Operation(summary = "Get a order by its id", description = "Get a order by its id")
+  @Operation(summary = "Get an order by its id", description = "Get a order by its id")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Order with the given id"),
       @ApiResponse(responseCode = "404", description = "Order not found"),
@@ -338,6 +338,7 @@ public class OrderController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of orders for the company"),
       @ApiResponse(responseCode = "403", description = "Not authorized"),
+      @ApiResponse(responseCode = "401", description = "Not authorized for this resource"),
       @ApiResponse(responseCode = "404", description = "Company not found"),
       @ApiResponse(responseCode = "500", description = "Unknown error")
   })
