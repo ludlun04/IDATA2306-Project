@@ -174,6 +174,7 @@ public class CarController {
       @ApiResponse(responseCode = "400", description = "Invalid car data"),
   })
   @PostMapping()
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
   public ResponseEntity<String> addCar(
       @Parameter(name = "car", description = "The car to add", required = true)
       @RequestBody @Valid Car car
@@ -182,10 +183,10 @@ public class CarController {
     ResponseEntity<String> response;
     try {
       this.carService.saveCar(car);
-      logger.info("Car added with id {}", car.getId());
+      logger.info("{}", car.getId());
 
       URI location = URI.create("/car/" + car.getId());
-      response = ResponseEntity.created(location).body("Car added with id " + car.getId());
+      response = ResponseEntity.created(location).body(""+car.getId());
     } catch (InvalidDataAccessApiUsageException e) {
       logger.warn("Invalid car data: {}", e.getMessage());
       response = ResponseEntity.badRequest().body("Given data conflicts with existing data");
@@ -258,6 +259,7 @@ public class CarController {
       @ApiResponse(responseCode = "404", description = "Car not found")
   })
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<String> deleteCar(
       @Parameter(name = "id", description = "The id of the car", required = true)
       @PathVariable Long id

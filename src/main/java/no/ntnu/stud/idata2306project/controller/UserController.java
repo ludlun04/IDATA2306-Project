@@ -323,6 +323,7 @@ public class UserController {
       @ApiResponse(responseCode = "404", description = "User not found")
   })
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<String> deleteUser(
       @Parameter(description = "User id to delete")
       @PathVariable long id
