@@ -174,6 +174,7 @@ public class CarController {
       @ApiResponse(responseCode = "400", description = "Invalid car data"),
   })
   @PostMapping()
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
   public ResponseEntity<String> addCar(
       @Parameter(name = "car", description = "The car to add", required = true)
       @RequestBody @Valid Car car
@@ -258,6 +259,7 @@ public class CarController {
       @ApiResponse(responseCode = "404", description = "Car not found")
   })
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<String> deleteCar(
       @Parameter(name = "id", description = "The id of the car", required = true)
       @PathVariable Long id
