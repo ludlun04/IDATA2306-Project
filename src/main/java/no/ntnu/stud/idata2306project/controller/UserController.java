@@ -1,16 +1,14 @@
 package no.ntnu.stud.idata2306project.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
+import jakarta.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
-
 import java.util.Set;
-
-import jakarta.validation.Valid;
 import no.ntnu.stud.idata2306project.dto.CarFavoriteRequestDto;
 import no.ntnu.stud.idata2306project.dto.UserDto;
 import no.ntnu.stud.idata2306project.exception.UserNotFoundException;
@@ -19,7 +17,6 @@ import no.ntnu.stud.idata2306project.model.user.Role;
 import no.ntnu.stud.idata2306project.model.user.User;
 import no.ntnu.stud.idata2306project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306project.service.UserService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -36,22 +33,53 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Represents the controller for managing users.
+ *
+ * <p>Has the following endpoints:
+ * <ul>
+ *   <li> Get all users
+ *   <li> Get authenticated user
+ *   <li> Get authenticated user's favorites
+ *   <li> Get authenticated user's favorites from a given list
+ *   <li> Set favorite on a given car
+ *   <li> Get authenticated user's roles
+ *   <li> Get a user by id
+ *   <li> Add a new user
+ *   <li> Delete a user by id
+ *   <li> Update a user by id
+ * </ul>
+ */
 @Tag(name = "Users", description = "Endpoints for managing users")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
   private final UserService userService;
 
-  private Logger logger = LoggerFactory.getLogger(UserController.class);
+  private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+  /**
+   * Create a new UserController.
+   *
+   * @param userService UserService to use
+   */
   public UserController(UserService userService) {
     this.userService = userService;
   }
 
 
-  @Operation(summary = "Get all users", description = "Get a list of all users")
+  /**
+   * Get all users.
+   *
+   * @return List of users
+   */
+  @Operation(
+      summary = "Get all users",
+      description = "Get a list of all users. Only accessible by admin"
+  )
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of users")
+      @ApiResponse(responseCode = "200", description = "List of users"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")
   })
   @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping()
@@ -59,44 +87,75 @@ public class UserController {
     return ResponseEntity.ok(userService.getUsers());
   }
 
-
-  @Operation(summary = "Get authenticated user", description = "Get the authenticated user")
+  /**
+   * Get authenticated user.
+   *
+   * @return Authenticated user
+   */
+  @Operation(
+      summary = "Get authenticated user",
+      description = "Get the authenticated user. Only accessible by user"
+  )
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Authenticated user")
+      @ApiResponse(responseCode = "200", description = "Authenticated user"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")
   })
   @PreAuthorize("hasAnyAuthority('USER')")
   @GetMapping("/details")
   public ResponseEntity<User> getAuthenticatedUser() {
-    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication()
-        .getPrincipal();
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
+        .getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
     return ResponseEntity.ok(user);
   }
 
 
-  @Operation(summary = "Get favorites", description = "Get the authenticated user's favorited cars")
+  /**
+   * Get authenticated user's favorites.
+   *
+   * @return List of authenticated user's favorites
+   */
+  @Operation(
+      summary = "Get favorites",
+      description = "Get a list of the authenticated user's favorite cars. Only accessible by user"
+  )
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of authenticated users favorites")
+      @ApiResponse(responseCode = "200", description = "List of authenticated users favorites"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")
   })
   @PreAuthorize("hasAnyAuthority('USER')")
   @GetMapping("/favorites")
   public ResponseEntity<List<Car>> getAuthenticatedUserFavorites() {
-    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication()
-        .getPrincipal();
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
+        .getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
     return ResponseEntity.ok(user.getFavorites());
   }
 
-
-  @Operation(summary = "Get favorites from given list", description = "Get the authenticated user's favorited cars among given cars")
+  /**
+   * Get authenticated user's favorites from a given list.
+   *
+   * @param cars List of cars
+   * @return List of authenticated user's favorites from the given list
+   */
+  @Operation(
+      summary = "Get favorites from given list",
+      description = "Get a list of the authenticated user's favorite cars among given cars. "
+          + "Only accessible by user"
+  )
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of authenticated users favorites among given cars")
+      @ApiResponse(responseCode = "200",
+          description = "List of authenticated users favorites among given cars"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")
   })
   @PreAuthorize("hasAnyAuthority('USER')")
   @PostMapping("/favorites")
-  public ResponseEntity<List<Car>> getAuthenticatedUserFavoritesFromList(@RequestBody List<Car> cars) {
-    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication()
-        .getPrincipal();
+  public ResponseEntity<List<Car>> getAuthenticatedUserFavoritesFromList(
+      @Parameter(description = "List of cars to check against")
+      @RequestBody List<Car> cars
+  ) {
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
+        .getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
     Set<Car> matching = new HashSet<>();
 
@@ -109,21 +168,33 @@ public class UserController {
     return ResponseEntity.ok(matching.stream().toList());
   }
 
-
-  @Operation(summary = "Set favorite on a given car", description = "Set favorite on a given car to a given status")
+  /**
+   * Set favorite on a given car.
+   *
+   * @param carFavorite CarFavoriteRequestDto
+   * @return ResponseEntity with boolean value that indicates the favorite status
+   */
+  @Operation(
+      summary = "Set favorite on a given car",
+      description = "Set favorite on a given car to a given status. Only accessible by user"
+  )
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Favorite set on car"),
-      @ApiResponse(responseCode = "400", description = "Bad request")
+      @ApiResponse(responseCode = "400", description = "Bad request"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")
   })
   @PreAuthorize("hasAnyAuthority('USER')")
   @PostMapping("/favorites/alter")
-  public ResponseEntity<Boolean> setAuthenticatedUserFavorite(@RequestBody @Valid CarFavoriteRequestDto carFavorite) {
+  public ResponseEntity<Boolean> setAuthenticatedUserFavorite(
+      @Parameter(description = "CarFavoriteRequestDto with car id and favorite status")
+      @RequestBody @Valid CarFavoriteRequestDto carFavorite
+  ) {
     logger.info("Setting favorite on car");
 
     ResponseEntity<Boolean> badRequest = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication()
-        .getPrincipal();
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
+        .getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
 
     Long id = carFavorite.getCarId();
@@ -140,29 +211,46 @@ public class UserController {
     return toReturn;
   }
 
-
-  @Operation(summary = "Get roles", description = "Get the authenticated user's roles")
+  /**
+   * Get authenticated user's roles.
+   *
+   * @return Set of authenticated user's roles
+   */
+  @Operation(
+      summary = "Get roles",
+      description = "Get the authenticated user's roles. Only accessible by user and admin"
+  )
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of authenticated users roles")
+      @ApiResponse(responseCode = "200", description = "List of authenticated users roles"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/roles")
   public ResponseEntity<Set<Role>> getCurrentAuthenticatedUserRoles() {
-    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder.getContext().getAuthentication()
-        .getPrincipal();
+    AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
+        .getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
     return ResponseEntity.ok(user.getRoles());
   }
 
-
-  @Operation(summary = "Get a user", description = "Get a user by id")
+  /**
+   * Get a user by id.
+   *
+   * @param id User id
+   * @return User with the given id
+   */
+  @Operation(summary = "Get a user", description = "Get a user by id. Only accessible by admin")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User that was found"),
-      @ApiResponse(responseCode = "404", description = "User not found")
+      @ApiResponse(responseCode = "404", description = "User not found"),
+      @ApiResponse(responseCode = "403", description = "Forbidden")
   })
   @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping("/{id}")
-  public ResponseEntity<User> getUserById(@PathVariable long id) {
+  public ResponseEntity<User> getUserById(
+      @Parameter(description = "User id to get")
+      @PathVariable long id
+  ) {
     try {
       User user = userService.getUserById(id);
       this.logger.info("User found with id {}", id);
@@ -172,13 +260,22 @@ public class UserController {
     }
   }
 
-
+  /**
+   * Add a user.
+   *
+   * @param userDto UserDto to add
+   * @return ResponseEntity with the id of the added user
+   */
   @Operation(summary = "Add a user", description = "Add a new user")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "User that was added")
+      @ApiResponse(responseCode = "201", description = "User that was added"),
+      @ApiResponse(responseCode = "400", description = "Bad request")
   })
   @PostMapping("/add")
-  public ResponseEntity<String> addUser(@RequestBody UserDto userDto) {
+  public ResponseEntity<String> addUser(
+      @Parameter(description = "UserDto to add")
+      @RequestBody UserDto userDto
+  ) {
     this.logger.info("Adding user {}", userDto.getFirstName());
 
     if (userDto.getAddress() == null) {
@@ -214,13 +311,22 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.CREATED).body("User Created: " + newUser.getId());
   }
 
+  /**
+   * Delete a user by id.
+   *
+   * @param id User id to delete
+   * @return ResponseEntity with the id of the deleted user
+   */
   @Operation(summary = "Delete a user", description = "Delete a user by id")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User that was deleted"),
       @ApiResponse(responseCode = "404", description = "User not found")
   })
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteUser(@PathVariable long id) {
+  public ResponseEntity<String> deleteUser(
+      @Parameter(description = "User id to delete")
+      @PathVariable long id
+  ) {
     this.logger.info("Deleting user with id {}", id);
     try {
       this.userService.deleteUser(id);
@@ -231,8 +337,18 @@ public class UserController {
     }
   }
 
-  
-  @Operation(summary = "Updates a user", description = "Updates a user by id") 
+  /**
+   * Update a user by id.
+   *
+   * @param id User id to update
+   * @param userDto UserDto containing the new user data
+   * @param userDetails Authenticated user details
+   * @return ResponseEntity with the id of the updated user
+   */
+  @Operation(
+      summary = "Updates a user",
+      description = "Updates a user by id. Only accessible by admin or the user itself"
+  )
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "User that was updated"),
     @ApiResponse(responseCode = "404", description = "User not found"),
@@ -240,7 +356,14 @@ public class UserController {
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @PutMapping("/{id}")
-  public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserDto userDto, @AuthenticationPrincipal AccessUserDetails userDetails) {
+  public ResponseEntity<String> updateUser(
+      @Parameter(description = "User id to update")
+      @PathVariable Long id,
+      @Parameter(description = "UserDto containing the new user data")
+      @RequestBody UserDto userDto,
+      @Parameter(description = "Authenticated user details")
+      @AuthenticationPrincipal AccessUserDetails userDetails
+  ) {
     boolean isAdmin = userDetails.getAuthorities().stream()
         .anyMatch(predicate -> predicate.getAuthority().equals("ADMIN"));
     
