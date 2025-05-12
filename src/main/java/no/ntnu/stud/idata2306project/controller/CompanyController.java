@@ -57,8 +57,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class CompanyController {
 
   private final CompanyService companyService;
-  private final PhoneNumberRepository phoneNumberRepository;
-  private final AddressRepository addressRepository;
 
   private final Logger logger = LoggerFactory.getLogger(CompanyController.class);
 
@@ -66,17 +64,9 @@ public class CompanyController {
    * Creates a new CompanyController.
    *
    * @param companyService        the service to use
-   * @param phoneNumberRepository the repository for phone numbers
-   * @param addressRepository     the repository for addresses
    */
-  public CompanyController(
-      CompanyService companyService,
-      PhoneNumberRepository phoneNumberRepository,
-      AddressRepository addressRepository
-  ) {
+  public CompanyController(CompanyService companyService) {
     this.companyService = companyService;
-    this.phoneNumberRepository = phoneNumberRepository;
-    this.addressRepository = addressRepository;
   }
 
   /**
@@ -176,13 +166,11 @@ public class CompanyController {
     this.logger.info("Updating company with id {}", company.getId());
     Company updatedCompany = companyService.getCompanyById(company.getId());
     boolean isAdmin = userDetails.isAdmin();
-    Set<User> companyUsers = companyService.getUsersInCompany(company.getId());
-    boolean isUserInCompany = companyUsers.stream()
-        .anyMatch(companyUser -> companyUser.getId().equals(userDetails.getId()));
+    boolean isUserInCompany = companyService.isUserInCompany(userDetails.getId(), company.getId());
 
     if (isAdmin || isUserInCompany) {
       if (updatedCompany != null) {
-        updateCompany(company, updatedCompany);
+        this.companyService.updateCompany(company, updatedCompany);
         return ResponseEntity.status(HttpStatus.OK).body(updatedCompany);
       } else {
         this.logger.error("Company not found with id {}", company.getId());
@@ -193,48 +181,6 @@ public class CompanyController {
           userDetails.getId(), company.getId());
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
     }
-  }
-
-  /**
-   * Update a company with the given company and updatedCompany.
-   *
-   * @param company        the company to update containing new information
-   * @param updatedCompany the preexisting company to update
-   */
-  private void updateCompany(Company company, Company updatedCompany) {
-    this.logger.info("Updating company with id {}", company.getId());
-    PhoneNumber phoneNumber = company.getPhoneNumber();
-    Address address = company.getAddress();
-
-    if (
-        phoneNumber != null
-            && phoneNumber.getNumber() != null
-            && phoneNumber.getCountryCode() != null
-            && !phoneNumber.getNumber().isEmpty()
-            && !phoneNumber.getCountryCode().isEmpty()
-    ) {
-      phoneNumberRepository.save(phoneNumber);
-      company.setPhoneNumber(phoneNumber);
-    }
-    if (address != null
-        && address.getStreetAddress() != null
-        && address.getCountry() != null
-        && address.getZipCode() != null
-        && !address.getStreetAddress().isEmpty()
-        && !address.getCountry().isEmpty()
-        && !address.getZipCode().isEmpty()
-    ) {
-      addressRepository.save(address);
-      company.setPhoneNumber(phoneNumber);
-    }
-
-    if (company.getName() != null && !company.getName().isEmpty()) {
-      updatedCompany.setName(company.getName());
-    }
-
-    companyService.addCompany(updatedCompany);
-
-    this.logger.info("Company updated with id {}", company.getId());
   }
 
   /**
