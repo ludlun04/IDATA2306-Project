@@ -1,5 +1,10 @@
 package no.ntnu.stud.idata2306project.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Map;
 import no.ntnu.stud.idata2306project.exception.InvalidFilterException;
 import no.ntnu.stud.idata2306project.exception.MissingFilterParameterException;
 import no.ntnu.stud.idata2306project.exception.UnknownFilterException;
@@ -7,25 +12,17 @@ import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.car.CarBrand;
 import no.ntnu.stud.idata2306project.model.car.FuelType;
 import no.ntnu.stud.idata2306project.model.company.Company;
-import no.ntnu.stud.idata2306project.repository.CarRepository;
 import no.ntnu.stud.idata2306project.repository.OrderRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Map;
-
+/**
+ * Service class for filtering cars based on various criteria.
+ */
 @Service
 public class CarFilterService {
 
   private final OrderRepository orderRepository;
   private final CarSearchService carSearchService;
-
-  private final Logger logger = LoggerFactory.getLogger(CarFilterService.class);
 
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -40,14 +37,23 @@ public class CarFilterService {
   private static final String FILTER_KEYWORD = "keyword";
   private final CarService carService;
 
-  public CarFilterService(OrderRepository orderRepository, CarSearchService carSearchService, CarService carService) {
+  /**
+   * Constructor for CarFilterService.
+   *
+   * @param orderRepository the order repository
+   * @param carSearchService the car search service
+   * @param carService the car service
+   */
+  public CarFilterService(OrderRepository orderRepository, CarSearchService carSearchService, 
+      CarService carService) {
     this.orderRepository = orderRepository;
     this.carSearchService = carSearchService;
     this.carService = carService;
   }
 
   public List<Car> getCarsByFilters(Map<String, String> filters) {
-    return carService.getAllVisibleCars().stream().filter((Car car) -> fulfillsAllConstraints(filters, car)).toList();
+    return carService.getAllVisibleCars().stream().filter(
+      (Car car) -> fulfillsAllConstraints(filters, car)).toList();
   }
 
   private boolean fulfillsAllConstraints(Map<String, String> filters, Car car) {

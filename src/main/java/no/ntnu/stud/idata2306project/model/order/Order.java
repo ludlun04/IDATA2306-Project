@@ -10,16 +10,14 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDate;
 import java.util.List;
-
 import no.ntnu.stud.idata2306project.model.car.Addon;
 import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.user.User;
 
 /**
- * Represents an order
+ * Represents an order.
  */
 @Entity
 @Table(name = "rent_order")
@@ -56,21 +54,22 @@ public class Order {
   private List<Addon> addons;
 
   /**
-   * Creates a new order
+   * Creates a new order.
    */
   public Order() {}
 
   /**
-   * Creates a new order
+   * Creates a new order.
    *
-   * @param userId the id of the user who made the order
-   * @param carId the id of the car that was ordered
+   * @param user the user who made the order
+   * @param car the id of the car that was ordered
    * @param startDate the start date of the order
    * @param endDate the end date of the order
    * @param price the price the user paid for the order
    * @param addons the addons that were included in the order
    */
-  public Order(User user, Car car, LocalDate startDate, LocalDate endDate, long price, List<Addon> addons) {
+  public Order(User user, Car car, LocalDate startDate, 
+      LocalDate endDate, long price, List<Addon> addons) {
     this.user = user;
     this.car = car;
     this.startDate = startDate;
@@ -80,7 +79,8 @@ public class Order {
   }
 
   /**
-   * Returns the id of the order
+   * Returns the id of the order.
+   *
    * @return the id of the order
    */
   public long getOrderId() {
@@ -88,56 +88,63 @@ public class Order {
   }
 
   /**
-   * Returns the id of the user who made the order
+   * Returns the id of the user who made the order.
+   *
    * @return the id of the user who made the order
    */
   public User getUser() {
-      return this.user;
+    return this.user;
   }
 
   /**
-   * Returns the id of the car that was ordered
+   * Returns the id of the car that was ordered.
+   *
    * @return the id of the car that was ordered
    */
   public Car getCar() {
-      return this.car;
+    return this.car;
   }
 
   /**
-   * Returns the start date of the order
+   * Returns the start date of the order.
+   *
    * @return the start date of the order
    */
   public LocalDate getStartDate() {
-      return startDate;
+    return startDate;
   }
 
   /**
-   * Returns the end date of the order
+   * Returns the end date of the order.
+   *
    * @return the end date of the order
    */
   public LocalDate getEndDate() {
-      return endDate;
+    return endDate;
   }
 
   /**
-   * Returns the price the user paid for the order
+   * Returns the price the user paid for the order.
+   *
    * @return the price the user paid for the order
    */
   public long getPrice() {
-      return price;
+    return price;
   }
 
   /**
-   * Returns the addons that were included in the order
+   * Returns the addons that were included in the order.
+   *
    * @return the addons that were included in the order
    */
   public List<Addon> getAddons() {
-      return addons;
+    return addons;
   }
 
   /**
-   * Sets the user id of the order
-   * @param userId the user id of the order
+   * Sets the user id of the order.
+   *
+   * @param user the user for the order
    */
   public void setUser(User user) {
     if (user == null) {

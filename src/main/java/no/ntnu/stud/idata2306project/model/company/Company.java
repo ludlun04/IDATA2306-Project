@@ -2,7 +2,14 @@ package no.ntnu.stud.idata2306project.model.company;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -104,7 +111,7 @@ public class Company {
   }
 
   /**
-   * Sets thje company's phone number
+   * Sets thje company's phone number.
    *
    * @param phoneNumber the new phone number
    */
@@ -116,7 +123,7 @@ public class Company {
   }
 
   /**
-   * Sets the company's name
+   * Sets the company's name.
    *
    * @param name the new name
    */
