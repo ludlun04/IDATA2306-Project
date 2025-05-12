@@ -183,10 +183,10 @@ public class CarController {
     ResponseEntity<String> response;
     try {
       this.carService.saveCar(car);
-      logger.info("Car added with id {}", car.getId());
+      logger.info("{}", car.getId());
 
       URI location = URI.create("/car/" + car.getId());
-      response = ResponseEntity.created(location).body("Car added with id " + car.getId());
+      response = ResponseEntity.created(location).body(""+car.getId());
     } catch (InvalidDataAccessApiUsageException e) {
       logger.warn("Invalid car data: {}", e.getMessage());
       response = ResponseEntity.badRequest().body("Given data conflicts with existing data");
