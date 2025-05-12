@@ -69,6 +69,8 @@ public class CompanyService {
    * @param company the company to add.
    */
   public void addCompany(Company company) {
+    addressRepository.save(company.getAddress());
+    phoneNumberRepository.save(company.getPhoneNumber());
     companyRepository.save(company);
   }
 

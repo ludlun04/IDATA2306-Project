@@ -30,12 +30,12 @@ public class Address {
   private String streetAddress;
 
   /**
-   * Creates an address
+   * Creates an address.
    */
   public Address() {/* */}
 
   /**
-   * Creates an address using an id, a zip code, a country and an address
+   * Creates an address using an id, a zip code, a country and an address.
    *
    * @param zipCode the zip code of the address
    * @param country the country of the address
@@ -48,7 +48,7 @@ public class Address {
   }
 
   /**
-   * Returns the id of the address
+   * Returns the id of the address.
    *
    * @return the id of the address
    */
@@ -57,7 +57,7 @@ public class Address {
   }
 
   /**
-   * Returns the country of the address
+   * Returns the country of the address.
    *
    * @return the country of the address
    */
@@ -66,7 +66,7 @@ public class Address {
   }
 
   /**
-   * Returns the address part of the address
+   * Returns the address part of the address.
    *
    * @return the address part of the address
    */
@@ -75,7 +75,7 @@ public class Address {
   }
 
   /**
-   * Returns the zip code of the address
+   * Returns the zip code of the address.
    *
    * @return the zip code of the address
    */
@@ -84,7 +84,7 @@ public class Address {
   }
 
   /**
-   * Sets the address
+   * Sets the address.
    *
    * @param address the new address
    */
@@ -93,7 +93,7 @@ public class Address {
   }
 
   /**
-   * Sets the country
+   * Sets the country.
    *
    * @param country the new country
    */
@@ -102,7 +102,7 @@ public class Address {
   }
 
   /**
-   * Sets the zip code of the address
+   * Sets the zip code of the address.
    *
    * @param zipCode the new zip code
    */

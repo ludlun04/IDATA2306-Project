@@ -203,7 +203,6 @@ public class CompanyController {
       @Parameter(name = "company", description = "The company to add", required = true)
       @RequestBody Company company
   ) {
-    //TODO: fix
     this.logger.info("Adding company {}", company.getName());
     companyService.addCompany(company);
     this.logger.info("Company added with id {}", company.getId());
@@ -230,7 +229,6 @@ public class CompanyController {
       @Parameter(name = "id", description = "The id of the company to delete", required = true)
       @PathVariable Long id
   ) {
-    //TODO: fix
     this.logger.info("Deleting company with id {}", id);
     companyService.deleteCompanyById(id);
     this.logger.info("Company deleted with id {}", id);
@@ -353,27 +351,6 @@ public class CompanyController {
   }
 
   /**
-   * Get all companies.
-   *
-   * @return a set of all companies
-   */
-  @Operation(summary = "Get all companies", description = "Get a set of all companies")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Set of all companies"),
-      @ApiResponse(responseCode = "403", description = "Forbidden")
-  })
-  @PreAuthorize("hasAnyAuthority('ADMIN')")
-  @GetMapping("/all")
-  public ResponseEntity<List<Company>> getAllCompanies() {
-    //TODO: remove as it is already in getCompanies()
-    List<Company> companies = this.companyService.getCompanies();
-
-    logger.info("Getting all companies");
-
-    return ResponseEntity.status(HttpStatus.OK).body(companies);
-  }
-
-  /**
    * Get all companies associated with the current user.
    *
    * @return a set of all companies associated with the current user
@@ -410,7 +387,7 @@ public class CompanyController {
       @ApiResponse(responseCode = "200", description = "List of cars belonging to the company"),
       @ApiResponse(responseCode = "404", description = "Company not found")
   })
-  @GetMapping("/cars/{companyId}")
+  @GetMapping("/{companyId}/cars")
   public ResponseEntity<List<Car>> getCarsBelongingToCompany(@PathVariable Long companyId) {
     logger.info("Getting all cars belonging to company with id {}", companyId);
     return ResponseEntity.ok(companyService.getCarsBelongingToCompany(companyId));

@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * Represents a phone number
+ * Represents a phone number.
  */
 @Entity
 public class PhoneNumber {
@@ -26,12 +26,13 @@ public class PhoneNumber {
   String number;
 
   /**
-   * Creates a phone number
+   * Creates a phone number.
    */
   public PhoneNumber() {}
 
   /**
-   * Creates a phone number using an id, a country code and a number
+   * Creates a phone number using an id, a country code and a number.
+   *
    * @param countryCode the country code of the phone number
    * @param number the number part of the phone number
    */
@@ -41,7 +42,8 @@ public class PhoneNumber {
   }
 
   /**
-   * Returns the id of the phone number
+   * Returns the id of the phone number.
+   *
    * @return the id of the phone number
    */
   public long getId() {
@@ -49,7 +51,8 @@ public class PhoneNumber {
   }
 
   /**
-   * Sets the country code
+   * Sets the country code.
+   *
    * @param code the new country code
    */
   public void setCountryCode(String code) {
@@ -57,7 +60,8 @@ public class PhoneNumber {
   }
 
   /**
-   * Returns the country code pf the phone number
+   * Returns the country code pf the phone number.
+   *
    * @return the country code of the phone number
    */
   public String getCountryCode() {
@@ -65,7 +69,8 @@ public class PhoneNumber {
   }
 
   /**
-   * Sets the number part of the phone number
+   * Sets the number part of the phone number.
+   *
    * @param number the new number part of the phone number
    */
   public void setNumber(String number) {
@@ -73,7 +78,8 @@ public class PhoneNumber {
   }
 
   /**
-   * Returns the number part of the phone number
+   * Returns the number part of the phone number.
+   *
    * @return the number part of the phone number
    */
   public String getNumber() {
