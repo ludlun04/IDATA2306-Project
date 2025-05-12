@@ -113,6 +113,7 @@ public class CompanyController {
   )
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Company that was found"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized"),
       @ApiResponse(responseCode = "404", description = "Company not found")
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
@@ -129,22 +130,20 @@ public class CompanyController {
             predicate.getAuthority().equals("ADMIN"));
 
     Company company = companyService.getCompanyById(id);
-
-    boolean isUserInCompany = false;
-
-    if (company != null) {
-      isUserInCompany = company.getUsers().stream()
-          .anyMatch(user -> user.getId().equals(userDetails.getId()));
+    if (company == null) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    if (isAdmin && company != null) {
-      this.logger.info("Company found with id {} by admin user", id);
-      return ResponseEntity.status(HttpStatus.OK).body(company);
-    } else if (isUserInCompany) {
+    boolean isUserInCompany = company.getUsers()
+            .stream().anyMatch(user -> user.getId().equals(userDetails.getId()));
+
+    if (isAdmin || isUserInCompany) {
+      this.logger.info("Company found with id {}", id);
       return ResponseEntity.status(HttpStatus.OK).body(company);
     } else {
-      this.logger.error("Company not found with id {} by user {}", id, userDetails.getId());
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+      this.logger.error("User {} is not authorized to get company with id {}",
+          userDetails.getId(), id);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
   }
 
