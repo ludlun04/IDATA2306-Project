@@ -3,9 +3,7 @@ package no.ntnu.stud.idata2306project.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-
 import no.ntnu.stud.idata2306project.exception.OrderNotFoundException;
-
 import no.ntnu.stud.idata2306project.model.company.Company;
 import no.ntnu.stud.idata2306project.model.order.Order;
 import no.ntnu.stud.idata2306project.repository.OrderRepository;
@@ -37,7 +35,7 @@ public class OrderService {
   /**
    * Check if the order is available from a given date.
    *
-   * @param id the id of the order
+   * @param id        the id of the order
    * @param startDate the date to check
    * @return true if the order is available from the given date, false otherwise
    */
@@ -48,9 +46,9 @@ public class OrderService {
   /**
    * Check if the order is available between two dates.
    *
-   * @param id the id of the order
+   * @param id        the id of the order
    * @param startDate the start date to check
-   * @param endDate the end date to check
+   * @param endDate   the end date to check
    * @return true if the order is available between the two dates, false otherwise
    */
   public boolean isAvailableBetween(Long id, LocalDate startDate, LocalDate endDate) {
@@ -58,7 +56,7 @@ public class OrderService {
   }
 
   /**
-   * Get all active orders by user id
+   * Get all active orders by user id.
    *
    * @param userId the id of the user
    * @return a list of orders
@@ -68,7 +66,7 @@ public class OrderService {
   }
 
   /**
-   * Get all orders by user id
+   * Get all orders by user id.
    *
    * @param userId the id of the user
    * @return a list of orders
@@ -77,19 +75,17 @@ public class OrderService {
     return orderRepository.findOrdersByUserId(userId);
   }
 
-
   /**
-   * Save an order
+   * Save an order.
    *
    * @param order the order to save
-   * @return the saved order
    */
   public void saveOrder(Order order) {
     orderRepository.save(order);
   }
 
   /**
-   * Get an order by its id
+   * Get an order by its id.
    *
    * @param id the id of the order
    * @return the order with the given id
@@ -100,7 +96,7 @@ public class OrderService {
   }
 
   /**
-   * Delete an order by its id
+   * Delete an order by its id.
    *
    * @param id the id of the order
    */
@@ -108,11 +104,25 @@ public class OrderService {
     orderRepository.deleteById(id);
   }
 
+  /**
+   * Get all orders belonging to a car.
+   *
+   * @param carId the id of the car
+   * @return a list of orders belonging to the car
+   */
   public List<Order> getOrdersByCarId(Long carId) {
     return orderRepository.findAllByCar_Id(carId);
   }
 
-  public List<Order> getOrdersByCompanyId(Long companyId, Long userId) {
+  /**
+   * Get all orders belonging to a company.
+   *
+   * @param companyId the id of the company
+   * @param userId    id of user requesting the orders
+   * @return a list of orders belonging to the company
+   */
+  public List<Order> getOrdersByCompanyId(Long companyId, Long userId)
+      throws IllegalArgumentException, InsufficientAuthenticationException {
     Company company = companyService.getCompanyById(companyId);
     if (company == null) {
       logger.error("Company with id {} not found", companyId);
@@ -122,7 +132,8 @@ public class OrderService {
         .anyMatch(user -> Objects.equals(user.getId(), userId));
     if (!userBelongsToCompany) {
       logger.error("User with id {} does not belong to company with id {}", userId, companyId);
-      throw new InsufficientAuthenticationException("User with id " + userId + " does not belong to company with id " + companyId);
+      throw new InsufficientAuthenticationException(
+          "User with id " + userId + " does not belong to company with id " + companyId);
     }
     return orderRepository.findAllOrdersByCompany_Id(companyId);
   }

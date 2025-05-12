@@ -308,7 +308,7 @@ public class UserController {
     }
 
     this.logger.info("User added with id {}", newUser.getId());
-    return ResponseEntity.status(HttpStatus.CREATED).body("User Created: " + newUser.getId());
+    return ResponseEntity.status(HttpStatus.CREATED).body("" + newUser.getId());
   }
 
   /**
