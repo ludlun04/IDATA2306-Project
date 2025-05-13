@@ -111,6 +111,17 @@ public class UserService {
   }
 
   /**
+   * Check if a user is an admin
+   * @param userId the id of the user
+   * @return true if the user is an admin, false otherwise
+   */
+  public boolean isAdmin(long userId) {
+    Optional<User> user = userRepository.findById(userId);
+      return user.map(value -> value.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN")))
+              .orElse(false);
+  }
+
+  /**
    * Returns a user from a dto, minus password
    * @param userDto the user to add
    * @return the added user

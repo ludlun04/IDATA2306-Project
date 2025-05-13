@@ -338,12 +338,9 @@ public class UserController {
       @Parameter(description = "Authenticated user details")
       @AuthenticationPrincipal AccessUserDetails userDetails
   ) {
-    boolean isAdmin = userDetails.getAuthorities().stream()
-        .anyMatch(predicate -> predicate.getAuthority().equals("ADMIN"));
-    
+    boolean isAdmin = userService.isAdmin(userDetails.getId());
     boolean hasSameId = userDetails.getId().equals(id);  
-    
-    this.logger.info("{} {}", isAdmin, hasSameId);
+
     if (!isAdmin && !hasSameId) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not admin");
     }
