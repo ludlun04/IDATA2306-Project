@@ -23,22 +23,48 @@ public class CarService {
     this.companyService = companyService;
   }
 
+  /**
+   * Get all cars that are visible.
+   *
+   * @return a list of all visible cars
+   */
   public List<Car> getAllVisibleCars() {
     return carRepository.findAllByVisible(true);
   }
 
+  /**
+   * Get a car by its id.
+   *
+   * @param id the id of the car
+   * @return an Optional containing the car if found, or an empty Optional if not found
+   */
   public Optional<Car> getCarById(long id) {
     return carRepository.findById(id);
   }
 
+  /**
+   * Save a car to the database.
+   *
+   * @param car the car to save
+   */
   public void saveCar(Car car) {
     carRepository.save(car);
   }
 
+  /**
+   * Delete a car by its id.
+   *
+   * @param id the id of the car to delete
+   */
   public void deleteCarById(long id) {
     carRepository.deleteById(id);
   }
 
+  /**
+   * Get all amount of seats in cars.
+   *
+   * @return a set of all amount of seats in cars
+   */
   public Set<Integer> getAllAmountOfSeatsInCars() {
     Set<Integer> amountOfSeats = carRepository.findAllAmountOfSeatsInCars();
     for (Integer amount : amountOfSeats) {
@@ -47,10 +73,23 @@ public class CarService {
     return amountOfSeats;
   }
 
+  /**
+   * Get visibility of a car.
+   *
+   * @param carId the id of the car
+   * @return true if the car is visible, false otherwise
+   */
   public boolean getVisibility(long carId) {
     return carRepository.findById(carId).map(Car::isVisible).orElse(false);
   }
 
+  /**
+   * Set the visibility of a car.
+   *
+   * @param userId    the id of the user
+   * @param carId     the id of the car
+   * @param visibility the visibility of the car
+   */
   public void setVisible(long userId, long carId, boolean visibility) {
     Optional<Car> car = carRepository.findById(carId);
     if (car.isEmpty()) {

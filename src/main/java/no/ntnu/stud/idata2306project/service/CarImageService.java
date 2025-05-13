@@ -16,6 +16,15 @@ public class CarImageService {
     this.carImageRepository = carImageRepository;
     logger.info("CarImageService initialized");
   }
+
+  /**
+   * Get a car image by car ID, image type, and image width.
+   *
+   * @param carId the ID of the car
+   * @param imageType the type of the image
+   * @param imageWidth the width of the image
+   * @return the car image
+   */
   public CarImage getCarImage(long carId, ImageType imageType, long imageWidth) {
     return carImageRepository.findCarImageByCarIdAndImageTypeAndImageWidth(carId, imageType, imageWidth);
   }
