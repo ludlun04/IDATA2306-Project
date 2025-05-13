@@ -383,6 +383,7 @@ public class CompanyController {
       @ApiResponse(responseCode = "200", description = "List of cars belonging to the company"),
       @ApiResponse(responseCode = "404", description = "Company not found")
   })
+  @PreAuthorize("hasAuthority('USER')")
   @GetMapping("/{companyId}/cars")
   public ResponseEntity<List<Car>> getCarsBelongingToCompany(@PathVariable Long companyId) {
     logger.info("Getting all cars belonging to company with id {}", companyId);
