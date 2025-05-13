@@ -5,17 +5,18 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.List;
-import java.util.Optional;
+
 import no.ntnu.stud.idata2306project.dto.OrderRequestDto;
+import no.ntnu.stud.idata2306project.exception.CarNotFoundException;
+import no.ntnu.stud.idata2306project.exception.InvalidDatesException;
 import no.ntnu.stud.idata2306project.exception.OrderNotFoundException;
-import no.ntnu.stud.idata2306project.model.car.Addon;
-import no.ntnu.stud.idata2306project.model.car.Car;
+import no.ntnu.stud.idata2306project.exception.UnauthorizedException;
+import no.ntnu.stud.idata2306project.exception.UserNotFoundException;
 import no.ntnu.stud.idata2306project.model.order.Order;
 import no.ntnu.stud.idata2306project.model.user.User;
-import no.ntnu.stud.idata2306project.repository.AddonRepository;
 import no.ntnu.stud.idata2306project.security.AccessUserDetails;
-import no.ntnu.stud.idata2306project.service.CarService;
 import no.ntnu.stud.idata2306project.service.OrderService;
 import no.ntnu.stud.idata2306project.service.UserService;
 import org.slf4j.Logger;
@@ -55,25 +56,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/order")
 public class OrderController {
   private final OrderService orderService;
-  private final CarService carService;
-  private final UserService userService;
-  private final AddonRepository addonRepository;
   private final Logger logger = LoggerFactory.getLogger(OrderController.class);
+  private final UserService userService;
 
   /**
    * Creates a new OrderController.
    *
    * @param orderService the order service to use
-   * @param userService the user service to use
-   * @param carService the car service to use
-   * @param addonRepository the addon repository to use
    */
-  public OrderController(OrderService orderService, UserService userService, CarService carService,
-      AddonRepository addonRepository) {
-    this.addonRepository = addonRepository;
+  public OrderController(OrderService orderService, UserService userService) {
     this.orderService = orderService;
     this.userService = userService;
-    this.carService = carService;
   }
 
   /**
@@ -93,11 +86,11 @@ public class OrderController {
   @GetMapping("/history")
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<List<Order>> getAuthenticatedUserOrders() {
+    logger.info("Getting orders for authenticated user");
     try {
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       AccessUserDetails user = (AccessUserDetails) auth.getPrincipal();
       logger.info("User found with ID: {}", user.getId());
-      logger.info("Getting orders for user with ID: {}", user.getId());
       return ResponseEntity.ok(orderService.findOrdersByUserId(user.getId()));
     } catch (ClassCastException e) {
       logger.error("Error casting authentication principal to AccessUserDetails", e);
@@ -122,11 +115,11 @@ public class OrderController {
   @GetMapping("/active")
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<List<Order>> getAuthenticatedUserActiveOrders() {
+    logger.info("Getting active orders for authenticated user");
     try {
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       AccessUserDetails user = (AccessUserDetails) auth.getPrincipal();
       logger.info("User found with ID: {}", user.getId());
-      logger.info("Getting active orders for user with ID: {}", user.getId());
       return ResponseEntity.ok(orderService.findActiveOrdersByUserId(user.getId()));
     } catch (ClassCastException e) {
       logger.error("Error casting authentication principal to AccessUserDetails", e);
@@ -148,7 +141,8 @@ public class OrderController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Order that was added"),
       @ApiResponse(responseCode = "400", description = "Invalid order"),
-      @ApiResponse(responseCode = "403", description = "Not authorized")
+      @ApiResponse(responseCode = "403", description = "Not authorized"),
+      @ApiResponse(responseCode = "500", description = "Unknown error"),
   })
   @PreAuthorize("hasAnyAuthority('USER')")
   @PostMapping("")
@@ -158,48 +152,24 @@ public class OrderController {
       @Parameter(description = "Order to add")
       @RequestBody OrderRequestDto orderDto
   ) {
-    User user = this.userService.getUserById(accessUserDetails.getId());
-    Optional<Car> optionalCar = this.carService.getCarById(orderDto.getCarId());
+    long userId = accessUserDetails.getId();
 
-    if (!optionalCar.isPresent()) {
-      logger.error("Car with id {} not found", orderDto.getCarId());
+    try {
+      long id = orderService.addOrder(userId, orderDto);
+      return ResponseEntity.status(HttpStatus.CREATED).body(id);
+    } catch (CarNotFoundException e) {
+      logger.error("Car not found: {}", e.getMessage());
       return ResponseEntity.badRequest().build();
+    } catch (InvalidDatesException e) {
+      logger.error("Invalid dates: {}", e.getMessage());
+      return ResponseEntity.notFound().build();
+    } catch (UserNotFoundException e) {
+      logger.error("User not found: {}", e.getMessage());
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    } catch (Exception e) {
+      logger.error("Unknown error: {}", e.getMessage());
+      return ResponseEntity.internalServerError().build();
     }
-
-    List<Addon> addons = orderDto.getAddonIds().stream()
-        .map((Long addonId) -> {
-          Optional<Addon> optionalAddon = this.addonRepository.findById(addonId);
-          if (optionalAddon.isPresent()) {
-            return optionalAddon.get();
-          } else {
-            return null;
-          }
-        }).toList();
-
-    Order order = new Order();
-    order.setUser(user);
-    order.setCar(optionalCar.get());
-    order.setStartDate(orderDto.getStartDate());
-    order.setEndDate(orderDto.getEndDate());
-    order.setAddons(addons);
-
-    long numberOfDays = order.getEndDate().toEpochDay() - order.getStartDate().toEpochDay() + 1;
-    if (numberOfDays <= 0) {
-      logger.error("Start date is after end date");
-      return ResponseEntity.badRequest().build();
-    }
-    long carPrice = order.getCar().getPricePerDay() * numberOfDays;
-
-    long addonPrices = addons.stream()
-        .mapToLong(Addon::getPrice)
-        .sum();
-    
-    order.setPrice(carPrice + addonPrices);
-    
-    logger.info("Adding order {}", order);
-    orderService.saveOrder(order);
-    logger.info("New order added");
-    return ResponseEntity.status(HttpStatus.CREATED).body(order.getOrderId());
   }
 
   /**
@@ -213,7 +183,9 @@ public class OrderController {
       @ApiResponse(responseCode = "200", description = "Order with the given id"),
       @ApiResponse(responseCode = "404", description = "Order not found"),
       @ApiResponse(responseCode = "403", description = "Not authorized"),
-      @ApiResponse(responseCode = "400", description = "Invalid id")
+      @ApiResponse(responseCode = "401", description = "Not authorized for this resource"),
+      @ApiResponse(responseCode = "400", description = "Invalid id"),
+      @ApiResponse(responseCode = "500", description = "Unknown error")
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/{id}")
@@ -223,33 +195,27 @@ public class OrderController {
       @Parameter(description = "The user details of the logged-in user")
       @AuthenticationPrincipal AccessUserDetails user
   ) {
-    // Check if the id is valid
+    logger.info("Getting order with id {}", id);
     if (id == null || id <= 0) {
       logger.error("Invalid id: {}", id);
       return ResponseEntity.badRequest().build();
     }
 
-    logger.info("Getting order with id {}", id);
-    Order order = null;
     try {
-      order = orderService.findOrderById(id);
+      if (this.orderService.userHasAccessToOrder(user, id)) {
+        logger.info("User with id {} has access to order with id {}", user.getId(), id);
+        return ResponseEntity.ok(orderService.findOrderById(id));
+      } else {
+        logger.error("User with id {} does not have access to order with id {}", user.getId(), id);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      }
+    } catch (OrderNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     } catch (Exception e) {
-      return ResponseEntity.notFound().build();
+      logger.error("Unknown error: {}", e.getMessage());
+      return ResponseEntity.internalServerError().build();
     }
 
-    // Check if the order belongs to the user or they are admin
-    boolean isAdmin = user.getAuthorities().stream()
-        .anyMatch(predicate -> predicate.getAuthority().equals("ADMIN"));
-
-    logger.info("User with id {} is admin: {}", user.getId(), isAdmin);
-    boolean isOwnerOfOrder = order.getUser().getId().equals(user.getId());
-    if (!isAdmin && !isOwnerOfOrder) {
-      logger.error("User with id {} is not authorized to access order with id {}",
-          user.getId(), id);
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-
-    return ResponseEntity.ok(order);
   }
   
 
@@ -263,7 +229,8 @@ public class OrderController {
       @ApiResponse(responseCode = "200", description = "Order removed"),
       @ApiResponse(responseCode = "404", description = "Order not found"),
       @ApiResponse(responseCode = "403", description = "Not authorized"),
-      @ApiResponse(responseCode = "400", description = "Invalid id")
+      @ApiResponse(responseCode = "400", description = "Invalid id"),
+      @ApiResponse(responseCode = "500", description = "Unknown error")
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @DeleteMapping("/{id}")
@@ -272,36 +239,27 @@ public class OrderController {
       @PathVariable Long id,
       @Parameter(description = "The user details of the logged-in user")
       @AuthenticationPrincipal AccessUserDetails user) {
-    // Check if the id is valid
+    logger.info("Removing order with id {}", id);
     if (id == null || id <= 0) {
       logger.error("Invalid id: {}", id);
       return ResponseEntity.badRequest().build();
     }
 
-    logger.info("Removing order with id {}", id);
-    Order order = null;
     try {
-      order = orderService.findOrderById(id);
+      if (this.orderService.userHasAccessToOrder(user, id)) {
+        logger.info("User with id {} has access to order with id {}", user.getId(), id);
+        orderService.deleteOrderById(id);
+        return ResponseEntity.ok("Order removed");
+      } else {
+        logger.error("User with id {} does not have access to order with id {}", user.getId(), id);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      }
     } catch (OrderNotFoundException e) {
       logger.error("Order with id {} not found", id);
       return ResponseEntity.notFound().build();
     } catch (Exception e) {
       return ResponseEntity.internalServerError().build();
     }
-
-    // Check if the order belongs to the user or they are admin
-    boolean isAdmin = user.isAdmin();
-
-    logger.info("User with id {} is admin: {}", user.getId(), isAdmin);
-
-    boolean isOwnerOfOrder = order.getUser().getId().equals(user.getId());
-    if (!isAdmin && !isOwnerOfOrder) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-
-    orderService.deleteOrderById(id);
-
-    return ResponseEntity.ok("Order removed");
   }
 
   /**
@@ -349,11 +307,10 @@ public class OrderController {
       @AuthenticationPrincipal AccessUserDetails accessUserDetails
   ) {
     logger.info("Getting orders for company with id {}", companyId);
-    User user = this.userService.getUserById(accessUserDetails.getId());
     try {
-      return ResponseEntity.ok(orderService.getOrdersByCompanyId(companyId, user.getId()));
-    } catch (InsufficientAuthenticationException e) {
-      logger.info("User with id {} does not belong to company with id {}", user.getId(), companyId);
+      return ResponseEntity.ok(orderService.getOrdersByCompanyId(companyId, accessUserDetails.getId()));
+    } catch (UnauthorizedException e) {
+      logger.info("User with id {} does not belong to company with id {}", accessUserDetails.getId(), companyId);
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     } catch (IllegalArgumentException e) {
       logger.error("Company with id {} not found", companyId);
