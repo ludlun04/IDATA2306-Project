@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306project.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import no.ntnu.stud.idata2306project.dto.UserDto;
 import no.ntnu.stud.idata2306project.exception.EmailAlreadyInUser;
@@ -12,6 +13,8 @@ import no.ntnu.stud.idata2306project.model.contact.PhoneNumber;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -85,6 +88,9 @@ public class UserService {
    * @throws UsernameAlreadyInUser if the email is already in use
    */
   public User addUser(User user, String password) throws EmailAlreadyInUser {
+    if (password == null || password.isEmpty()) {
+      throw new IllegalArgumentException("Password cannot be null or empty");
+    }
 
     Role role = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Role not found"));
     user.addRole(role);
@@ -105,6 +111,51 @@ public class UserService {
   }
 
   /**
+   * Check if a user is an admin
+   * @param userId the id of the user
+   * @return true if the user is an admin, false otherwise
+   */
+  public boolean isAdmin(long userId) {
+    Optional<User> user = userRepository.findById(userId);
+      return user.map(value -> value.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN")))
+              .orElse(false);
+  }
+
+  /**
+   * Returns a user from a dto, minus password
+   * @param userDto the user to add
+   * @return the added user
+   * @throws UsernameAlreadyInUser if the email is already in use
+   */
+  public User constructUserFromDto(UserDto userDto) {
+    if (userDto.getAddress() == null) {
+      throw new IllegalArgumentException("Address cannot be null");
+    }
+    if (userDto.getEmail() == null) {
+        throw new IllegalArgumentException("Email cannot be null");
+    }
+    if (userDto.getPhoneNumber() == null) {
+        throw new IllegalArgumentException("Phone number cannot be null");
+    }
+    if (userDto.getFirstName() == null) {
+        throw new IllegalArgumentException("First name cannot be null");
+    }
+    if (userDto.getLastName() == null) {
+        throw new IllegalArgumentException("Last name cannot be null");
+    }
+
+    User user = new User();
+    user.setFirstname(userDto.getFirstName());
+    user.setLastName(userDto.getLastName());
+    user.setEmail(userDto.getEmail());
+    user.setPhoneNumber(userDto.getPhoneNumber());
+    user.setAddress(userDto.getAddress());
+    user.setDateOfBirth(userDto.getDateOfBirth());
+
+    return user;
+  }
+
+  /**
    * Update a user
    *
    * @param id   the id of the user
@@ -120,11 +171,25 @@ public class UserService {
     userRepository.delete(user.get());
   }
 
+  /**
+   * Add a car to a user's favorites
+   *
+   * @param user the user
+   * @param car  the car to add
+   */
   public void addFavoriteToUser(User user, Car car) {
     user.addFavorite(car);
     userRepository.save(user);
   }
 
+  /**
+   * Set a car as favorite for a user
+   *
+   * @param user      the user
+   * @param carId     the id of the car
+   * @param isFavorite true if the car is a favorite, false otherwise
+   * @return true if the car is a favorite, false otherwise
+   */
   public boolean setUserFavorite(User user, Long carId, Boolean isFavorite) {
     boolean result;
     Optional<Car> carOptional = carService.getCarById(carId);
@@ -144,12 +209,27 @@ public class UserService {
     return result;
   }
 
+  /**
+   * Returns user favorites within a list
+   */
+  public List<Car> getUserFavorites(long userId, List<Car> cars) {
+    User user = getUserById(userId);
+    List<Car> favorites = user.getFavorites();
+    Set<Car> favoritesSet = new HashSet<>();
+    for (Car car : cars) {
+      if (favorites.contains(car)) {
+        favoritesSet.add(car);
+      }
+    }
+
+    return List.copyOf(favoritesSet);
+  }
 
   /**
    * Overwrites values of a user if different from the given userDto
-   * @param userid
-   * @param userDto
-   * @throws UserNotFoundException
+   * @param userid the id of the user
+   * @param userDto the user to update
+   * @throws UserNotFoundException if the user is not found
    */
   public void updateUser(long userid, UserDto userDto) throws UserNotFoundException {
     Optional<User> userOptional = userRepository.findById(userid);
