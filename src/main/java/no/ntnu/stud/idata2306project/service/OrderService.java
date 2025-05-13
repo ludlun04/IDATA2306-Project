@@ -57,6 +57,7 @@ public class OrderService {
    * @return true if the order is available from the given date, false otherwise
    */
   public boolean isAvailableFrom(Long id, LocalDate startDate) {
+    logger.trace("Checking if order with id: {} is available from date: {}", id, startDate);
     return orderRepository.isAvailableFrom(id, startDate);
   }
 
@@ -69,6 +70,8 @@ public class OrderService {
    * @return true if the order is available between the two dates, false otherwise
    */
   public boolean isAvailableBetween(Long id, LocalDate startDate, LocalDate endDate) {
+    logger.trace("Checking if order with id: {} is available between dates: {} and {}", id,
+        startDate, endDate);
     return orderRepository.isAvailableBetween(id, startDate, endDate);
   }
 
@@ -79,6 +82,7 @@ public class OrderService {
    * @return a list of orders
    */
   public List<Order> findActiveOrdersByUserId(Long userId) {
+    logger.trace("Finding active orders for user with id: {}", userId);
     return orderRepository.findActiveOrdersByUserId(userId);
   }
 
@@ -89,6 +93,7 @@ public class OrderService {
    * @return a list of orders
    */
   public List<Order> findOrdersByUserId(Long userId) {
+    logger.trace("Finding orders for user with id: {}", userId);
     return orderRepository.findOrdersByUserId(userId);
   }
 
@@ -97,7 +102,8 @@ public class OrderService {
    *
    * @param order the order to save
    */
-  public void saveOrder(Order order) {
+  private void saveOrder(Order order) {
+    logger.trace("Saving order: {}", order);
     orderRepository.save(order);
   }
 
@@ -119,6 +125,7 @@ public class OrderService {
    * @param id the id of the order
    */
   public void deleteOrderById(Long id) throws OrderNotFoundException {
+    logger.trace("Deleting order with id: {}", id);
     orderRepository.deleteById(id);
   }
 
@@ -129,6 +136,7 @@ public class OrderService {
    * @return a list of orders belonging to the car
    */
   public List<Order> getOrdersByCarId(Long carId) {
+    logger.trace("Finding orders with car id: {}", carId);
     return orderRepository.findAllByCar_Id(carId);
   }
 
@@ -141,15 +149,14 @@ public class OrderService {
    */
   public List<Order> getOrdersByCompanyId(Long companyId, Long userId)
       throws IllegalArgumentException, InsufficientAuthenticationException {
+    logger.trace("Finding orders with company id: {}", companyId);
     Company company = companyService.getCompanyById(companyId);
     if (company == null) {
-      logger.error("Company with id {} not found", companyId);
       throw new IllegalArgumentException("Company with id " + companyId + " not found");
     }
     boolean userBelongsToCompany = company.getUsers().stream()
         .anyMatch(user -> Objects.equals(user.getId(), userId));
     if (!userBelongsToCompany) {
-      logger.error("User with id {} does not belong to company with id {}", userId, companyId);
       throw new UnauthorizedException(
           "User with id " + userId + " does not belong to company with id " + companyId);
     }
@@ -157,6 +164,7 @@ public class OrderService {
   }
 
   public Long addOrder(long userId, OrderRequestDto orderDto) {
+    logger.trace("Adding order for user with id: {}", userId);
     User user = this.userService.getUserById(userId);
     Optional<Car> optionalCar = this.carService.getCarById(orderDto.getCarId());
 
@@ -193,6 +201,8 @@ public class OrderService {
   }
 
   public boolean userHasAccessToOrder(AccessUserDetails user, long orderId) {
+    logger.trace("Checking if user with id: {} has access to order with id: {}", user.getId(),
+        orderId);
     Order order = findOrderById(orderId);
 
     boolean isAdmin = user.getAuthorities().stream()
