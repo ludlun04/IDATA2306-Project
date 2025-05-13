@@ -171,11 +171,25 @@ public class UserService {
     userRepository.delete(user.get());
   }
 
+  /**
+   * Add a car to a user's favorites
+   *
+   * @param user the user
+   * @param car  the car to add
+   */
   public void addFavoriteToUser(User user, Car car) {
     user.addFavorite(car);
     userRepository.save(user);
   }
 
+  /**
+   * Set a car as favorite for a user
+   *
+   * @param user      the user
+   * @param carId     the id of the car
+   * @param isFavorite true if the car is a favorite, false otherwise
+   * @return true if the car is a favorite, false otherwise
+   */
   public boolean setUserFavorite(User user, Long carId, Boolean isFavorite) {
     boolean result;
     Optional<Car> carOptional = carService.getCarById(carId);
@@ -213,9 +227,9 @@ public class UserService {
 
   /**
    * Overwrites values of a user if different from the given userDto
-   * @param userid
-   * @param userDto
-   * @throws UserNotFoundException
+   * @param userid the id of the user
+   * @param userDto the user to update
+   * @throws UserNotFoundException if the user is not found
    */
   public void updateUser(long userid, UserDto userDto) throws UserNotFoundException {
     Optional<User> userOptional = userRepository.findById(userid);
