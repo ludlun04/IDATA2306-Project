@@ -32,7 +32,8 @@ public class Address {
   /**
    * Creates an address.
    */
-  public Address() {/* */}
+  public Address() {/* */
+  }
 
   /**
    * Creates an address using an id, a zip code, a country and an address.

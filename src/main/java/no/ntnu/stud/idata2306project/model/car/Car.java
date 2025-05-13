@@ -1,12 +1,16 @@
 package no.ntnu.stud.idata2306project.model.car;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import no.ntnu.stud.idata2306project.model.company.Company;
-
 import java.util.List;
+import no.ntnu.stud.idata2306project.model.company.Company;
 
 /**
  * Represents a car.
@@ -72,6 +76,20 @@ public class Car {
   public Car() {
   }
 
+  /**
+   * Creates a new car.
+   *
+   * @param year the year of the car
+   * @param numberOfSeats the number of seats in the car
+   * @param pricePerDay the price per day for renting the car, in NOK
+   * @param model the model of the car
+   * @param fuelType the fuel type of the car
+   * @param transmissionType the transmission type of the car
+   * @param addons the addons of the car
+   * @param features the features of the car
+   * @param company the company that owns the car
+   * @param description the description of the car
+   */
   public Car(int year, int numberOfSeats, int pricePerDay, CarModel model,
              FuelType fuelType, TransmissionType transmissionType, List<Addon> addons,
              List<Feature> features, Company company, String description) {
@@ -93,7 +111,7 @@ public class Car {
    * @return true if the car is visible, false otherwise
    */
   public boolean isVisible() {
-      return visible;
+    return visible;
   }
 
   /**
@@ -102,7 +120,7 @@ public class Car {
    * @param visible true if the car should be visible, false otherwise
    */
   public void setVisible(boolean visible) {
-      this.visible = visible;
+    this.visible = visible;
   }
 
   /**
@@ -206,6 +224,7 @@ public class Car {
 
   /**
    * Returns the company that owns the car.
+   *
    * @return the company that owns the car
    */
   public Company getCompany() {

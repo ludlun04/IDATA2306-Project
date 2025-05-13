@@ -1,26 +1,33 @@
 package no.ntnu.stud.idata2306project.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.car.CarBrand;
 import no.ntnu.stud.idata2306project.model.car.CarModel;
 import no.ntnu.stud.idata2306project.repository.CarRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
+/**
+ * Service class for searching cars based on a keyword.
+ */
 @Service
 public class CarSearchService {
 
   private final CarRepository carRepository;
 
-  private final Logger logger = LoggerFactory.getLogger(CarSearchService.class);
-
   public CarSearchService(CarRepository carRepository) {
     this.carRepository = carRepository;
   }
 
+  /**
+   * Searches for cars based on a keyword. The keyword is matched against the car's brand and model
+   * names.
+   *
+   * @param keyword the keyword to search for
+   * @return a list of cars that match the keyword
+   */
   public List<Car> getCarsByKeyword(String keyword) {
     String keywordCopy = keyword.toLowerCase();
 

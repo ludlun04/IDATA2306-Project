@@ -11,7 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+
+import no.ntnu.stud.idata2306project.exception.CarNotFoundException;
+import no.ntnu.stud.idata2306project.exception.CompanyNotFoundException;
 import no.ntnu.stud.idata2306project.exception.InvalidFilterException;
+import no.ntnu.stud.idata2306project.exception.UnauthorizedException;
 import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.company.Company;
 import no.ntnu.stud.idata2306project.security.AccessUserDetails;
@@ -54,7 +58,6 @@ public class CarController {
 
   private final CarService carService;
   private final CarFilterService carFilterService;
-  private final CompanyService companyService;
   private final Logger logger = LoggerFactory.getLogger(CarController.class);
 
   /**
@@ -66,11 +69,9 @@ public class CarController {
    */
   public CarController(
       CarService carService,
-      CarFilterService carFilterService,
-      CompanyService companyService) {
+      CarFilterService carFilterService) {
     this.carService = carService;
     this.carFilterService = carFilterService;
-    this.companyService = companyService;
   }
 
   /**
@@ -217,31 +218,26 @@ public class CarController {
       @RequestBody boolean visible
   ) {
     Optional<Car> car = this.carService.getCarById(id);
+    if (car.isEmpty()) {
+      logNotFound(id);
+      return ResponseEntity.notFound().build();
+    }
+
     AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
         .getContext().getAuthentication().getPrincipal();
 
-    if (car.isEmpty()) {
-      logger.info("No car found with id {}", id);
-      return ResponseEntity.notFound().build();
-    }
-
-    Company company = this.companyService.findCompanyThatOwnsCar(car);
-    if (company == null) {
-      logger.info("No company found that owns car with id {}", id);
-      return ResponseEntity.notFound().build();
-    }
-
-    boolean isUserInCompany = company.getUsers().stream()
-        .anyMatch(user -> Objects.equals(user.getId(), userDetails.getId()));
-
-    if (!isUserInCompany) {
-      logger.warn("User with id {} is not authorized to update car with id {}",
-          userDetails.getId(), id);
+    try {
+      carService.setVisible(userDetails.getId(), id, visible);
+      logger.info("Car with id {} updated", id);
+    } catch (UnauthorizedException e) {
+      logger.warn("User with id {} is not authorized to update car with id {}", userDetails.getId(), id);
       return ResponseEntity.status(403).build();
+    } catch (CarNotFoundException e) {
+      logNotFound(id);
+      return ResponseEntity.notFound().build();
+    } catch (CompanyNotFoundException e) {
+      logger.warn("No company found that owns car with id {}", id);
     }
-
-    logger.info("Updating car visibility with id {}", id);
-    carService.setVisible(id, visible);
 
     return ResponseEntity.ok(car.get());
   }

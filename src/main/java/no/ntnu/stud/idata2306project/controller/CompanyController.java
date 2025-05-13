@@ -9,11 +9,7 @@ import java.util.List;
 import java.util.Set;
 import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.company.Company;
-import no.ntnu.stud.idata2306project.model.contact.Address;
-import no.ntnu.stud.idata2306project.model.contact.PhoneNumber;
 import no.ntnu.stud.idata2306project.model.user.User;
-import no.ntnu.stud.idata2306project.repository.AddressRepository;
-import no.ntnu.stud.idata2306project.repository.PhoneNumberRepository;
 import no.ntnu.stud.idata2306project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306project.service.CompanyService;
 import org.slf4j.Logger;
@@ -387,6 +383,7 @@ public class CompanyController {
       @ApiResponse(responseCode = "200", description = "List of cars belonging to the company"),
       @ApiResponse(responseCode = "404", description = "Company not found")
   })
+  @PreAuthorize("hasAuthority('USER')")
   @GetMapping("/{companyId}/cars")
   public ResponseEntity<List<Car>> getCarsBelongingToCompany(@PathVariable Long companyId) {
     logger.info("Getting all cars belonging to company with id {}", companyId);
