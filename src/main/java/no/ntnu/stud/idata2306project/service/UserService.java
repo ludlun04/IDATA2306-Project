@@ -13,6 +13,8 @@ import no.ntnu.stud.idata2306project.model.contact.PhoneNumber;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -86,6 +88,9 @@ public class UserService {
    * @throws UsernameAlreadyInUser if the email is already in use
    */
   public User addUser(User user, String password) throws EmailAlreadyInUser {
+    if (password == null || password.isEmpty()) {
+      throw new IllegalArgumentException("Password cannot be null or empty");
+    }
 
     Role role = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Role not found"));
     user.addRole(role);
@@ -103,6 +108,40 @@ public class UserService {
     addressRepository.save(user.getAddress());
 
     return userRepository.save(user);
+  }
+
+  /**
+   * Returns a user from a dto, minus password
+   * @param userDto the user to add
+   * @return the added user
+   * @throws UsernameAlreadyInUser if the email is already in use
+   */
+  public User constructUserFromDto(UserDto userDto) {
+    if (userDto.getAddress() == null) {
+      throw new IllegalArgumentException("Address cannot be null");
+    }
+    if (userDto.getEmail() == null) {
+        throw new IllegalArgumentException("Email cannot be null");
+    }
+    if (userDto.getPhoneNumber() == null) {
+        throw new IllegalArgumentException("Phone number cannot be null");
+    }
+    if (userDto.getFirstName() == null) {
+        throw new IllegalArgumentException("First name cannot be null");
+    }
+    if (userDto.getLastName() == null) {
+        throw new IllegalArgumentException("Last name cannot be null");
+    }
+
+    User user = new User();
+    user.setFirstname(userDto.getFirstName());
+    user.setLastName(userDto.getLastName());
+    user.setEmail(userDto.getEmail());
+    user.setPhoneNumber(userDto.getPhoneNumber());
+    user.setAddress(userDto.getAddress());
+    user.setDateOfBirth(userDto.getDateOfBirth());
+
+    return user;
   }
 
   /**
@@ -146,7 +185,7 @@ public class UserService {
   }
 
   /**
-   * Get user favorites within a list
+   * Returns user favorites within a list
    */
   public List<Car> getUserFavorites(long userId, List<Car> cars) {
     User user = getUserById(userId);

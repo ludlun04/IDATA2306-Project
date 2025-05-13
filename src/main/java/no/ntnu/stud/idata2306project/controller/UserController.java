@@ -269,32 +269,13 @@ public class UserController {
       @RequestBody UserDto userDto
   ) {
     this.logger.info("Adding user {}", userDto.getFirstName());
-
-    if (userDto.getAddress() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Address is required");
-    }
-    if (userDto.getEmail() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
-    }
-    if (userDto.getPhoneNumber() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number is required");
-    }
-    if (userDto.getFirstName() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name is required");
-    }
-    if (userDto.getLastName() == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name is required");
+    User newUser;
+    try {
+      newUser = userService.addUser(userService.constructUserFromDto(userDto), userDto.getPassword());
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
-    User user = new User();
-    user.setFirstname(userDto.getFirstName());
-    user.setLastName(userDto.getLastName());
-    user.setEmail(userDto.getEmail());
-    user.setPhoneNumber(userDto.getPhoneNumber());
-    user.setAddress(userDto.getAddress());
-    user.setDateOfBirth(userDto.getDateOfBirth());
-
-    User newUser = userService.addUser(user, userDto.getPassword());
     if (newUser == null) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
     }
@@ -367,7 +348,6 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not admin");
     }
 
-    this.logger.info("Good we cooking");
     try {
       this.userService.updateUser(id, userDto);
     } catch (UserNotFoundException e) {
