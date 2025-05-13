@@ -156,16 +156,8 @@ public class UserController {
   ) {
     AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
         .getContext().getAuthentication().getPrincipal();
-    User user = userService.getUserById(userDetails.getId());
-    Set<Car> matching = new HashSet<>();
 
-    List<Long> carIds = cars.stream().map(Car::getId).toList();
-    for (Car favorite : user.getFavorites()) {
-      if (carIds.contains(favorite.getId())) {
-        matching.add(favorite);
-      }
-    }
-    return ResponseEntity.ok(matching.stream().toList());
+    return ResponseEntity.ok(userService.getUserFavorites(userDetails.getId(), cars));
   }
 
   /**

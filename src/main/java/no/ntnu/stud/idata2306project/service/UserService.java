@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306project.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import no.ntnu.stud.idata2306project.dto.UserDto;
 import no.ntnu.stud.idata2306project.exception.EmailAlreadyInUser;
@@ -144,6 +145,21 @@ public class UserService {
     return result;
   }
 
+  /**
+   * Get user favorites within a list
+   */
+  public List<Car> getUserFavorites(long userId, List<Car> cars) {
+    User user = getUserById(userId);
+    List<Car> favorites = user.getFavorites();
+    Set<Car> favoritesSet = new HashSet<>();
+    for (Car car : cars) {
+      if (favorites.contains(car)) {
+        favoritesSet.add(car);
+      }
+    }
+
+    return List.copyOf(favoritesSet);
+  }
 
   /**
    * Overwrites values of a user if different from the given userDto
