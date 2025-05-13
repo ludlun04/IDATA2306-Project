@@ -63,7 +63,7 @@ public class CarService {
       throw new CompanyNotFoundException("Company not found");
     }
 
-    if (!companyService.isUserInCompany(userId, carId)) {
+    if (!companyService.isUserInCompany(userId, company.getId())) {
       throw new UnauthorizedException("User is not authorized to change the visibility of this car");
     }
 
