@@ -346,7 +346,7 @@ public class UserController {
     }
 
     try {
-      this.userService.updateUser(id, userDto);
+      this.userService.updateUser(id, userDto, userDetails);
     } catch (UserNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found: " + id);
     }

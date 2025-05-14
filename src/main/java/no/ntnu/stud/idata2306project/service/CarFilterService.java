@@ -3,6 +3,7 @@ package no.ntnu.stud.idata2306project.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import no.ntnu.stud.idata2306project.exception.InvalidFilterException;
@@ -23,6 +24,7 @@ public class CarFilterService {
 
   private final OrderRepository orderRepository;
   private final CarSearchService carSearchService;
+  private final CompanyService companyService;
 
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -45,10 +47,11 @@ public class CarFilterService {
    * @param carService the car service
    */
   public CarFilterService(OrderRepository orderRepository, CarSearchService carSearchService, 
-      CarService carService) {
+      CarService carService, CompanyService companyService) {
     this.orderRepository = orderRepository;
     this.carSearchService = carSearchService;
     this.carService = carService;
+    this.companyService = companyService;
   }
 
   /**
@@ -165,10 +168,15 @@ public class CarFilterService {
    */
   private boolean hasSeller(Car car, String value) {
     boolean result = false;
-    String[] sellers = value.split(",");
-    for (String seller : sellers) {
-      Company company = car.getCompany();
-      if (company.getName().equalsIgnoreCase(seller)) {
+
+    List<String> sellers = Arrays.stream(value.split(",")).toList();
+    sellers = sellers.stream().map(String::toLowerCase).toList();
+
+    List<Company> companies = companyService.getCompanies();
+    for (Company company : companies) {
+      if (sellers.contains(company.getName().toLowerCase())
+          && company.getCars().contains(car)
+      ) {
         result = true;
         break;
       }
