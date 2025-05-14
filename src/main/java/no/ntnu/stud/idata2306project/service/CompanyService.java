@@ -175,7 +175,7 @@ public class CompanyService {
     if (company != null) {
       return company.getUsers().stream().anyMatch(user -> user.getId() == userId);
     } else {
-        this.logger.warn("Company with id {} does not exist", companyId);
+      this.logger.warn("Company with id {} does not exist", companyId);
       return false;
     }
   }
