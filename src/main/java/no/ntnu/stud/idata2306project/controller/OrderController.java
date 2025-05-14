@@ -20,8 +20,10 @@ import no.ntnu.stud.idata2306project.model.user.User;
 import no.ntnu.stud.idata2306project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306project.service.OrderService;
 import no.ntnu.stud.idata2306project.service.UserService;
+import no.ntnu.stud.idata2306project.dto.OrderResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,7 +38,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 /**
  * Represents a controller for orders.
@@ -188,7 +189,7 @@ public class OrderController {
   })
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/{id}")
-  public ResponseEntity<Order> getOrderById(
+  public ResponseEntity<OrderResponseDto> getOrderById(
       @Parameter(description = "The id of the order to get")
       @PathVariable Long id,
       @Parameter(description = "The user details of the logged-in user")
@@ -272,12 +273,16 @@ public class OrderController {
       @ApiResponse(responseCode = "200", description = "List of orders for the car"),
   })
   @GetMapping("car/{carId}")
-  public ResponseEntity<List<Order>> getOrdersByCarId(
+  public ResponseEntity<List<OrderResponseDto>> getOrdersByCarId(
       @Parameter(description = "The id of the car to get orders for")
       @PathVariable Long carId
   ) {
     logger.info("Getting orders for car with id {}", carId);
-    return ResponseEntity.ok(orderService.getOrdersByCarId(carId));
+    List<OrderResponseDto> orders = orderService.getOrdersByCarId(carId);
+    for (OrderResponseDto order : orders) {
+      logger.info("Order with id {} found for car with id {}", order.getOrderId(), carId);
+    }
+    return ResponseEntity.ok(orders);
   }
 
   /**

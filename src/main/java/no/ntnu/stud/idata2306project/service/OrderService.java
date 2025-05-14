@@ -86,9 +86,7 @@ public class OrderService {
   public List<OrderResponseDto> findActiveOrdersByUserId(Long userId) {
     logger.trace("Finding active orders for user with id: {}", userId);
     List<Order> orders = orderRepository.findActiveOrdersByUserId(userId);
-    return orders.stream()
-        .map(order -> new OrderResponseDto(order, carService.getCarDtoFromCar(order.getCar())))
-        .toList();
+    return getOrderResponseDtos(orders);
   }
 
   /**
@@ -118,10 +116,12 @@ public class OrderService {
    * @param id the id of the order
    * @return the order with the given id
    */
-  public Order findOrderById(Long id) {
+  public OrderResponseDto findOrderById(Long id) {
     logger.trace("Finding order with id: {}", id);
-    return orderRepository.findById(id)
+    Order order = orderRepository.findById(id)
         .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + id));
+
+    return getOrderResponseDto(order);
   }
 
   /**
@@ -140,9 +140,11 @@ public class OrderService {
    * @param carId the id of the car
    * @return a list of orders belonging to the car
    */
-  public List<Order> getOrdersByCarId(Long carId) {
+  public List<OrderResponseDto> getOrdersByCarId(Long carId) {
     logger.trace("Finding orders with car id: {}", carId);
-    return orderRepository.findAllByCar_Id(carId);
+    List<Order> orders = orderRepository.findAllByCar_Id(carId);
+
+    return getOrderResponseDtos(orders);
   }
 
   /**
@@ -222,7 +224,7 @@ public class OrderService {
   public boolean userHasAccessToOrder(AccessUserDetails user, long orderId) {
     logger.trace("Checking if user with id: {} has access to order with id: {}", user.getId(),
         orderId);
-    Order order = findOrderById(orderId);
+    OrderResponseDto order = findOrderById(orderId);
 
     boolean isAdmin = user.getAuthorities().stream()
         .anyMatch(predicate ->
@@ -231,5 +233,16 @@ public class OrderService {
 
     return isAdmin || isOwnerOfOrder;
 
+  }
+
+  private List<OrderResponseDto> getOrderResponseDtos(List<Order> orders) {
+    return orders.stream()
+        .map(order -> new OrderResponseDto(order, carService.getCarDtoFromCar(order.getCar())))
+        .toList();
+  }
+
+  private OrderResponseDto getOrderResponseDto(Order order) {
+    CarDto carDto = carService.getCarDtoFromCar(order.getCar());
+    return new OrderResponseDto(order, carDto);
   }
 }
