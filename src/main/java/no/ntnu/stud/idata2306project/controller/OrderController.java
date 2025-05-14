@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 
 import no.ntnu.stud.idata2306project.dto.OrderRequestDto;
+import no.ntnu.stud.idata2306project.dto.OrderResponseDto;
 import no.ntnu.stud.idata2306project.exception.CarNotFoundException;
 import no.ntnu.stud.idata2306project.exception.InvalidDatesException;
 import no.ntnu.stud.idata2306project.exception.OrderNotFoundException;
@@ -57,7 +58,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
   private final OrderService orderService;
   private final Logger logger = LoggerFactory.getLogger(OrderController.class);
-  private final UserService userService;
 
   /**
    * Creates a new OrderController.
@@ -66,7 +66,6 @@ public class OrderController {
    */
   public OrderController(OrderService orderService, UserService userService) {
     this.orderService = orderService;
-    this.userService = userService;
   }
 
   /**
@@ -114,7 +113,7 @@ public class OrderController {
   })
   @GetMapping("/active")
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-  public ResponseEntity<List<Order>> getAuthenticatedUserActiveOrders() {
+  public ResponseEntity<List<OrderResponseDto>> getAuthenticatedUserActiveOrders() {
     logger.info("Getting active orders for authenticated user");
     try {
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
