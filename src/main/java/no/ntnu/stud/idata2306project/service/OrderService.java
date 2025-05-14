@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import no.ntnu.stud.idata2306project.dto.CarDto;
 import no.ntnu.stud.idata2306project.dto.OrderRequestDto;
+import no.ntnu.stud.idata2306project.dto.OrderResponseDto;
 import no.ntnu.stud.idata2306project.exception.CarNotFoundException;
 import no.ntnu.stud.idata2306project.exception.InvalidDatesException;
 import no.ntnu.stud.idata2306project.exception.OrderNotFoundException;
@@ -81,9 +83,12 @@ public class OrderService {
    * @param userId the id of the user
    * @return a list of orders
    */
-  public List<Order> findActiveOrdersByUserId(Long userId) {
+  public List<OrderResponseDto> findActiveOrdersByUserId(Long userId) {
     logger.trace("Finding active orders for user with id: {}", userId);
-    return orderRepository.findActiveOrdersByUserId(userId);
+    List<Order> orders = orderRepository.findActiveOrdersByUserId(userId);
+    return orders.stream()
+        .map(order -> new OrderResponseDto(order, carService.getCarDtoFromCar(order.getCar())))
+        .toList();
   }
 
   /**

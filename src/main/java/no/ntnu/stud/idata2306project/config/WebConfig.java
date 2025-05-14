@@ -28,6 +28,6 @@ public class WebConfig implements WebMvcConfigurer {
         .allowedOrigins("*") //allow all origins
         .allowedMethods("GET", "POST", "PUT", "DELETE") //allow HTTP request methods
         .allowedHeaders("*") //allow all headers
-        .maxAge(3600); //response can be cached by clients for 1 hour
+        .maxAge(5 * 3L); //response can be cached by clients for 1 hour
   }
 }
