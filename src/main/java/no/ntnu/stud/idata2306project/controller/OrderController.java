@@ -85,7 +85,7 @@ public class OrderController {
   })
   @GetMapping("/history")
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-  public ResponseEntity<List<Order>> getAuthenticatedUserOrders() {
+  public ResponseEntity<List<OrderResponseDto>> getAuthenticatedUserOrders() {
     logger.info("Getting orders for authenticated user");
     try {
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -306,7 +306,7 @@ public class OrderController {
   })
   @GetMapping("company/{companyId}")
   @PreAuthorize("hasAnyAuthority('USER')")
-  public ResponseEntity<List<Order>> getOrdersByCompanyId(
+  public ResponseEntity<List<OrderResponseDto>> getOrdersByCompanyId(
       @PathVariable Long companyId,
       @AuthenticationPrincipal AccessUserDetails accessUserDetails
   ) {

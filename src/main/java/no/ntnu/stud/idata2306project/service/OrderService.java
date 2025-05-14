@@ -95,9 +95,9 @@ public class OrderService {
    * @param userId the id of the user
    * @return a list of orders
    */
-  public List<Order> findOrdersByUserId(Long userId) {
+  public List<OrderResponseDto> findOrdersByUserId(Long userId) {
     logger.trace("Finding orders for user with id: {}", userId);
-    return orderRepository.findOrdersByUserId(userId);
+    return getOrderResponseDtos(orderRepository.findOrdersByUserId(userId));
   }
 
   /**
@@ -154,7 +154,7 @@ public class OrderService {
    * @param userId    id of user requesting the orders
    * @return a list of orders belonging to the company
    */
-  public List<Order> getOrdersByCompanyId(Long companyId, Long userId)
+  public List<OrderResponseDto> getOrdersByCompanyId(Long companyId, Long userId)
       throws IllegalArgumentException, InsufficientAuthenticationException {
     logger.trace("Finding orders with company id: {}", companyId);
     Company company = companyService.getCompanyById(companyId);
@@ -167,7 +167,7 @@ public class OrderService {
       throw new UnauthorizedException(
           "User with id " + userId + " does not belong to company with id " + companyId);
     }
-    return orderRepository.findAllOrdersByCompany_Id(companyId);
+    return getOrderResponseDtos(orderRepository.findAllOrdersByCompany_Id(companyId));
   }
 
   /**
