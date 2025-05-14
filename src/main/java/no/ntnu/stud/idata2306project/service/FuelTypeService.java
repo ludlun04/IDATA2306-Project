@@ -15,6 +15,11 @@ public class FuelTypeService {
     this.fuelTypeRepository = fuelTypeRepository;
   }
 
+  /**
+   * Get all fuel types that are used by cars.
+   *
+   * @return a set of all fuel types used by cars
+   */
   public Set<FuelType> getFuelTypesUsedInCars() {
     return fuelTypeRepository.getFuelTypesUsedInCars();
   }

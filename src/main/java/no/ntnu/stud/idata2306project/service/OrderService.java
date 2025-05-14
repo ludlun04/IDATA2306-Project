@@ -163,6 +163,13 @@ public class OrderService {
     return orderRepository.findAllOrdersByCompany_Id(companyId);
   }
 
+  /**
+   * Adds an order.
+   *
+   * @param userId  the id of the user
+   * @param orderDto the order to add
+   * @return the id of the order that was added
+   */
   public Long addOrder(long userId, OrderRequestDto orderDto) {
     logger.trace("Adding order for user with id: {}", userId);
     User user = this.userService.getUserById(userId);
@@ -200,6 +207,13 @@ public class OrderService {
     return order.getOrderId();
   }
 
+  /**
+   * Check if a user has access to an order.
+   *
+   * @param user the user to check
+   * @param orderId the id of the order
+   * @return true if the user has access to the order, false otherwise
+   */
   public boolean userHasAccessToOrder(AccessUserDetails user, long orderId) {
     logger.trace("Checking if user with id: {} has access to order with id: {}", user.getId(),
         orderId);

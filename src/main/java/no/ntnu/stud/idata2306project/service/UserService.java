@@ -4,30 +4,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import no.ntnu.stud.idata2306project.dto.UserDto;
 import no.ntnu.stud.idata2306project.exception.EmailAlreadyInUser;
+import no.ntnu.stud.idata2306project.exception.UserNotFoundException;
+import no.ntnu.stud.idata2306project.exception.UsernameAlreadyInUser;
 import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.contact.Address;
 import no.ntnu.stud.idata2306project.model.contact.PhoneNumber;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import no.ntnu.stud.idata2306project.exception.UserNotFoundException;
-import no.ntnu.stud.idata2306project.exception.UsernameAlreadyInUser;
 import no.ntnu.stud.idata2306project.model.user.Role;
 import no.ntnu.stud.idata2306project.model.user.User;
 import no.ntnu.stud.idata2306project.repository.AddressRepository;
 import no.ntnu.stud.idata2306project.repository.PhoneNumberRepository;
 import no.ntnu.stud.idata2306project.repository.RoleRepository;
 import no.ntnu.stud.idata2306project.repository.UserRepository;
+import no.ntnu.stud.idata2306project.security.AccessUserDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+/**
+ * Service class for managing users.
+ */
 @Service
 public class UserService {
   UserRepository userRepository;
@@ -40,13 +39,19 @@ public class UserService {
   Logger logger = LoggerFactory.getLogger(UserService.class);
 
   /**
-   * Constructor for UserService
+   * Constructor for UserService.
    *
    * @param userRepository  the user repository
    * @param roleRepository  the role repository
    * @param passwordEncoder the password encoder
    */
-  public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PhoneNumberRepository phoneNumberRepository, AddressRepository addressRepository, CarService carService) {
+  public UserService(
+      UserRepository userRepository, 
+      RoleRepository roleRepository, 
+      PasswordEncoder passwordEncoder, 
+      PhoneNumberRepository phoneNumberRepository, 
+      AddressRepository addressRepository, 
+      CarService carService) {
     this.phoneNumberRepository = phoneNumberRepository;
     this.addressRepository = addressRepository;
     this.passwordEncoder = passwordEncoder;
@@ -56,7 +61,7 @@ public class UserService {
   }
 
   /**
-   * Get all users
+   * Get all users.
    *
    * @return a list of all users
    */
@@ -65,7 +70,7 @@ public class UserService {
   }
 
   /**
-   * Get a user by id
+   * Get a user by id.
    *
    * @param id the id of the user
    * @return the user with the given id
@@ -81,7 +86,8 @@ public class UserService {
   }
 
   /**
-   * Add a user
+   * Add a user.
+   *
    * @param user the user to add
    * @param password the password of the user
    * @return the added user
@@ -92,7 +98,8 @@ public class UserService {
       throw new IllegalArgumentException("Password cannot be null or empty");
     }
 
-    Role role = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Role not found"));
+    Role role = roleRepository.findByName("USER")
+        .orElseThrow(() -> new RuntimeException("Role not found"));
     user.addRole(role);
 
     Optional<User> userWithEmail = userRepository.findByEmail(user.getEmail());
@@ -111,18 +118,21 @@ public class UserService {
   }
 
   /**
-   * Check if a user is an admin
+   * Check if a user is an admin.
+   *
    * @param userId the id of the user
    * @return true if the user is an admin, false otherwise
    */
   public boolean isAdmin(long userId) {
     Optional<User> user = userRepository.findById(userId);
-      return user.map(value -> value.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN")))
-              .orElse(false);
+    return user.map(value -> value.getRoles().stream()
+        .anyMatch(role -> role.getName().equals("ADMIN")))
+        .orElse(false);
   }
 
   /**
-   * Returns a user from a dto, minus password
+   * Returns a user from a dto, minus password.
+   *
    * @param userDto the user to add
    * @return the added user
    * @throws UsernameAlreadyInUser if the email is already in use
@@ -132,16 +142,16 @@ public class UserService {
       throw new IllegalArgumentException("Address cannot be null");
     }
     if (userDto.getEmail() == null) {
-        throw new IllegalArgumentException("Email cannot be null");
+      throw new IllegalArgumentException("Email cannot be null");
     }
     if (userDto.getPhoneNumber() == null) {
-        throw new IllegalArgumentException("Phone number cannot be null");
+      throw new IllegalArgumentException("Phone number cannot be null");
     }
     if (userDto.getFirstName() == null) {
-        throw new IllegalArgumentException("First name cannot be null");
+      throw new IllegalArgumentException("First name cannot be null");
     }
     if (userDto.getLastName() == null) {
-        throw new IllegalArgumentException("Last name cannot be null");
+      throw new IllegalArgumentException("Last name cannot be null");
     }
 
     User user = new User();
@@ -156,7 +166,7 @@ public class UserService {
   }
 
   /**
-   * Update a user
+   * Update a user.
    *
    * @param id   the id of the user
    * @throws UserNotFoundException if the user is not found
@@ -172,7 +182,7 @@ public class UserService {
   }
 
   /**
-   * Add a car to a user's favorites
+   * Add a car to a user's favorites.
    *
    * @param user the user
    * @param car  the car to add
@@ -183,7 +193,7 @@ public class UserService {
   }
 
   /**
-   * Set a car as favorite for a user
+   * Set a car as favorite for a user.
    *
    * @param user      the user
    * @param carId     the id of the car
@@ -210,7 +220,10 @@ public class UserService {
   }
 
   /**
-   * Returns user favorites within a list
+   * Returns user favorites within a list.
+   *
+   * @param userId the id of the user
+   * @param cars   the list of cars
    */
   public List<Car> getUserFavorites(long userId, List<Car> cars) {
     User user = getUserById(userId);
@@ -226,12 +239,15 @@ public class UserService {
   }
 
   /**
-   * Overwrites values of a user if different from the given userDto
+   * Overwrites values of a user if different from the given userDto.
+   *
    * @param userid the id of the user
    * @param userDto the user to update
+   * @param performer UserDetails for user performing the update
    * @throws UserNotFoundException if the user is not found
    */
-  public void updateUser(long userid, UserDto userDto) throws UserNotFoundException {
+  public void updateUser(long userid, UserDto userDto, AccessUserDetails performer) 
+      throws UserNotFoundException {
     Optional<User> userOptional = userRepository.findById(userid);
     if (userOptional.isPresent()) {
       User user = userOptional.get();
@@ -283,11 +299,13 @@ public class UserService {
         this.addressRepository.save(userAddress);
       }
 
-      if (userDto.getRoles() != null) {
+      // Update roles if the performer of the action isn't the user being updated
+      if (userDto.getRoles() != null && !performer.getId().equals(user.getId())) {
         HashSet<Role> roles = new HashSet<>();
         for (String roleName : userDto.getRoles()) {
           this.logger.info("Updated user {}", roleName);
-          Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException("Role not found"));
+          Role role = roleRepository.findByName(roleName)
+              .orElseThrow(() -> new RuntimeException("Role not found"));
           roles.add(role);
         }
 

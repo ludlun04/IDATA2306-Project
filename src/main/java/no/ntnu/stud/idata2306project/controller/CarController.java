@@ -9,19 +9,16 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-
+import no.ntnu.stud.idata2306project.dto.CarDto;
 import no.ntnu.stud.idata2306project.exception.CarNotFoundException;
 import no.ntnu.stud.idata2306project.exception.CompanyNotFoundException;
 import no.ntnu.stud.idata2306project.exception.InvalidFilterException;
 import no.ntnu.stud.idata2306project.exception.UnauthorizedException;
 import no.ntnu.stud.idata2306project.model.car.Car;
-import no.ntnu.stud.idata2306project.model.company.Company;
 import no.ntnu.stud.idata2306project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306project.service.CarFilterService;
 import no.ntnu.stud.idata2306project.service.CarService;
-import no.ntnu.stud.idata2306project.service.CompanyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -43,12 +40,12 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * <p>Contains the following endpoints:
  * <ul>
- *   <li> Get all cars
- *   <li> Get a car by its id
- *   <li> Get all amount of seats
- *   <li> Add a new car
- *   <li> Update a car's visibility
- *   <li> Delete a car by its id
+ * <li>Get all cars
+ * <li>Get a car by its id
+ * <li>Get all amount of seats
+ * <li>Add a new car
+ * <li>Update a car's visibility
+ * <li>Delete a car by its id
  * </ul>
  */
 @Tag(name = "Cars", description = "Endpoints for managing cars")
@@ -65,7 +62,6 @@ public class CarController {
    *
    * @param carService       The service for cars
    * @param carFilterService The service for filtering cars
-   * @param companyService   The service for companies
    */
   public CarController(
       CarService carService,
@@ -77,11 +73,13 @@ public class CarController {
   /**
    * Endpoint to get all cars.
    *
-   * <p>Note that cars marked as not visible will not be included.</p>
+   * <p>
+   * Note that cars marked as not visible will not be included.
+   * </p>
    *
    * @return ResponseEntity with a list of all cars
    */
-  @Operation(summary = "Get all cars",
+  @Operation(summary = "Get all cars", 
       description = "Get all cars. Cars marked as not visible will not be included.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of cars"),
@@ -89,23 +87,26 @@ public class CarController {
       @ApiResponse(responseCode = "500", description = "Internal server error")
   })
   @GetMapping()
-  public ResponseEntity<List<Car>> getAll(
-      @Parameter(name = "filters",
-          description = "Filters to apply when filtering which cars get returned")
-      @RequestParam Map<String, String> filters
-  ) {
+  public ResponseEntity<List<CarDto>> getAll(
+      @Parameter(name = "filters", 
+          description = "Filters to apply when filtering which cars get returned") 
+      @RequestParam Map<String, String> filters) {
 
     logger.info("Getting all cars{}", !filters.isEmpty() ? " with filters: " + filters : "");
 
-    ResponseEntity<List<Car>> response;
+    ResponseEntity<List<CarDto>> response;
 
     if (filters.isEmpty()) {
-      response = ResponseEntity.ok(carService.getAllVisibleCars());
+      response = ResponseEntity.ok(carService.getAllVisibleCars().stream()
+          .map(carService::getCarDtoFromCar)
+          .toList());
     } else {
       try {
         List<Car> cars = carFilterService.getCarsByFilters(filters);
         logger.info("{} cars found with filters: {}", cars.size(), filters);
-        response = ResponseEntity.ok(cars);
+        response = ResponseEntity.ok(cars.stream()
+            .map(carService::getCarDtoFromCar)
+            .toList());
       } catch (InvalidFilterException e) {
         logger.warn(e.getMessage());
         response = ResponseEntity.badRequest().body(null);
@@ -124,17 +125,15 @@ public class CarController {
    * @param id The id of the car
    * @return ResponseEntity with the car if it is found
    */
-  @Operation(summary = "Get a car by its id",
-      description = "Get a car by its id.")
+  @Operation(summary = "Get a car by its id", description = "Get a car by its id.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Car found"),
       @ApiResponse(responseCode = "404", description = "Car not found")
   })
   @GetMapping("/{id}")
-  public ResponseEntity<Car> getById(
-      @Parameter(name = "id", description = "The id of the car", required = true)
-      @PathVariable Long id
-  ) {
+  public ResponseEntity<CarDto> getById(
+      @Parameter(name = "id", description = "The id of the car", required = true) 
+      @PathVariable Long id) {
     Optional<Car> car = this.carService.getCarById(id);
 
     if (car.isEmpty()) {
@@ -143,7 +142,7 @@ public class CarController {
     }
 
     logger.info("Car with id {} found", id);
-    return ResponseEntity.ok(car.get());
+    return ResponseEntity.ok(this.carService.getCarDtoFromCar(car.get()));
   }
 
   /**
@@ -151,7 +150,7 @@ public class CarController {
    *
    * @return ResponseEntity with a list of all amount of seats in cars
    */
-  @Operation(summary = "Get all amount of seats in cars",
+  @Operation(summary = "Get all amount of seats in cars", 
       description = "Get all amount of seats in cars.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of amount of seats in cars")
@@ -168,8 +167,7 @@ public class CarController {
    * @param car The car to add
    * @return ResponseEntity with the id of the new cars id
    */
-  @Operation(summary = "Add a new car",
-      description = "Add a new car.")
+  @Operation(summary = "Add a new car", description = "Add a new car.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Car added"),
       @ApiResponse(responseCode = "400", description = "Invalid car data"),
@@ -177,9 +175,8 @@ public class CarController {
   @PostMapping()
   @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
   public ResponseEntity<String> addCar(
-      @Parameter(name = "car", description = "The car to add", required = true)
-      @RequestBody @Valid Car car
-  ) {
+      @Parameter(name = "car", description = "The car to add", required = true) 
+      @RequestBody @Valid Car car) {
     logger.info("Adding car with id: {}", car.getId());
     ResponseEntity<String> response;
     try {
@@ -187,7 +184,8 @@ public class CarController {
       logger.info("{}", car.getId());
 
       URI location = URI.create("/car/" + car.getId());
-      response = ResponseEntity.created(location).body(""+car.getId());
+      response = ResponseEntity.created(location).body((Long.toString(car.getId())));
+
     } catch (InvalidDataAccessApiUsageException e) {
       logger.warn("Invalid car data: {}", e.getMessage());
       response = ResponseEntity.badRequest().body("Given data conflicts with existing data");
@@ -196,7 +194,8 @@ public class CarController {
   }
 
   /**
-   * Endpoint for updating a car's visibility. User must be logged in and be a part of the company
+   * Endpoint for updating a car's visibility. User must be logged in and be a
+   * part of the company
    * that owns the car.
    *
    * @param id      The id of the car
@@ -211,12 +210,11 @@ public class CarController {
   })
   @PreAuthorize("hasAuthority('USER')")
   @PutMapping("/{id}/visibility")
-  public ResponseEntity<Car> updateCarVisibility(
-      @Parameter(name = "id", description = "The id of the car", required = true)
+  public ResponseEntity<String> updateCarVisibility(
+      @Parameter(name = "id", description = "The id of the car", required = true) 
       @PathVariable Long id,
-      @Parameter(name = "visible", description = "The visibility of the car", required = true)
-      @RequestBody boolean visible
-  ) {
+      @Parameter(name = "visible", description = "The visibility of the car", required = true) 
+      @RequestBody boolean visible) {
     Optional<Car> car = this.carService.getCarById(id);
     if (car.isEmpty()) {
       logNotFound(id);
@@ -230,7 +228,9 @@ public class CarController {
       carService.setVisible(userDetails.getId(), id, visible);
       logger.info("Car with id {} updated", id);
     } catch (UnauthorizedException e) {
-      logger.warn("User with id {} is not authorized to update car with id {}", userDetails.getId(), id);
+      logger.warn("User with id {} is not authorized to update car with id {}",
+          userDetails.getId(), id);
+
       return ResponseEntity.status(403).build();
     } catch (CarNotFoundException e) {
       logNotFound(id);
@@ -239,7 +239,7 @@ public class CarController {
       logger.warn("No company found that owns car with id {}", id);
     }
 
-    return ResponseEntity.ok(car.get());
+    return ResponseEntity.ok(car.get().getId() + " updated");
   }
 
   /**
@@ -248,8 +248,7 @@ public class CarController {
    * @param id The id of the car to delete
    * @return ResponseEntity with a message if the car was deleted
    */
-  @Operation(summary = "Delete a car by its id",
-      description = "Delete a car by its id.")
+  @Operation(summary = "Delete a car by its id", description = "Delete a car by its id.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Car deleted"),
       @ApiResponse(responseCode = "404", description = "Car not found")
@@ -257,9 +256,8 @@ public class CarController {
   @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<String> deleteCar(
-      @Parameter(name = "id", description = "The id of the car", required = true)
-      @PathVariable Long id
-  ) {
+      @Parameter(name = "id", description = "The id of the car", required = true) 
+      @PathVariable Long id) {
     Optional<Car> car = carService.getCarById(id);
 
     if (car.isEmpty()) {
@@ -275,6 +273,5 @@ public class CarController {
   private void logNotFound(Long id) {
     logger.warn("Car with id {} not found", id);
   }
-
 
 }
