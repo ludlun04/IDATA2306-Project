@@ -6,9 +6,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
+
+import no.ntnu.stud.idata2306project.dto.CarDto;
 import no.ntnu.stud.idata2306project.dto.CarFavoriteRequestDto;
 import no.ntnu.stud.idata2306project.dto.UserDto;
 import no.ntnu.stud.idata2306project.exception.UserNotFoundException;
@@ -125,11 +127,11 @@ public class UserController {
   })
   @PreAuthorize("hasAnyAuthority('USER')")
   @GetMapping("/favorites")
-  public ResponseEntity<List<Car>> getAuthenticatedUserFavorites() {
+  public ResponseEntity<List<CarDto>> getAuthenticatedUserFavorites() {
     AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
         .getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
-    return ResponseEntity.ok(user.getFavorites());
+    return ResponseEntity.ok(userService.getUserFavorites(user));
   }
 
   /**
@@ -157,7 +159,7 @@ public class UserController {
     AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
         .getContext().getAuthentication().getPrincipal();
 
-    return ResponseEntity.ok(userService.getUserFavorites(userDetails.getId(), cars));
+    return ResponseEntity.ok(userService.getUserFavoritesAmongList(userDetails.getId(), cars));
   }
 
   /**
