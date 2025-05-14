@@ -17,24 +17,29 @@ import org.springframework.data.repository.ListCrudRepository;
 public interface CompanyRepository extends ListCrudRepository<Company, Long> {
 
   @Query("""
-      SELECT DISTINCT company
-            FROM Company company JOIN Car car ON company.id = car.company.id
+      SELECT company
+            FROM Company company
+                  WHERE company.cars IS NOT EMPTY
       """)
   Set<Company> findAllInUseOnCars();
 
   Set<Company> findAllByUsers_Id(long usersId);
 
   @Query("""
-      SELECT DISTINCT car
-                  FROM Company company JOIN Car car ON company.id = car.company.id
+      SELECT company.cars
+                  FROM Company company
                   WHERE company.id = :companyId
       """)
   List<Car> getCarsBelongingToCompany(Long companyId);
 
   @Query("""
-      SELECT DISTINCT company
-                  FROM Company company JOIN Car car ON company.id = car.company.id
-                  WHERE car.id = :carId
+      SELECT company
+                  FROM Company company
+                  WHERE :carId IN (
+                        SELECT car.id
+                              FROM company.cars car
+                              WHERE car.id = :carId
+                        )
       """)
   Company findCompanyThatOwnsCar(Long carId);
 }

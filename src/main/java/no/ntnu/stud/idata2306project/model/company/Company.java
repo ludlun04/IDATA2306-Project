@@ -12,6 +12,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,6 +71,7 @@ public class Company {
     this.name = name;
     this.address = address;
     this.phoneNumber = phoneNumber;
+    this.cars = new ArrayList<>();
   }
 
   /**
@@ -176,5 +179,38 @@ public class Company {
    */
   public Set<User> getUsers() {
     return this.users;
+  }
+
+  /**
+   * Adds a car to the company.
+   *
+   * @param car the car to add
+   */
+  public void addCar(Car car) {
+    if (car == null) {
+      throw new IllegalArgumentException("Car cannot be null");
+    }
+    this.cars.add(car);
+  }
+
+  /**
+   * Removes a car from the company.
+   *
+   * @param car the car to remove
+   */
+  public void removeCar(Car car) {
+    if (car == null) {
+      throw new IllegalArgumentException("Car cannot be null");
+    }
+    this.cars.remove(car);
+  }
+
+  /**
+   * Returns the list of cars provided by the company.
+   *
+   * @return the list of cars provided by the company.
+   */
+  public List<Car> getCars() {
+    return this.cars;
   }
 }

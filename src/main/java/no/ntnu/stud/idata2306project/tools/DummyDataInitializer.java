@@ -253,6 +253,100 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     auto99.addUser(userService.getUserById(3));
     auto1010.addUser(userService.getUserById(3));
 
+    String description1 = "This is a great car for city driving. It has a compact size and is easy to park.";
+    String description2 = "This car is perfect for long road trips. It has a spacious interior and a powerful engine.";
+    String description3 = "This car is great for families. It has plenty of space for kids and luggage.";
+    String description4 = "This car is perfect for off-road adventures. It has a rugged design and all-wheel drive.";
+    String description5 = "This car is great for city driving. It has a compact size and is easy to park.";
+    String description6 = "This car is perfect for long road trips. It has a spacious interior and a powerful engine.";
+    String description7 = "This car is great for families. It has plenty of space for kids and luggage.";
+    String description8 = "This car is perfect for off-road adventures. It has a rugged design and all-wheel drive.";
+    String description9 = "This car is great for city driving. It has a compact size and is easy to park.";
+    String description10 = "This car is perfect for long road trips. It has a spacious interior and a powerful engine.";
+    String description11 = "This car is great for families. It has plenty of space for kids and luggage.";
+    String description12 = "This car is perfect for off-road adventures. It has a rugged design and all-wheel drive.";
+
+    Car car1 = new Car(2007, 5, 600, volkswagenGolf, petrol, automatic, List.of(childSeatAddon),
+        List.of(bluetooth, heatedSeats, DAB), description1);
+    Car car2 = new Car(2007, 5, 550, volkswagenGolf, petrol, automatic, List.of(childSeatAddon),
+        List.of(bluetooth, heatedSeats, DAB), description1);
+    Car car3 = new Car(2019, 5, 700, teslaModel3, electric, automatic, List.of(childSeatAddon),
+        List.of(autoPilot, longRange, heatedSeats), description2);
+    Car car4 = new Car(2019, 5, 500, teslaModel3, electric, automatic, List.of(childSeatAddon),
+        List.of(autoPilot, longRange, heatedSeats), description2);
+    Car car5 = new Car(2022, 5, 900, teslaModelY, electric, automatic, List.of(childSeatAddon),
+        List.of(fourWheelDrive, sunRoof, autoPilot), description3);
+    Car car6 = new Car(2022, 5, 700, teslaModelY, electric, automatic, List.of(childSeatAddon),
+        List.of(fourWheelDrive, sunRoof, autoPilot), description3);
+    Car car7 = new Car(2016, 5, 500, nissanLeaf, electric, automatic, List.of(childSeatAddon), List.of(),
+        description4);
+    Car car8 = new Car(2016, 5, 500, nissanLeaf, electric, automatic, List.of(childSeatAddon), List.of(),
+        description4);
+    Car car9 = new Car(2017, 5, 400, mazda2, petrol, automatic, List.of(childSeatAddon), List.of(DAB),
+        description5);
+    Car car10 = new Car(1978, 8, 200, vwTransporter, petrol, manual, List.of(childSeatAddon), List.of(retrofitted), description6);
+    Car car11 = new Car(1978, 8, 70, vwTransporter, petrol, manual, List.of(childSeatAddon), List.of(retrofitted), description6);
+    Car car12 = new Car(1978, 8, 180, vwTransporter, petrol, manual, List.of(childSeatAddon), List.of(retrofitted), description6);
+    Car car13 = new Car(1988, 4, 400, bmwM3, petrol, manual, List.of(childSeatAddon),
+        List.of(threeStripes, originalTireDiscs), description7);
+    Car car14 = new Car(1988, 4, 450, bmwM3, petrol, manual, List.of(childSeatAddon),
+        List.of(threeStripes, originalTireDiscs), description7);
+    Car car15 = new Car(1988, 4, 449, bmwM3, petrol, manual, List.of(childSeatAddon),
+        List.of(threeStripes, originalTireDiscs), description7);
+    Car car16 = new Car(2011, 5, 300, skodaFabia, diesel, automatic, List.of(childSeatAddon), List.of(towHook), description8);
+    Car car17 = new Car(2011, 5, 299, skodaFabia, diesel, automatic, List.of(childSeatAddon), List.of(towHook), description8);
+    Car car18 = new Car(2011, 5, 700, skodaFabia, diesel, automatic, List.of(childSeatAddon), List.of(towHook), description8);
+    Car car19 = new Car(2008, 7, 600, peugeot307SW, diesel, manual, List.of(childSeatAddon), List.of(skiBox), description9);
+    Car car20 = new Car(2008, 7, 550, peugeot307SW, diesel, manual, List.of(childSeatAddon), List.of(skiBox),
+        description9);
+    Car car21 = new Car(2007, 5, 500, peugeot207, diesel, manual, List.of(childSeatAddon),
+        List.of(heatedSeats, heatedSteeringWheel, heatedMirrors), description10);
+    Car car22 = new Car(2007, 5, 550, peugeot207, diesel, manual, List.of(childSeatAddon),
+        List.of(heatedSeats, heatedSteeringWheel, heatedMirrors), description10);
+    Car car23 = new Car(2010, 5, 600, peugeot3008, diesel, manual, List.of(childSeatAddon),
+        List.of(fmRadio, cdPlayer, metallicPaint), description11);
+    Car car24 = new Car(2010, 5, 600, peugeot3008, diesel, manual, List.of(childSeatAddon),
+        List.of(fmRadio, cdPlayer, metallicPaint), description11);
+    Car car25 = new Car(2015, 4, 200, peugeotiOne, electric, automatic, List.of(childSeatAddon),
+        List.of(fiveDoors, ecoFriendly), description12);
+    Car car26 = new Car(2015, 4, 201, peugeotiOne, electric, automatic, List.of(childSeatAddon),
+        List.of(fiveDoors, ecoFriendly), description12);
+
+    List<Car> cars = List.of(car1, car2, car3, car4, car5, car6, car7, car8, car9, car10, car11, car12, car13, car14,
+        car15, car16, car17, car18, car19, car20, car21, car22, car23, car24, car25, car26);
+    this.carRepository.saveAll(cars);
+
+    millerBil.addCar(car1);
+    billerBil.addCar(car2);
+    biggernesTesla.addCar(car3);
+    teslaTomPrivate.addCar(car4);
+    biggernesTesla.addCar(car5);
+    teslaTomPrivate.addCar(car6);
+    auto99.addCar(car7);
+    auto1010.addCar(car8);
+    bilikist.addCar(car9);
+    ørstaKommune.addCar(car10);
+    sirkelsliperen.addCar(car11);
+    peacePer.addCar(car12);
+    bilverksted.addCar(car13);
+    grabes.addCar(car14);
+    djarney.addCar(car15);
+    sprekksaver.addCar(car16);
+    smidigBilforhandler.addCar(car17);
+    fossefallBilforhandler.addCar(car18);
+    betrelOstein.addCar(car19);
+    auto1010.addCar(car20);
+    betrelOstein.addCar(car21);
+    auto1010.addCar(car22);
+    betrelOstein.addCar(car23);
+    auto1010.addCar(car24);
+    betrelOstein.addCar(car25);
+    auto1010.addCar(car26);
+
+    car5.setVisible(false);
+    car9.setVisible(false);
+    car17.setVisible(false);
+
     this.companyService.addCompany(millerBil);
     this.companyService.addCompany(billerBil);
     this.companyService.addCompany(biggernesTesla);
@@ -271,80 +365,6 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     this.companyService.addCompany(fossefallBilforhandler);
     this.companyService.addCompany(betrelOstein);
     this.companyService.addCompany(smidigBilforhandler);
-
-    String description1 = "This is a great car for city driving. It has a compact size and is easy to park.";
-    String description2 = "This car is perfect for long road trips. It has a spacious interior and a powerful engine.";
-    String description3 = "This car is great for families. It has plenty of space for kids and luggage.";
-    String description4 = "This car is perfect for off-road adventures. It has a rugged design and all-wheel drive.";
-    String description5 = "This car is great for city driving. It has a compact size and is easy to park.";
-    String description6 = "This car is perfect for long road trips. It has a spacious interior and a powerful engine.";
-    String description7 = "This car is great for families. It has plenty of space for kids and luggage.";
-    String description8 = "This car is perfect for off-road adventures. It has a rugged design and all-wheel drive.";
-    String description9 = "This car is great for city driving. It has a compact size and is easy to park.";
-    String description10 = "This car is perfect for long road trips. It has a spacious interior and a powerful engine.";
-    String description11 = "This car is great for families. It has plenty of space for kids and luggage.";
-    String description12 = "This car is perfect for off-road adventures. It has a rugged design and all-wheel drive.";
-
-    Car car1 = new Car(2007, 5, 600, volkswagenGolf, petrol, automatic, List.of(childSeatAddon),
-        List.of(bluetooth, heatedSeats, DAB), millerBil, description1);
-    Car car2 = new Car(2007, 5, 550, volkswagenGolf, petrol, automatic, List.of(childSeatAddon),
-        List.of(bluetooth, heatedSeats, DAB), billerBil, description1);
-    Car car3 = new Car(2019, 5, 700, teslaModel3, electric, automatic, List.of(childSeatAddon),
-        List.of(autoPilot, longRange, heatedSeats), biggernesTesla, description2);
-    Car car4 = new Car(2019, 5, 500, teslaModel3, electric, automatic, List.of(childSeatAddon),
-        List.of(autoPilot, longRange, heatedSeats), teslaTomPrivate, description2);
-    Car car5 = new Car(2022, 5, 900, teslaModelY, electric, automatic, List.of(childSeatAddon),
-        List.of(fourWheelDrive, sunRoof, autoPilot), biggernesTesla, description3);
-    Car car6 = new Car(2022, 5, 700, teslaModelY, electric, automatic, List.of(childSeatAddon),
-        List.of(fourWheelDrive, sunRoof, autoPilot), teslaTomPrivate, description3);
-    Car car7 = new Car(2016, 5, 500, nissanLeaf, electric, automatic, List.of(childSeatAddon), List.of(), auto99,
-        description4);
-    Car car8 = new Car(2016, 5, 500, nissanLeaf, electric, automatic, List.of(childSeatAddon), List.of(), auto1010,
-        description4);
-    Car car9 = new Car(2017, 5, 400, mazda2, petrol, automatic, List.of(childSeatAddon), List.of(DAB), bilikist,
-        description5);
-    Car car10 = new Car(1978, 8, 200, vwTransporter, petrol, manual, List.of(childSeatAddon), List.of(retrofitted),
-        ørstaKommune, description6);
-    Car car11 = new Car(1978, 8, 70, vwTransporter, petrol, manual, List.of(childSeatAddon), List.of(retrofitted),
-        sirkelsliperen, description6);
-    Car car12 = new Car(1978, 8, 180, vwTransporter, petrol, manual, List.of(childSeatAddon), List.of(retrofitted),
-        peacePer, description6);
-    Car car13 = new Car(1988, 4, 400, bmwM3, petrol, manual, List.of(childSeatAddon),
-        List.of(threeStripes, originalTireDiscs), bilverksted, description7);
-    Car car14 = new Car(1988, 4, 450, bmwM3, petrol, manual, List.of(childSeatAddon),
-        List.of(threeStripes, originalTireDiscs), grabes, description7);
-    Car car15 = new Car(1988, 4, 449, bmwM3, petrol, manual, List.of(childSeatAddon),
-        List.of(threeStripes, originalTireDiscs), djarney, description7);
-    Car car16 = new Car(2011, 5, 300, skodaFabia, diesel, automatic, List.of(childSeatAddon), List.of(towHook),
-        sprekksaver, description8);
-    Car car17 = new Car(2011, 5, 299, skodaFabia, diesel, automatic, List.of(childSeatAddon), List.of(towHook),
-        smidigBilforhandler, description8);
-    Car car18 = new Car(2011, 5, 700, skodaFabia, diesel, automatic, List.of(childSeatAddon), List.of(towHook),
-        fossefallBilforhandler, description8);
-    Car car19 = new Car(2008, 7, 600, peugeot307SW, diesel, manual, List.of(childSeatAddon), List.of(skiBox),
-        betrelOstein, description9);
-    Car car20 = new Car(2008, 7, 550, peugeot307SW, diesel, manual, List.of(childSeatAddon), List.of(skiBox), auto1010,
-        description9);
-    Car car21 = new Car(2007, 5, 500, peugeot207, diesel, manual, List.of(childSeatAddon),
-        List.of(heatedSeats, heatedSteeringWheel, heatedMirrors), betrelOstein, description10);
-    Car car22 = new Car(2007, 5, 550, peugeot207, diesel, manual, List.of(childSeatAddon),
-        List.of(heatedSeats, heatedSteeringWheel, heatedMirrors), auto1010, description10);
-    Car car23 = new Car(2010, 5, 600, peugeot3008, diesel, manual, List.of(childSeatAddon),
-        List.of(fmRadio, cdPlayer, metallicPaint), betrelOstein, description11);
-    Car car24 = new Car(2010, 5, 600, peugeot3008, diesel, manual, List.of(childSeatAddon),
-        List.of(fmRadio, cdPlayer, metallicPaint), auto1010, description11);
-    Car car25 = new Car(2015, 4, 200, peugeotiOne, electric, automatic, List.of(childSeatAddon),
-        List.of(fiveDoors, ecoFriendly), betrelOstein, description12);
-    Car car26 = new Car(2015, 4, 201, peugeotiOne, electric, automatic, List.of(childSeatAddon),
-        List.of(fiveDoors, ecoFriendly), auto1010, description12);
-
-    car5.setVisible(false);
-    car9.setVisible(false);
-    car17.setVisible(false);
-
-    List<Car> cars = List.of(car1, car2, car3, car4, car5, car6, car7, car8, car9, car10, car11, car12, car13, car14,
-        car15, car16, car17, car18, car19, car20, car21, car22, car23, car24, car25, car26);
-    this.carRepository.saveAll(cars);
 
     logger.info("Dummy data initialized");
 
