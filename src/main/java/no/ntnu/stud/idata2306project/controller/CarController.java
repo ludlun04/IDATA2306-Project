@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.RestController;
  * <li>Add a new car
  * <li>Update a car's visibility
  * <li>Delete a car by its id
+ * <li> Get cars belonging to a company
  * </ul>
  */
 @Tag(name = "Cars", description = "Endpoints for managing cars")
@@ -268,6 +269,28 @@ public class CarController {
     carService.deleteCarById(car.get().getId());
     logger.info("Car with id {} deleted", id);
     return ResponseEntity.ok("Car deleted");
+  }
+
+  /**
+   * Get all cars belonging to a company.
+   *
+   * @param companyId the id of the company to get cars from
+   * @return a list of all cars belonging to the company
+   */
+  @Operation(
+      summary = "Get all cars belonging to a company",
+      description = "Get a list of all cars belonging to a company"
+  )
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List of cars belonging to the company"),
+      @ApiResponse(responseCode = "404", description = "Company not found")
+  })
+  @PreAuthorize("hasAuthority('USER')")
+  @GetMapping("/company/{companyId}")
+  public ResponseEntity<List<CarDto>> getCarsBelongingToCompany(@PathVariable Long companyId) {
+    logger.info("Getting all cars belonging to company with id {}", companyId);
+    List<CarDto> cars = carService.getCarsBelongingToCompany(companyId);
+    return ResponseEntity.ok(cars);
   }
 
   private void logNotFound(Long id) {

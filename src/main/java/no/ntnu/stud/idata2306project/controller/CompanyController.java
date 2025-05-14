@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Set;
+
+import no.ntnu.stud.idata2306project.dto.CarDto;
 import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.company.Company;
 import no.ntnu.stud.idata2306project.model.user.User;
@@ -44,7 +46,6 @@ import org.springframework.web.bind.annotation.RestController;
  *  <li> Get all users in a company
  *  <li> Get all companies used in cars
  *  <li> Get companies associated with the current user
- *  <li> Get cars belonging to a company
  * </ul>
  */
 @Tag(name = "Companies", description = "Endpoints for managing companies")
@@ -369,24 +370,4 @@ public class CompanyController {
         .body(companyService.getAllCompaniesByUserId(userDetails.getId()));
   }
 
-  /**
-   * Get all cars belonging to a company.
-   *
-   * @param companyId the id of the company to get cars from
-   * @return a list of all cars belonging to the company
-   */
-  @Operation(
-      summary = "Get all cars belonging to a company",
-      description = "Get a list of all cars belonging to a company"
-  )
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List of cars belonging to the company"),
-      @ApiResponse(responseCode = "404", description = "Company not found")
-  })
-  @PreAuthorize("hasAuthority('USER')")
-  @GetMapping("/{companyId}/cars")
-  public ResponseEntity<List<Car>> getCarsBelongingToCompany(@PathVariable Long companyId) {
-    logger.info("Getting all cars belonging to company with id {}", companyId);
-    return ResponseEntity.ok(companyService.getCarsBelongingToCompany(companyId));
-  }
 }

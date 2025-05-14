@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import no.ntnu.stud.idata2306project.dto.CarDto;
 import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.company.Company;
 import no.ntnu.stud.idata2306project.model.contact.Address;
@@ -37,12 +39,14 @@ public class CompanyService {
    * @param companyRepository the company repository
    * @param phoneNumberRepository the phone number repository
    * @param addressRepository the address repository
+   *
    */
   public CompanyService(
       UserRepository userRepository, 
       CompanyRepository companyRepository,
       PhoneNumberRepository phoneNumberRepository,
-      AddressRepository addressRepository) {
+      AddressRepository addressRepository
+  ) {
     this.phoneNumberRepository = phoneNumberRepository;
     this.addressRepository = addressRepository;
     this.userRepository = userRepository;
@@ -150,16 +154,6 @@ public class CompanyService {
    */
   public Set<Company> getAllCompaniesByUserId(long userId) {
     return this.companyRepository.findAllByUsers_Id(userId);
-  }
-
-  /**
-   * Get all cars belonging to a company.
-   *
-   * @param companyId the id of the company to get cars for
-   * @return a list of cars that belong to the company
-   */
-  public List<Car> getCarsBelongingToCompany(Long companyId) {
-    return this.companyRepository.getCarsBelongingToCompany(companyId);
   }
 
   /**

@@ -26,13 +26,6 @@ public interface CompanyRepository extends ListCrudRepository<Company, Long> {
   Set<Company> findAllByUsers_Id(long usersId);
 
   @Query("""
-      SELECT company.cars
-                  FROM Company company
-                  WHERE company.id = :companyId
-      """)
-  List<Car> getCarsBelongingToCompany(Long companyId);
-
-  @Query("""
       SELECT company
                   FROM Company company
                   WHERE :carId IN (

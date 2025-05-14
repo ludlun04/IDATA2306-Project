@@ -1,5 +1,6 @@
 package no.ntnu.stud.idata2306project.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -123,6 +124,17 @@ public class CarService {
   }
 
   /**
+   * Get all cars belonging to a company.
+   *
+   * @param companyId the id of the company to get cars for
+   * @return a list of cars that belong to the company
+   */
+  public List<CarDto> getCarsBelongingToCompany(Long companyId) {
+    List<Car> cars = this.carRepository.getCarsBelongingToCompany(companyId);
+    return getCarDtosFromCars(cars);
+  }
+
+  /**
    * Returns a carDto object for the given car.
    *
    * @param car the car to convert
@@ -145,5 +157,13 @@ public class CarService {
     carDto.setFeatures(car.getFeatures());
 
     return carDto;
+  }
+
+  public List<CarDto> getCarDtosFromCars(List<Car> cars) {
+    List<CarDto> carDtos = new ArrayList<>();
+    for (Car car : cars) {
+      carDtos.add(getCarDtoFromCar(car));
+    }
+    return carDtos;
   }
 }

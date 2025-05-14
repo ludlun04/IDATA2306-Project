@@ -25,5 +25,12 @@ public interface CarRepository extends JpaRepository<Car, Long> {
       """)
   Set<Integer> findAllAmountOfSeatsInCars();
 
+  @Query("""
+      SELECT company.cars
+                  FROM Company company
+                  WHERE company.id = :companyId
+      """)
+  List<Car> getCarsBelongingToCompany(Long companyId);
+
   List<Car> findAllByVisible(boolean visible);
 }
