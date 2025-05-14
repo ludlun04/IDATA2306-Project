@@ -19,7 +19,7 @@ public class CarDto {
   private int pricePerDay;
   private FuelType fuelType;
   private TransmissionType transmissionType;
-  private CarModel carModel;
+  private CarModel model;
   private Company company;
   private String description;
   private List<Addon> addons;
@@ -73,12 +73,12 @@ public class CarDto {
     return transmissionType;
   }
 
-  public void setCarModel(CarModel carModel) {
-    this.carModel = carModel;
+  public void setModel(CarModel model) {
+    this.model = model;
   }
 
-  public CarModel getCarModel() {
-    return carModel;
+  public CarModel getModel() {
+    return this.model;
   }
 
   public void setCompany(Company company) {

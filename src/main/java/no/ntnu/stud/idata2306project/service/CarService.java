@@ -138,7 +138,7 @@ public class CarService {
     carDto.setPricePerDay(car.getPricePerDay());
     carDto.setFuelType(car.getFuelType());
     carDto.setTransmissionType(car.getTransmissionType());
-    carDto.setCarModel(car.getModel());
+    carDto.setModel(car.getModel());
     carDto.setCompany(company);
     carDto.setDescription(car.getDescription());
     carDto.setAddons(car.getAddons());
