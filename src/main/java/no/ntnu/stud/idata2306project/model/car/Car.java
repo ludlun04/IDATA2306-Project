@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
+import java.util.Objects;
+
 import no.ntnu.stud.idata2306project.model.company.Company;
 
 /**
@@ -249,5 +251,33 @@ public class Car {
    */
   public void setFeatures(List<Feature> features) {
     this.features = features;
+  }
+
+  /**
+   * Returns true if the car is equal to another car, this is determined by the id of the car.
+   *
+   * @param o the object to compare to
+   * @return true if equal, false otherwise
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Car car)) return false;
+
+    if (car.getId() == this.getId()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Returns the hash code of the car.
+   *
+   * @return the hash code of the car
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 }

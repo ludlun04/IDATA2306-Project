@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -72,7 +73,7 @@ public class User {
   @Schema(description = "The user's favorite cars")
   @JsonIgnore
   @ManyToMany(fetch = FetchType.EAGER)
-  List<Car> favorites;
+  Set<Car> favorites;
 
   @Schema(description = "The user's roles")
   @ManyToMany(fetch = FetchType.EAGER)
@@ -80,7 +81,6 @@ public class User {
 
   /**
    * Default constructor for User
-   *
    */
   public User() {/** */}
 
@@ -113,6 +113,7 @@ public class User {
 
   /**
    * Adds a role to the user
+   *
    * @param role the role to be added
    */
   public void addRole(Role role) {
@@ -124,6 +125,7 @@ public class User {
 
   /**
    * Removes a role from the user
+   *
    * @param role the role to be removed
    */
   public void removeRole(Role role) {
@@ -208,7 +210,7 @@ public class User {
    *
    * @return the user's favorites
    */
-  public List<Car> getFavorites() {
+  public Set<Car> getFavorites() {
     return this.favorites;
   }
 
@@ -250,6 +252,7 @@ public class User {
 
   /**
    * Sets the users first name
+   *
    * @param firstName
    */
   public void setFirstname(String firstName) {
@@ -279,7 +282,7 @@ public class User {
    *
    * @param favorites
    */
-  public void setFavorites(List<Car> favorites) {
+  public void setFavorites(Set<Car> favorites) {
     this.favorites = favorites;
   }
 
@@ -289,7 +292,19 @@ public class User {
    * @param car the car to be added to the favorites
    */
   public void addFavorite(Car car) {
-    this.favorites.add(car);
+    if (!favorites.contains(car)) {
+      this.favorites.add(car);
+    }
+
+  }
+
+  /**
+   * Adds cars to the user's favorites.
+   *
+   * @param cars the cars to be added to the favorites
+   */
+  public void addFavorites(Car... cars) {
+    this.favorites.addAll(Arrays.asList(cars));
   }
 
   /**

@@ -152,7 +152,7 @@ public class UserController {
   })
   @PreAuthorize("hasAnyAuthority('USER')")
   @PostMapping("/favorites")
-  public ResponseEntity<List<Car>> getAuthenticatedUserFavoritesFromList(
+  public ResponseEntity<List<CarDto>> getAuthenticatedUserFavoritesFromList(
       @Parameter(description = "List of cars to check against")
       @RequestBody List<Car> cars
   ) {

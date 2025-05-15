@@ -184,14 +184,15 @@ public class UserService {
   }
 
   /**
-   * Add a car to a user's favorites.
+   * Add cars to a user's favorites.
    *
    * @param user the user
-   * @param car  the car to add
+   * @param cars the cars to add
    */
-  public void addFavoriteToUser(User user, Car car) {
-    user.addFavorite(car);
+  public void addFavoritesToUser(User user, Car... cars) {
+    user.addFavorites(cars);
     userRepository.save(user);
+
   }
 
   /**
@@ -202,7 +203,7 @@ public class UserService {
    * @param isFavorite true if the car is a favorite, false otherwise
    * @return true if the car is a favorite, false otherwise
    */
-  public boolean setUserFavorite(User user, Long carId, Boolean isFavorite) {
+  public boolean setUserFavorite(User user, Long carId, boolean isFavorite) {
     boolean result;
     Optional<Car> carOptional = carService.getCarById(carId);
     if (carOptional.isPresent()) {
@@ -227,21 +228,24 @@ public class UserService {
    * @param userId the id of the user
    * @param cars   the list of cars
    */
-  public List<Car> getUserFavoritesAmongList(long userId, List<Car> cars) {
+  public List<CarDto> getUserFavoritesAmongList(long userId, List<Car> cars) {
     User user = getUserById(userId);
-    List<Car> favorites = user.getFavorites();
+    Set<Car> favorites = user.getFavorites();
+    List<Long> favoriteIds = favorites.stream()
+        .map(Car::getId)
+        .toList();
     Set<Car> favoritesSet = new HashSet<>();
     for (Car car : cars) {
-      if (favorites.contains(car)) {
+      if (favoriteIds.contains(car.getId())) {
         favoritesSet.add(car);
       }
     }
 
-    return List.copyOf(favoritesSet);
+    return carService.getCarDtosFromCars(List.copyOf(favoritesSet));
   }
 
   public List<CarDto> getUserFavorites(User user) {
-    return this.carService.getCarDtosFromCars(user.getFavorites());
+    return this.carService.getCarDtosFromCars(user.getFavorites().stream().toList());
   }
 
   /**

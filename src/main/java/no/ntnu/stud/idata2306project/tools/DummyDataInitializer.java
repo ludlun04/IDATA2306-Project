@@ -426,8 +426,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       order6.setCar(car1);
       orderRepository.save(order6);
 
-      this.userService.addFavoriteToUser(user, car1);
-      this.userService.addFavoriteToUser(user, car3);
+      this.userService.addFavoritesToUser(user, car1, car3);
 
 
     }
