@@ -41,7 +41,9 @@ public interface OrderRepository extends ListCrudRepository<Order, Long> {
       SELECT CASE WHEN COUNT(o) = 0 THEN true ELSE false END
       FROM Order o
       WHERE o.car.id = :carId
-          AND (o.startDate < :endDate AND o.endDate > :startDate)
+          AND ((o.startDate > :startDate AND o.startDate < :endDate)
+          OR (o.endDate > :startDate AND o.endDate < :endDate)
+          OR (o.startDate < :startDate AND o.endDate > :endDate))
       """)
   boolean isAvailableBetween(Long carId, LocalDate startDate, LocalDate endDate);
 

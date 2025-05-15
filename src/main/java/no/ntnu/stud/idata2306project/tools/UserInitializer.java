@@ -63,8 +63,8 @@ public class UserInitializer {
     admin.addRole(userRole);
     admin.addRole(adminRole);
     admin.setEmail(environment.getProperty("ADMIN_USER_EMAIL"));
-    admin.setFirstname("admin");
-    admin.setLastName("admin");
+    admin.setFirstname("Chuck");
+    admin.setLastName("Norris");
     admin.setAddress(address);
     admin.setGender(Gender.MALE);
     admin.setPhoneNumber(phoneNumber);
@@ -74,8 +74,8 @@ public class UserInitializer {
     User user = new User();
     user.addRole(userRole);
     user.setEmail(environment.getProperty("REGULAR_USER_EMAIL"));
-    user.setFirstname("user");
-    user.setLastName("user");
+    user.setFirstname("Dave");
+    user.setLastName("Dangerous");
     user.setAddress(address);
     user.setGender(Gender.FEMALE);
     user.setPhoneNumber(phoneNumber);

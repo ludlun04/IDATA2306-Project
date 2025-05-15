@@ -3,6 +3,8 @@
 ## Introduction
 Backend part of application developed for courses [IDATA2301](https://www.ntnu.edu/studies/courses/IDATA2301#tab=omEmnet) and [IDATA2306](https://www.ntnu.edu/studies/courses/IDATA2306#tab=omEmnet) at NTNU Ålesund.
 
+The project is a simple car rental application where companies go to advertice their cars.
+
 
 ### Contributors
 | Student Name     | GitHub account                              | Email Account            |
@@ -19,7 +21,7 @@ Backend part of application developed for courses [IDATA2301](https://www.ntnu.e
 - Docker installed and running
 - env file will all required feilds
 
-### Run The Application through maven
+### Run The Application
 1. Open terminal and navigate to the root of the project
 2. Run ``mvn spring-boot:run``
 
