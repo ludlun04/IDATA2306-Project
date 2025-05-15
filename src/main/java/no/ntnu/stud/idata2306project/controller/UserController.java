@@ -221,6 +221,7 @@ public class UserController {
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/roles")
   public ResponseEntity<Set<Role>> getCurrentAuthenticatedUserRoles() {
+    this.logger.info("Getting roles for authenticated user");
     AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
         .getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
