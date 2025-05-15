@@ -32,11 +32,12 @@ public class JwtUtil {
     final long timeNow = System.currentTimeMillis();
     final long millisecondsInHour = (long) 60 * 60 * 1000;
     final long timeAfterOneHour = timeNow + millisecondsInHour;
+    final long timeAfterThreeHours = 3 * timeAfterOneHour;
 
     return Jwts.builder()
       .subject(userDetails.getUsername())
       .issuedAt(new Date(timeNow))
-      .expiration(new Date(timeAfterOneHour))
+      .expiration(new Date(timeAfterThreeHours))
       .signWith(getSigningKey())
       .compact();
   }
