@@ -447,6 +447,15 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     byte[] teslaModel31600jpgImageData = null;
     byte[] skodaFabia1600jpgImageData = null;
     byte[] vwTransporterImageData = null;
+    byte[] blackTestla800jpgImageData = null;
+    byte[] bmwM3Evo800jpgImageData = null;
+    byte[] mazda3800jpgImageData = null;
+    byte[] nissanLeaf800jpgImageData = null;
+    byte[] peugeot307SW800jpgImageData = null;
+    byte[] peugeotiOn800jpgImageData = null;
+    byte[] teslaModel3800jpgImageData = null;
+    byte[] skodaFabia800jpgImageData = null;
+    byte[] vwTransporter800jpgImageData = null;
 
     try {
 
@@ -466,8 +475,27 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
           .getResourceAsStream("carImages/RedTesla/RedTesla-1600.jpg");
       InputStream skodaFabia1600jpg = getClass().getClassLoader()
           .getResourceAsStream("carImages/Skoda-Fabia/skoda-fabia-1600.jpg");
-      InputStream vwTransporter = getClass().getClassLoader()
+      InputStream vwTransporter1600 = getClass().getClassLoader()
           .getResourceAsStream("carImages/VW-Bus/vw-bus-1600.jpg");
+
+      InputStream blackTestla800jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/BlackTesla/BlackTesla-800.jpg");
+      InputStream bmwM3Evo800jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/bmw_m3/bmw_m3-800.jpg");
+      InputStream mazda3800jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/mazda/mazda3-800.jpg");
+      InputStream nissanLeaf800jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/Nissan/Nissan-800.jpg");
+      InputStream peugeot307SW800jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/Peguot/peugeot-800.jpg");
+      InputStream peugeotiOn800jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/Peugeot-iON/peugeot-ion-800.jpg");
+        InputStream teslaModel3800jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/RedTesla/RedTesla-800.jpg");
+        InputStream skodaFabia800jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/Skoda-Fabia/skoda-fabia-800.jpg");
+        InputStream vwTransporter800jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/VW-Bus/vw-bus-800.jpg");
 
 
       blackTesla1600jpgImageData = blackTesla1600jpg.readAllBytes();
@@ -478,51 +506,98 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       peugeotiOn1600jpgImageData = peugeotiOn1600jpg.readAllBytes();
       teslaModel31600jpgImageData = teslaModel31600jpg.readAllBytes();
       skodaFabia1600jpgImageData = skodaFabia1600jpg.readAllBytes();
-      vwTransporterImageData = vwTransporter.readAllBytes();
-
+      vwTransporterImageData = vwTransporter1600.readAllBytes();
+      blackTestla800jpgImageData = blackTestla800jpg.readAllBytes();
+      bmwM3Evo800jpgImageData = bmwM3Evo800jpg.readAllBytes();
+      mazda3800jpgImageData = mazda3800jpg.readAllBytes();
+      nissanLeaf800jpgImageData = nissanLeaf800jpg.readAllBytes();
+      peugeot307SW800jpgImageData = peugeot307SW800jpg.readAllBytes();
+      peugeotiOn800jpgImageData = peugeotiOn800jpg.readAllBytes();
+      teslaModel3800jpgImageData = teslaModel3800jpg.readAllBytes();
+      skodaFabia800jpgImageData = skodaFabia800jpg.readAllBytes();
+      vwTransporter800jpgImageData = vwTransporter800jpg.readAllBytes();
     } catch (Exception e) {
       logger.error("Error reading image file: {}", e.getMessage());
     }
-    CarImage blackTeslaImage = new CarImage(3, blackTesla1600jpgImageData, 1600, ImageType.JPG);
-    CarImage blackTeslaImage1 = new CarImage(4, blackTesla1600jpgImageData, 1600, ImageType.JPG);
-    CarImage bmwM3EvoImage = new CarImage(13, bmwM3Evo1600jpgImageData, 1600, ImageType.JPG);
-    CarImage bmwM3EvoImage1 = new CarImage(14, bmwM3Evo1600jpgImageData, 1600, ImageType.JPG);
-    CarImage bmwM3EvoImage2 = new CarImage(15, bmwM3Evo1600jpgImageData, 1600, ImageType.JPG);
-    CarImage mazda3Image = new CarImage(9, mazda31600jpgImageData, 1600, ImageType.JPG);
-    CarImage nissanLeafImage = new CarImage(7, nissanLeaf1600jpgImageData, 1600, ImageType.JPG);
-    CarImage nissanLeafImage1 = new CarImage(8, nissanLeaf1600jpgImageData, 1600, ImageType.JPG);
-    CarImage peugeot307SWImage = new CarImage(19, peugeot307SW1600jpgImageData, 1600, ImageType.JPG);
-    CarImage peugeot307SWImage1 = new CarImage(20, peugeot307SW1600jpgImageData, 1600, ImageType.JPG);
-    CarImage peugeotiOnImage = new CarImage(25, peugeotiOn1600jpgImageData, 1600, ImageType.JPG);
-    CarImage peugeotiOnImage1 = new CarImage(26, peugeotiOn1600jpgImageData, 1600, ImageType.JPG);
-    CarImage teslaModel3Image = new CarImage(5, teslaModel31600jpgImageData, 1600, ImageType.JPG);
-    CarImage teslaModel3Image1 = new CarImage(6, teslaModel31600jpgImageData, 1600, ImageType.JPG);
-    CarImage skodaFabiaImage = new CarImage(16, skodaFabia1600jpgImageData, 1600, ImageType.JPG);
-    CarImage skodaFabiaImage1 = new CarImage(17, skodaFabia1600jpgImageData, 1600, ImageType.JPG);
-    CarImage vwTransporterImage = new CarImage(10, vwTransporterImageData, 1600, ImageType.JPG);
-    CarImage vwTransporterImage1 = new CarImage(11, vwTransporterImageData, 1600, ImageType.JPG);
-    CarImage vwTransporterImage2 = new CarImage(12, vwTransporterImageData, 1600, ImageType.JPG);
+    CarImage blackTeslaImageSize1600 = new CarImage(3, blackTesla1600jpgImageData, 1600, ImageType.JPG);
+    CarImage blackTeslaImage800 = new CarImage(3, blackTestla800jpgImageData, 800, ImageType.JPG);
+    CarImage blackTeslaImage1Size1600 = new CarImage(4, blackTesla1600jpgImageData, 1600, ImageType.JPG);
+    CarImage blackTeslaImage1Size800 = new CarImage(4, blackTestla800jpgImageData, 800, ImageType.JPG);
+    CarImage bmwM3EvoImageSize1600 = new CarImage(13, bmwM3Evo1600jpgImageData, 1600, ImageType.JPG);
+    CarImage bmwM3EvoImage800 = new CarImage(13, bmwM3Evo800jpgImageData, 800, ImageType.JPG);
+    CarImage bmwM3EvoImage1Size1600 = new CarImage(14, bmwM3Evo1600jpgImageData, 1600, ImageType.JPG);
+    CarImage bmwM3EvoImage1Size800 = new CarImage(14, bmwM3Evo800jpgImageData, 800, ImageType.JPG);
+    CarImage bmwM3EvoImage2Size1600 = new CarImage(15, bmwM3Evo1600jpgImageData, 1600, ImageType.JPG);
+    CarImage bmwM3EvoImage2Size800 = new CarImage(15, bmwM3Evo800jpgImageData, 800, ImageType.JPG);
+    CarImage mazda3ImageSize1600 = new CarImage(9, mazda31600jpgImageData, 1600, ImageType.JPG);
+    CarImage mazda3Image800 = new CarImage(9, mazda3800jpgImageData, 800, ImageType.JPG);
+    CarImage nissanLeafImageSize1600 = new CarImage(7, nissanLeaf1600jpgImageData, 1600, ImageType.JPG);
+    CarImage nissanLeafImage800 = new CarImage(7, nissanLeaf800jpgImageData, 800, ImageType.JPG);
+    CarImage nissanLeafImage1Size1600 = new CarImage(8, nissanLeaf1600jpgImageData, 1600, ImageType.JPG);
+    CarImage nissanLeafImage1Size800 = new CarImage(8, nissanLeaf800jpgImageData, 800, ImageType.JPG);
+    CarImage peugeot307SWImageSize1600 = new CarImage(19, peugeot307SW1600jpgImageData, 1600, ImageType.JPG);
+    CarImage peugeot307SWImage800 = new CarImage(19, peugeot307SW800jpgImageData, 800, ImageType.JPG);
+    CarImage peugeot307SWImage1Size1600 = new CarImage(20, peugeot307SW1600jpgImageData, 1600, ImageType.JPG);
+    CarImage peugeot307SWImage1Size800 = new CarImage(20, peugeot307SW800jpgImageData, 800, ImageType.JPG);
+    CarImage peugeotiOnImageSize1600 = new CarImage(25, peugeotiOn1600jpgImageData, 1600, ImageType.JPG);
+    CarImage peugeotiOnImage800 = new CarImage(25, peugeotiOn800jpgImageData, 800, ImageType.JPG);
+    CarImage peugeotiOnImage1Size1600 = new CarImage(26, peugeotiOn1600jpgImageData, 1600, ImageType.JPG);
+    CarImage peugeotiOnImage1Size800 = new CarImage(26, peugeotiOn800jpgImageData, 800, ImageType.JPG);
+    CarImage teslaModel3ImageSize1600 = new CarImage(5, teslaModel31600jpgImageData, 1600, ImageType.JPG);
+    CarImage teslaModel3Image800 = new CarImage(5, teslaModel3800jpgImageData, 800, ImageType.JPG);
+    CarImage teslaModel3Image1Size1600 = new CarImage(6, teslaModel31600jpgImageData, 1600, ImageType.JPG);
+    CarImage teslaModel3Image1Size800 = new CarImage(6, teslaModel3800jpgImageData, 800, ImageType.JPG);
+    CarImage skodaFabiaImageSize1600 = new CarImage(16, skodaFabia1600jpgImageData, 1600, ImageType.JPG);
+    CarImage skodaFabiaImage800 = new CarImage(16, skodaFabia800jpgImageData, 800, ImageType.JPG);
+    CarImage skodaFabiaImage1Size1600 = new CarImage(17, skodaFabia1600jpgImageData, 1600, ImageType.JPG);
+    CarImage skodaFabiaImage1Size800 = new CarImage(17, skodaFabia800jpgImageData, 800, ImageType.JPG);
+    CarImage vwTransporterImageSize1600 = new CarImage(10, vwTransporterImageData, 1600, ImageType.JPG);
+    CarImage vwTransporterImage800 = new CarImage(10, vwTransporter800jpgImageData, 800, ImageType.JPG);
+    CarImage vwTransporterImage1Size1600 = new CarImage(11, vwTransporterImageData, 1600, ImageType.JPG);
+    CarImage vwTransporterImage1Size800 = new CarImage(11, vwTransporter800jpgImageData, 800, ImageType.JPG);
+    CarImage vwTransporterImage2Size1600 = new CarImage(12, vwTransporterImageData, 1600, ImageType.JPG);
+    CarImage vwTransporterImage2Size800 = new CarImage(12, vwTransporter800jpgImageData, 800, ImageType.JPG);
 
     carImageRepository.saveAll(List.of(
-        blackTeslaImage,
-        blackTeslaImage1,
-        bmwM3EvoImage,
-        bmwM3EvoImage1,
-        bmwM3EvoImage2,
-        mazda3Image,
-        nissanLeafImage,
-        nissanLeafImage1,
-        peugeot307SWImage,
-        peugeot307SWImage1,
-        peugeotiOnImage,
-        peugeotiOnImage1,
-        teslaModel3Image,
-        teslaModel3Image1,
-        skodaFabiaImage,
-        skodaFabiaImage1,
-        vwTransporterImage,
-        vwTransporterImage1,
-        vwTransporterImage2));
+        blackTeslaImageSize1600,
+        blackTeslaImage1Size1600,
+        bmwM3EvoImageSize1600,
+        bmwM3EvoImage1Size1600,
+        bmwM3EvoImage2Size1600,
+        mazda3ImageSize1600,
+        nissanLeafImageSize1600,
+        nissanLeafImage1Size1600,
+        peugeot307SWImageSize1600,
+        peugeot307SWImage1Size1600,
+        peugeotiOnImageSize1600,
+        peugeotiOnImage1Size1600,
+        teslaModel3ImageSize1600,
+        teslaModel3Image1Size1600,
+        skodaFabiaImageSize1600,
+        skodaFabiaImage1Size1600,
+        vwTransporterImageSize1600,
+        vwTransporterImage1Size1600,
+        vwTransporterImage2Size1600,
+        blackTeslaImage800,
+        blackTeslaImage1Size800,
+        bmwM3EvoImage800,
+        bmwM3EvoImage1Size800,
+        bmwM3EvoImage2Size800,
+        mazda3Image800,
+        nissanLeafImage800,
+        nissanLeafImage1Size800,
+        peugeot307SWImage800,
+        peugeot307SWImage1Size800,
+        peugeotiOnImage800,
+        peugeotiOnImage1Size800,
+        teslaModel3Image800,
+        teslaModel3Image1Size800,
+        skodaFabiaImage800,
+        skodaFabiaImage1Size800,
+        vwTransporterImage800,
+        vwTransporterImage1Size800,
+        vwTransporterImage2Size800
+            ));
 
   }
 }
