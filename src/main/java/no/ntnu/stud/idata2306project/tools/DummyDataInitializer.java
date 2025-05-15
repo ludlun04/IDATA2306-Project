@@ -1,6 +1,8 @@
 package no.ntnu.stud.idata2306project.tools;
 
 import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -435,15 +437,7 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
 
   // TODO: Fix quality
   public void initiateImages() {
-    File blackTesla1600jpgFile = new File("src/main/resources/carImages/BlackTesla/BlackTesla-1600.jpg");
-    File bmwM3Evo1600jpgFile = new File("src/main/resources/carImages/bmw_m3/bmw_m3-1600.jpg");
-    File mazda31600jpgFile = new File("src/main/resources/carImages/mazda/mazda3-1600.jpg");
-    File nissanLeaf1600jpgFile = new File("src/main/resources/carImages/Nissan/Nissan-1600.jpg");
-    File peugeot307SW1600jpgFile = new File("src/main/resources/carImages/Peguot/peugeot-1600.jpg");
-    File peugeotiOn1600jpgFile = new File("src/main/resources/carImages/Peugeot-iON/peugeot-ion-1600.jpg");
-    File teslaModel31600jpgFile = new File("src/main/resources/carImages/RedTesla/RedTesla-1600.jpg");
-    File skodaFabia1600jpgFile = new File("src/main/resources/carImages/Skoda-Fabia/skoda-fabia-1600.jpg");
-    File vwTransporter = new File("src/main/resources/carImages/VW-Bus/vw-bus-1600.jpg");
+
     byte[] blackTesla1600jpgImageData = null;
     byte[] bmwM3Evo1600jpgImageData = null;
     byte[] mazda31600jpgImageData = null;
@@ -455,32 +449,36 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
     byte[] vwTransporterImageData = null;
 
     try {
-      blackTesla1600jpgImageData = new byte[(int) blackTesla1600jpgFile.length()];
-      blackTesla1600jpgImageData = java.nio.file.Files.readAllBytes(blackTesla1600jpgFile.toPath());
 
-      bmwM3Evo1600jpgImageData = new byte[(int) bmwM3Evo1600jpgFile.length()];
-      bmwM3Evo1600jpgImageData = java.nio.file.Files.readAllBytes(bmwM3Evo1600jpgFile.toPath());
+      InputStream blackTesla1600jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/BlackTesla/BlackTesla-1600.jpg");
+      InputStream bmwM3Evo1600jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/bmw_m3/bmw_m3-1600.jpg");
+      InputStream mazda31600jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/mazda/mazda3-1600.jpg");
+      InputStream nissanLeaf1600jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/Nissan/Nissan-1600.jpg");
+      InputStream peugeot307SW1600jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/Peguot/peugeot-1600.jpg");
+      InputStream peugeotiOn1600jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/Peugeot-iON/peugeot-ion-1600.jpg");
+      InputStream teslaModel31600jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/RedTesla/RedTesla-1600.jpg");
+      InputStream skodaFabia1600jpg = getClass().getClassLoader()
+          .getResourceAsStream("carImages/Skoda-Fabia/skoda-fabia-1600.jpg");
+      InputStream vwTransporter = getClass().getClassLoader()
+          .getResourceAsStream("carImages/VW-Bus/vw-bus-1600.jpg");
 
-      mazda31600jpgImageData = new byte[(int) mazda31600jpgFile.length()];
-      mazda31600jpgImageData = java.nio.file.Files.readAllBytes(mazda31600jpgFile.toPath());
 
-      nissanLeaf1600jpgImageData = new byte[(int) nissanLeaf1600jpgFile.length()];
-      nissanLeaf1600jpgImageData = java.nio.file.Files.readAllBytes(nissanLeaf1600jpgFile.toPath());
-
-      peugeot307SW1600jpgImageData = new byte[(int) peugeot307SW1600jpgFile.length()];
-      peugeot307SW1600jpgImageData = java.nio.file.Files.readAllBytes(peugeot307SW1600jpgFile.toPath());
-
-      peugeotiOn1600jpgImageData = new byte[(int) peugeotiOn1600jpgFile.length()];
-      peugeotiOn1600jpgImageData = java.nio.file.Files.readAllBytes(peugeotiOn1600jpgFile.toPath());
-
-      teslaModel31600jpgImageData = new byte[(int) teslaModel31600jpgFile.length()];
-      teslaModel31600jpgImageData = java.nio.file.Files.readAllBytes(teslaModel31600jpgFile.toPath());
-
-      skodaFabia1600jpgImageData = new byte[(int) skodaFabia1600jpgFile.length()];
-      skodaFabia1600jpgImageData = java.nio.file.Files.readAllBytes(skodaFabia1600jpgFile.toPath());
-
-      vwTransporterImageData = new byte[(int) vwTransporter.length()];
-      vwTransporterImageData = java.nio.file.Files.readAllBytes(vwTransporter.toPath());
+      blackTesla1600jpgImageData = blackTesla1600jpg.readAllBytes();
+      bmwM3Evo1600jpgImageData = bmwM3Evo1600jpg.readAllBytes();
+      mazda31600jpgImageData = mazda31600jpg.readAllBytes();
+      nissanLeaf1600jpgImageData = nissanLeaf1600jpg.readAllBytes();
+      peugeot307SW1600jpgImageData = peugeot307SW1600jpg.readAllBytes();
+      peugeotiOn1600jpgImageData = peugeotiOn1600jpg.readAllBytes();
+      teslaModel31600jpgImageData = teslaModel31600jpg.readAllBytes();
+      skodaFabia1600jpgImageData = skodaFabia1600jpg.readAllBytes();
+      vwTransporterImageData = vwTransporter.readAllBytes();
 
     } catch (Exception e) {
       logger.error("Error reading image file: {}", e.getMessage());
