@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import no.ntnu.stud.idata2306project.dto.CarDto;
 import no.ntnu.stud.idata2306project.dto.UserDto;
 import no.ntnu.stud.idata2306project.exception.EmailAlreadyInUser;
 import no.ntnu.stud.idata2306project.exception.UserNotFoundException;
@@ -46,11 +48,11 @@ public class UserService {
    * @param passwordEncoder the password encoder
    */
   public UserService(
-      UserRepository userRepository, 
-      RoleRepository roleRepository, 
-      PasswordEncoder passwordEncoder, 
-      PhoneNumberRepository phoneNumberRepository, 
-      AddressRepository addressRepository, 
+      UserRepository userRepository,
+      RoleRepository roleRepository,
+      PasswordEncoder passwordEncoder,
+      PhoneNumberRepository phoneNumberRepository,
+      AddressRepository addressRepository,
       CarService carService) {
     this.phoneNumberRepository = phoneNumberRepository;
     this.addressRepository = addressRepository;
@@ -88,7 +90,7 @@ public class UserService {
   /**
    * Add a user.
    *
-   * @param user the user to add
+   * @param user     the user to add
    * @param password the password of the user
    * @return the added user
    * @throws UsernameAlreadyInUser if the email is already in use
@@ -126,7 +128,7 @@ public class UserService {
   public boolean isAdmin(long userId) {
     Optional<User> user = userRepository.findById(userId);
     return user.map(value -> value.getRoles().stream()
-        .anyMatch(role -> role.getName().equals("ADMIN")))
+            .anyMatch(role -> role.getName().equals("ADMIN")))
         .orElse(false);
   }
 
@@ -168,7 +170,7 @@ public class UserService {
   /**
    * Update a user.
    *
-   * @param id   the id of the user
+   * @param id the id of the user
    * @throws UserNotFoundException if the user is not found
    */
   @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -195,8 +197,8 @@ public class UserService {
   /**
    * Set a car as favorite for a user.
    *
-   * @param user      the user
-   * @param carId     the id of the car
+   * @param user       the user
+   * @param carId      the id of the car
    * @param isFavorite true if the car is a favorite, false otherwise
    * @return true if the car is a favorite, false otherwise
    */
@@ -225,7 +227,7 @@ public class UserService {
    * @param userId the id of the user
    * @param cars   the list of cars
    */
-  public List<Car> getUserFavorites(long userId, List<Car> cars) {
+  public List<Car> getUserFavoritesAmongList(long userId, List<Car> cars) {
     User user = getUserById(userId);
     List<Car> favorites = user.getFavorites();
     Set<Car> favoritesSet = new HashSet<>();
@@ -238,15 +240,19 @@ public class UserService {
     return List.copyOf(favoritesSet);
   }
 
+  public List<CarDto> getUserFavorites(User user) {
+    return this.carService.getCarDtosFromCars(user.getFavorites());
+  }
+
   /**
    * Overwrites values of a user if different from the given userDto.
    *
-   * @param userid the id of the user
-   * @param userDto the user to update
+   * @param userid    the id of the user
+   * @param userDto   the user to update
    * @param performer UserDetails for user performing the update
    * @throws UserNotFoundException if the user is not found
    */
-  public void updateUser(long userid, UserDto userDto, AccessUserDetails performer) 
+  public void updateUser(long userid, UserDto userDto, AccessUserDetails performer)
       throws UserNotFoundException {
     Optional<User> userOptional = userRepository.findById(userid);
     if (userOptional.isPresent()) {
@@ -265,7 +271,7 @@ public class UserService {
         user.setDateOfBirth(userDto.getDateOfBirth());
       }
 
-      
+
       if (userDto.getPhoneNumber() != null) {
         PhoneNumber userOhoneNumber = user.getPhoneNumber();
         PhoneNumber dtoPhoneNumber = userDto.getPhoneNumber();
@@ -276,7 +282,7 @@ public class UserService {
         if (dtoPhoneNumber.getCountryCode() != null && !dtoPhoneNumber.getCountryCode().isEmpty()) {
           userOhoneNumber.setCountryCode(dtoPhoneNumber.getCountryCode());
         }
-        
+
         phoneNumberRepository.save(userOhoneNumber);
       }
 
@@ -317,4 +323,6 @@ public class UserService {
       throw new UserNotFoundException("User with id " + userid + " not found");
     }
   }
+
+
 }
