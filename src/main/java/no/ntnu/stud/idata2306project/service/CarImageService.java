@@ -1,5 +1,6 @@
 package no.ntnu.stud.idata2306project.service;
 
+import jakarta.transaction.Transactional;
 import no.ntnu.stud.idata2306project.enums.ImageType;
 import no.ntnu.stud.idata2306project.model.image.CarImage;
 import no.ntnu.stud.idata2306project.repository.CarImageRepository;
@@ -25,6 +26,7 @@ public class CarImageService {
    * @param imageWidth the width of the image
    * @return the car image
    */
+  @Transactional
   public CarImage getCarImage(long carId, ImageType imageType, long imageWidth) {
     return carImageRepository.findCarImageByCarIdAndImageTypeAndImageWidth(carId, imageType, imageWidth);
   }
