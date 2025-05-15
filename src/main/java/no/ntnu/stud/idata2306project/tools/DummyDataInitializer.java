@@ -393,8 +393,8 @@ public class DummyDataInitializer implements ApplicationListener<ApplicationRead
       orderRepository.save(order2);
 
       Order order3 = new Order();
-      order3.setStartDate(LocalDate.of(2025, 1, 19));
-      order3.setEndDate(LocalDate.of(2025, 1, 20));
+      order3.setStartDate(LocalDate.of(2026, 1, 19));
+      order3.setEndDate(LocalDate.of(2026, 1, 20));
       order3.setAddons(List.of(gpsAddon));
       order3.setPrice(500);
       order3.setUser(user);

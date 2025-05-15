@@ -66,15 +66,15 @@ public class OrderService {
   /**
    * Check if the order is available between two dates.
    *
-   * @param id        the id of the order
+   * @param carid     the id of the car to check
    * @param startDate the start date to check
    * @param endDate   the end date to check
    * @return true if the order is available between the two dates, false otherwise
    */
-  public boolean isAvailableBetween(Long id, LocalDate startDate, LocalDate endDate) {
-    logger.trace("Checking if order with id: {} is available between dates: {} and {}", id,
+  public boolean isAvailableBetween(Long carid, LocalDate startDate, LocalDate endDate) {
+    logger.trace("Checking if car with id: {} is available between dates: {} and {}", carid,
         startDate, endDate);
-    return orderRepository.isAvailableBetween(id, startDate, endDate);
+    return orderRepository.isAvailableBetween(carid, startDate, endDate);
   }
 
   /**
@@ -184,6 +184,10 @@ public class OrderService {
 
     if (optionalCar.isEmpty()) {
       throw new CarNotFoundException("Car not found with id: " + orderDto.getCarId());
+    }
+
+    if (!isAvailableBetween(orderDto.getCarId(), orderDto.getStartDate(), orderDto.getEndDate())) {
+      throw new InvalidDatesException("Car is not available between the given dates");
     }
 
     List<Addon> addons = orderDto.getAddonIds().stream()
