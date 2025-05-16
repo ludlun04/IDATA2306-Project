@@ -321,8 +321,8 @@ public class UserService {
 
         user.setRoles(roles);
       }
-
       userRepository.save(user);
+      logger.info("User with id {} updated", user.getId());
     } else {
       throw new UserNotFoundException("User with id " + userid + " not found");
     }

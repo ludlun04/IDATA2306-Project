@@ -63,7 +63,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
     String origin = request.getHeader("Origin");
     String requestType = request.getMethod();
-    logger.info("{} REQUEST FROM ORIGIN: {}", requestType, origin);
+    logger.trace("{} REQUEST FROM ORIGIN: {}", requestType, origin);
     String jwtToken = getJwt(request);
 
     try {

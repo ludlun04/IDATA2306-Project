@@ -341,10 +341,12 @@ public class UserController {
       @Parameter(description = "Authenticated user details")
       @AuthenticationPrincipal AccessUserDetails userDetails
   ) {
+    this.logger.info("Updating user with id {}", id);
     boolean isAdmin = userService.isAdmin(userDetails.getId());
     boolean hasSameId = userDetails.getId().equals(id);  
 
     if (!isAdmin && !hasSameId) {
+      this.logger.error("User with id {} is not admin and does not match the id of the user to update", userDetails.getId());
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not admin");
     }
 
