@@ -1,8 +1,12 @@
 package no.ntnu.stud.idata2306project.model.car;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Represents a feature.

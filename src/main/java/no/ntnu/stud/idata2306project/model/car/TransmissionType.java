@@ -1,7 +1,11 @@
 package no.ntnu.stud.idata2306project.model.car;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 
 /**
@@ -23,14 +27,15 @@ public class TransmissionType {
    * Creates a new transmission
    * type.
    */
-  public TransmissionType() {}
+  public TransmissionType() {
+  }
 
   /**
    * Creates a new transmission
    * type.
    *
    * @param name the transmission
-   *            type's name
+   *             type's name
    */
   public TransmissionType(String name) {
     this.name = name;
@@ -41,7 +46,7 @@ public class TransmissionType {
    * type's id.
    *
    * @return the transmission
-   * type's id
+   *        type's id
    */
   public Long getId() {
     return this.id;
@@ -52,7 +57,7 @@ public class TransmissionType {
    * type's name.
    *
    * @return the transmission
-   * type's name
+   *       type's name
    */
   public String getName() {
     return this.name;
