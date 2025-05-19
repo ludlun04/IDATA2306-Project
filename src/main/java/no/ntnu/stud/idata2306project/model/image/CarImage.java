@@ -9,6 +9,9 @@ import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotNull;
 import no.ntnu.stud.idata2306project.enums.ImageType;
 
+/**
+ * Represents a car image.
+ */
 @Entity
 public class CarImage {
 
@@ -33,9 +36,20 @@ public class CarImage {
   @Schema(description = "The type of the image", example = "JPEG")
   private ImageType imageType;
 
+  /**
+   * Creates a new car image.
+   */
   public CarImage() {
   }
 
+  /**
+   * Creates a new car image.
+   *
+   * @param carId the id of the car
+   * @param image the image of the car
+   * @param imageWidth the width of the image
+   * @param imageType the type of the image
+   */
   public CarImage(long carId, byte[] image, long imageWidth, ImageType imageType) {
     this.carId = carId;
     this.image = image;

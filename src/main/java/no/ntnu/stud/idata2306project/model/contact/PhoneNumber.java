@@ -31,7 +31,7 @@ public class PhoneNumber {
   public PhoneNumber() {}
 
   /**
-   * Creates a phone number using an id, a country code and a number.
+   * Creates a phone number using a country code and a number.
    *
    * @param countryCode the country code of the phone number
    * @param number the number part of the phone number

@@ -1,5 +1,6 @@
 package no.ntnu.stud.idata2306project.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,22 +12,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import no.ntnu.stud.idata2306project.enums.Gender;
 import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.contact.Address;
 import no.ntnu.stud.idata2306project.model.contact.PhoneNumber;
 
 /**
- * User entity class
+ * Represents a user.
  */
 @Entity
 @Table(name = "app_user")
@@ -80,9 +76,11 @@ public class User {
   Set<Role> roles = new HashSet<>();
 
   /**
-   * Default constructor for User
+   * Default constructor for User.
    */
-  public User() {/** */}
+  public User() {/* */
+
+  }
 
   /**
    * Returns the user's id.
@@ -94,7 +92,7 @@ public class User {
   }
 
   /**
-   * Returns roles assosiated with the current user.
+   * Returns roles associated with the current user.
    *
    * @return A set of roles
    */
@@ -112,7 +110,7 @@ public class User {
   }
 
   /**
-   * Adds a role to the user
+   * Adds a role to the user.
    *
    * @param role the role to be added
    */
@@ -124,7 +122,7 @@ public class User {
   }
 
   /**
-   * Removes a role from the user
+   * Removes a role from the user.
    *
    * @param role the role to be removed
    */
@@ -134,45 +132,45 @@ public class User {
 
 
   /**
-   * Returns the user's id.
+   * Returns the user's password.
    *
-   * @return the user's id
+   * @return the user's password
    */
   public String getPassword() {
     return password;
   }
 
   /**
-   * Returns whether the user's account has expired.
+   * Returns the user's phone number.
    *
-   * @return whether the user's account has expired
+   * @return the user's phone number
    */
   public PhoneNumber getPhoneNumber() {
     return this.phoneNumber;
   }
 
   /**
-   * Returns whether the user's account is locked.
+   * Returns the user's date of birth.
    *
-   * @return whether the user's account is locked
+   * @return the user's date of birth
    */
   public Date getDateOfBirth() {
     return this.dateOfBirth;
   }
 
   /**
-   * Returns whether the user's credentials have expired.
+   * Returns the user's email.
    *
-   * @return whether the user's credentials have expired
+   * @return the user's email
    */
   public String getEmail() {
     return this.email;
   }
 
   /**
-   * Returns whether the user is enabled.
+   * Returns the user's gender.
    *
-   * @return whether the user is enabled
+   * @return the user's gender
    */
   public Gender getGender() {
     return this.gender;
@@ -217,7 +215,7 @@ public class User {
   /**
    * Sets the user's password.
    *
-   * @param password
+   * @param password the new password
    */
   public void setPassword(String password) {
     this.password = password;
@@ -226,7 +224,7 @@ public class User {
   /**
    * Sets the user's phone number.
    *
-   * @param phoneNumber
+   * @param phoneNumber the new phone number
    */
   public void setPhoneNumber(PhoneNumber phoneNumber) {
     this.phoneNumber = phoneNumber;
@@ -235,7 +233,7 @@ public class User {
   /**
    * Sets the user's date of birth.
    *
-   * @param dateOfBirth
+   * @param dateOfBirth the new date of birth
    */
   public void setDateOfBirth(Date dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
@@ -244,25 +242,25 @@ public class User {
   /**
    * Sets the user's email.
    *
-   * @param email
+   * @param email the new email
    */
   public void setEmail(String email) {
     this.email = email;
   }
 
   /**
-   * Sets the users first name
+   * Sets the users first name.
    *
-   * @param firstName
+   * @param firstName the new first name
    */
   public void setFirstname(String firstName) {
     this.firstName = firstName;
   }
 
   /**
-   * Sets the users last name
+   * Sets the users last name.
    *
-   * @param lastName
+   * @param lastName the new last name
    */
   public void setLastName(String lastName) {
     this.lastName = lastName;
@@ -271,7 +269,7 @@ public class User {
   /**
    * Sets the user's address.
    *
-   * @param address
+   * @param address the new address
    */
   public void setAddress(Address address) {
     this.address = address;
@@ -280,7 +278,7 @@ public class User {
   /**
    * Sets the user's favorites.
    *
-   * @param favorites
+   * @param favorites the new favorites
    */
   public void setFavorites(Set<Car> favorites) {
     this.favorites = favorites;
@@ -295,7 +293,6 @@ public class User {
     if (!favorites.contains(car)) {
       this.favorites.add(car);
     }
-
   }
 
   /**
@@ -317,9 +314,9 @@ public class User {
   }
 
   /**
-   * Sets the users gender
+   * Sets the users gender.
    *
-   * @param gender
+   * @param gender the new gender
    */
   public void setGender(Gender gender) {
     this.gender = gender;

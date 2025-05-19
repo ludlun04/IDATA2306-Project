@@ -154,22 +154,47 @@ public class Order {
     this.user = user;
   }
 
+  /**
+   * Sets the addons of the order.
+   *
+   * @param addons the addons of the order
+   */
   public void setAddons(List<Addon> addons) {
     this.addons = addons;
   }
 
+  /**
+   * Sets the car of the order.
+   *
+   * @param car the car of the order
+   */
   public void setCar(Car car) {
     this.car = car;
   }
 
+  /**
+   * Sets the price of the order.
+   *
+   * @param price the price of the order
+   */
   public void setPrice(long price) {
     this.price = price;
   }
 
+  /**
+   * Sets the start date of the order.
+   *
+   * @param startDate the start date of the order
+   */
   public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 
+  /**
+   * Sets the end date of the order.
+   *
+   * @param endDate the end date of the order
+   */
   public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }

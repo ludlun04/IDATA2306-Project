@@ -36,7 +36,7 @@ public class Address {
   }
 
   /**
-   * Creates an address using an id, a zip code, a country and an address.
+   * Creates an address using a zip code, a country and an address.
    *
    * @param zipCode the zip code of the address
    * @param country the country of the address

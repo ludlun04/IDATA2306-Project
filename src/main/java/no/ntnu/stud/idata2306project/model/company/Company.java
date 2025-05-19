@@ -12,7 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -57,6 +56,9 @@ public class Company {
   @ManyToMany(fetch = FetchType.EAGER)
   private Set<User> users = new HashSet<>();
 
+  /**
+   * Creates a new company.
+   */
   public Company() {
   }
 
@@ -114,7 +116,7 @@ public class Company {
   }
 
   /**
-   * Sets thje company's phone number.
+   * Sets the company's phone number.
    *
    * @param phoneNumber the new phone number
    */
@@ -175,7 +177,7 @@ public class Company {
   /**
    * Returns the list of users associated with the company.
    *
-   * @return the list of users associated with the company.
+   * @return the users associated with the company.
    */
   public Set<User> getUsers() {
     return this.users;
