@@ -1,7 +1,10 @@
 package no.ntnu.stud.idata2306project.model.car;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 
 /**
@@ -22,7 +25,8 @@ public class CarBrand {
   /**
    * Creates a new car brand.
    */
-  public CarBrand() {}
+  public CarBrand() {
+  }
 
   /**
    * Creates a new car brand.
@@ -30,7 +34,7 @@ public class CarBrand {
    * @param name the car brand's name
    */
   public CarBrand(String name) {
-      this.name = name;
+    this.name = name;
   }
 
   /**
@@ -39,7 +43,7 @@ public class CarBrand {
    * @return the car brand's id
    */
   public long getId() {
-      return this.id;
+    return this.id;
   }
 
   /**
@@ -48,6 +52,6 @@ public class CarBrand {
    * @return the car brand's name
    */
   public String getName() {
-      return this.name;
+    return this.name;
   }
 }

@@ -26,6 +26,12 @@ public class CarService {
   private final Logger logger = LoggerFactory.getLogger(CarService.class);
   private final CompanyService companyService;
 
+  /**
+   * Creates an instance of CarService.
+   *
+   * @param carRepository the car repository
+   * @param companyService the company service
+   */
   public CarService(CarRepository carRepository, CompanyService companyService) {
     this.carRepository = carRepository;
     this.companyService = companyService;
@@ -105,13 +111,13 @@ public class CarService {
       throw new CarNotFoundException("Car not found");
     }
 
-    Company company = companyService.getCompanyById(userId);
+    Company company = companyService.findCompanyThatOwnsCar(car);
 
     if (company == null) {
       throw new CompanyNotFoundException("Company not found");
     }
-
-    if (!companyService.isUserInCompany(userId, company.getId())) {
+    boolean isInCompany = companyService.isUserInCompany(userId, company.getId());
+    if (!isInCompany) {
       throw new UnauthorizedException(
           "User is not authorized to change the visibility of this car");
     }
@@ -155,10 +161,17 @@ public class CarService {
     carDto.setDescription(car.getDescription());
     carDto.setAddons(car.getAddons());
     carDto.setFeatures(car.getFeatures());
+    carDto.setVisible(car.isVisible());
 
     return carDto;
   }
 
+  /**
+   * Converts a list of cars to a list of carDtos.
+   *
+   * @param cars the list of cars to convert
+   * @return a list of carDtos
+   */
   public List<CarDto> getCarDtosFromCars(List<Car> cars) {
     List<CarDto> carDtos = new ArrayList<>();
     for (Car car : cars) {

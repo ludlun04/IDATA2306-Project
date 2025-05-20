@@ -1,7 +1,12 @@
 package no.ntnu.stud.idata2306project.model.car;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -35,7 +40,6 @@ public class CarModel {
   /**
    * Creates a new car model.
    *
-   * @param id the car model's id
    * @param name the car model's name
    * @param brand the car model's brand
    */

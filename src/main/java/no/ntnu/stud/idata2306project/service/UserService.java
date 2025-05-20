@@ -7,9 +7,9 @@ import java.util.Set;
 
 import no.ntnu.stud.idata2306project.dto.CarDto;
 import no.ntnu.stud.idata2306project.dto.UserDto;
-import no.ntnu.stud.idata2306project.exception.EmailAlreadyInUser;
+import no.ntnu.stud.idata2306project.exception.EmailAlreadyInUserException;
 import no.ntnu.stud.idata2306project.exception.UserNotFoundException;
-import no.ntnu.stud.idata2306project.exception.UsernameAlreadyInUser;
+import no.ntnu.stud.idata2306project.exception.UsernameAlreadyInUserException;
 import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.contact.Address;
 import no.ntnu.stud.idata2306project.model.contact.PhoneNumber;
@@ -93,9 +93,9 @@ public class UserService {
    * @param user     the user to add
    * @param password the password of the user
    * @return the added user
-   * @throws UsernameAlreadyInUser if the email is already in use
+   * @throws UsernameAlreadyInUserException if the email is already in use
    */
-  public User addUser(User user, String password) throws EmailAlreadyInUser {
+  public User addUser(User user, String password) throws EmailAlreadyInUserException {
     if (password == null || password.isEmpty()) {
       throw new IllegalArgumentException("Password cannot be null or empty");
     }
@@ -106,7 +106,7 @@ public class UserService {
 
     Optional<User> userWithEmail = userRepository.findByEmail(user.getEmail());
     if (userWithEmail.isPresent()) {
-      throw new EmailAlreadyInUser(user.getEmail());
+      throw new EmailAlreadyInUserException(user.getEmail());
     }
 
     user.setPassword(passwordEncoder.encode(password));
@@ -137,7 +137,7 @@ public class UserService {
    *
    * @param userDto the user to add
    * @return the added user
-   * @throws UsernameAlreadyInUser if the email is already in use
+   * @throws UsernameAlreadyInUserException if the email is already in use
    */
   public User constructUserFromDto(UserDto userDto) {
     if (userDto.getAddress() == null) {
@@ -321,8 +321,8 @@ public class UserService {
 
         user.setRoles(roles);
       }
-
       userRepository.save(user);
+      logger.info("User with id {} updated", user.getId());
     } else {
       throw new UserNotFoundException("User with id " + userid + " not found");
     }

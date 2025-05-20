@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * Class representing the different user roles in the system
+ * Class representing the different user roles in the system.
  */
 @Entity
 public class Role {
@@ -19,13 +19,13 @@ public class Role {
   private String name;
 
   /**
-   * Default constructor for Role
+   * Default constructor for Role.
    */
   public Role() {}
 
   /**
-   * Constructor for Role
-   * 
+   * Constructor for Role.
+   *
    * @param name The name of the role
    */
   public Role(String name) {
@@ -37,7 +37,8 @@ public class Role {
   }
 
   /**
-   * Returns the id of the role
+   * Returns the id of the role.
+   *
    * @return the id of the role as a long
    */
   public long getId() {
@@ -45,7 +46,8 @@ public class Role {
   }
 
   /**
-   * Returns the name of the role
+   * Returns the name of the role.
+   *
    * @return the name of the role as a string
    */
   public String getName() {

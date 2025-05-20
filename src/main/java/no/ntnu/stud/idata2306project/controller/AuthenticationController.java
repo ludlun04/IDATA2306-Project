@@ -80,7 +80,7 @@ public class AuthenticationController {
       return new ResponseEntity<>("Missing body", HttpStatus.BAD_REQUEST);
     }
 
-    logger.info("Authenticating user {} {}", request.getUsername(), request.getPassword());
+    logger.info("Authenticating user {}", request.getUsername());
 
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(

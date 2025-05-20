@@ -10,10 +10,20 @@ import java.util.Set;
 public class CarBrandService {
   private CarBrandRepository carBrandRepository;
 
+  /**
+   * Creates an instance of CarBrandService.
+   *
+   * @param carBrandRepository the car brand repository
+   */
   public CarBrandService(CarBrandRepository carBrandRepository) {
     this.carBrandRepository = carBrandRepository;
   }
 
+  /**
+   * Finds all car brands used in cars.
+   *
+   * @return a set of car brands used in cars
+   */
   public Set<CarBrand> getCarBrandsUsedInCars() {
     return carBrandRepository.findAllInUseOnCars();
   }

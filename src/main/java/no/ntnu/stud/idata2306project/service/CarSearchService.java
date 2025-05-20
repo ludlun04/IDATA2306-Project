@@ -17,6 +17,11 @@ public class CarSearchService {
 
   private final CarRepository carRepository;
 
+  /**
+   * Creates an instance of CarSearchService.
+   *
+   * @param carRepository the car repository
+   */
   public CarSearchService(CarRepository carRepository) {
     this.carRepository = carRepository;
   }

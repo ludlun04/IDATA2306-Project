@@ -192,7 +192,7 @@ public class UserController {
     User user = userService.getUserById(userDetails.getId());
 
     Long id = carFavorite.getCarId();
-    Boolean isFavorite = carFavorite.isFavorite();
+    boolean isFavorite = carFavorite.isFavorite();
 
     ResponseEntity<Boolean> toReturn;
     try {
@@ -221,6 +221,7 @@ public class UserController {
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   @GetMapping("/roles")
   public ResponseEntity<Set<Role>> getCurrentAuthenticatedUserRoles() {
+    this.logger.info("Getting roles for authenticated user");
     AccessUserDetails userDetails = (AccessUserDetails) SecurityContextHolder
         .getContext().getAuthentication().getPrincipal();
     User user = userService.getUserById(userDetails.getId());
@@ -275,6 +276,7 @@ public class UserController {
     try {
       newUser = userService.addUser(userService.constructUserFromDto(userDto), userDto.getPassword());
     } catch (IllegalArgumentException e) {
+      logger.error(e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
@@ -340,10 +342,12 @@ public class UserController {
       @Parameter(description = "Authenticated user details")
       @AuthenticationPrincipal AccessUserDetails userDetails
   ) {
+    this.logger.info("Updating user with id {}", id);
     boolean isAdmin = userService.isAdmin(userDetails.getId());
     boolean hasSameId = userDetails.getId().equals(id);  
 
     if (!isAdmin && !hasSameId) {
+      this.logger.error("User with id {} is not admin and does not match the id of the user to update", userDetails.getId());
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not admin");
     }
 

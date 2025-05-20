@@ -36,7 +36,7 @@ public class Address {
   }
 
   /**
-   * Creates an address using an id, a zip code, a country and an address.
+   * Creates an address using a zip code, a country and an address.
    *
    * @param zipCode the zip code of the address
    * @param country the country of the address
@@ -67,7 +67,7 @@ public class Address {
   }
 
   /**
-   * Returns the address part of the address.
+   * Returns the street address part of the address.
    *
    * @return the address part of the address
    */
@@ -85,7 +85,7 @@ public class Address {
   }
 
   /**
-   * Sets the address.
+   * Sets the street address.
    *
    * @param address the new address
    */

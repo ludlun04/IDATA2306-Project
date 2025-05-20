@@ -11,5 +11,13 @@ import org.springframework.data.repository.CrudRepository;
  * entities.
  */
 public interface RoleRepository extends CrudRepository<Role, Long> {
+
+  /**
+   * Finds a role by its name.
+   *
+   * @param name the name of the role to find
+   * @return an {@link Optional} containing the found role, or empty if no role with the specified
+   *     name exists
+   */
   Optional<Role> findByName(String name);
 }

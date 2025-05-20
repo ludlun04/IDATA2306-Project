@@ -59,10 +59,20 @@ public class AccessUserDetails implements UserDetails {
     return this.email;
   }
 
+  /**
+   * Returns the user's id
+   *
+   * @return The user's id
+   */
   public Long getId() {
     return this.userId;
   }
 
+  /**
+   * Returns true if the user is admin, false otherwise
+   *
+   * @return True if the user is admin, false otherwise
+   */
   public boolean isAdmin() {
     return this.getAuthorities().stream()
         .anyMatch(authority -> authority.getAuthority().equals("ADMIN"));

@@ -15,19 +15,14 @@ import no.ntnu.stud.idata2306project.exception.InvalidDatesException;
 import no.ntnu.stud.idata2306project.exception.OrderNotFoundException;
 import no.ntnu.stud.idata2306project.exception.UnauthorizedException;
 import no.ntnu.stud.idata2306project.exception.UserNotFoundException;
-import no.ntnu.stud.idata2306project.model.order.Order;
-import no.ntnu.stud.idata2306project.model.user.User;
 import no.ntnu.stud.idata2306project.security.AccessUserDetails;
 import no.ntnu.stud.idata2306project.service.OrderService;
 import no.ntnu.stud.idata2306project.service.UserService;
-import no.ntnu.stud.idata2306project.dto.OrderResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,7 +60,7 @@ public class OrderController {
    *
    * @param orderService the order service to use
    */
-  public OrderController(OrderService orderService, UserService userService) {
+  public OrderController(OrderService orderService) {
     this.orderService = orderService;
   }
 

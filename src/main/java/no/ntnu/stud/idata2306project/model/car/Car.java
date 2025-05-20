@@ -12,8 +12,6 @@ import jakarta.validation.constraints.Positive;
 import java.util.List;
 import java.util.Objects;
 
-import no.ntnu.stud.idata2306project.model.company.Company;
-
 /**
  * Represents a car.
  */
@@ -70,6 +68,9 @@ public class Car {
   @Schema(description = "Whether the car is visible to users", example = "true")
   private boolean visible = true;
 
+  /**
+   * Creates a new car.
+   */
   public Car() {
   }
 
@@ -261,14 +262,14 @@ public class Car {
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Car car)) return false;
-
-    if (car.getId() == this.getId()) {
+    if (this == o) {
       return true;
-    } else {
+    }
+    if (!(o instanceof Car car)) {
       return false;
     }
+
+    return car.getId() == this.getId();
   }
 
   /**

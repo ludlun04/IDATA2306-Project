@@ -14,6 +14,7 @@ import no.ntnu.stud.idata2306project.model.car.CarBrand;
 import no.ntnu.stud.idata2306project.model.car.FuelType;
 import no.ntnu.stud.idata2306project.model.company.Company;
 import no.ntnu.stud.idata2306project.repository.OrderRepository;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,6 +26,8 @@ public class CarFilterService {
   private final OrderRepository orderRepository;
   private final CarSearchService carSearchService;
   private final CompanyService companyService;
+
+  
 
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -229,7 +232,8 @@ public class CarFilterService {
       LocalDate startDate = LocalDate.parse(dates[0], formatter);
       LocalDate endDate = LocalDate.parse(dates[1], formatter);
 
-      return orderRepository.isAvailableBetween(car.getId(), startDate, endDate);
+      boolean isAvailable = orderRepository.isAvailableBetween(car.getId(), startDate, endDate);
+      return isAvailable;
     } catch (ArrayIndexOutOfBoundsException e) {
       // Missing one of the dates
       throw new MissingFilterParameterException(FILTER_BETWEEN_TIMES, value);
