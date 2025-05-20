@@ -276,6 +276,7 @@ public class UserController {
     try {
       newUser = userService.addUser(userService.constructUserFromDto(userDto), userDto.getPassword());
     } catch (IllegalArgumentException e) {
+      logger.error(e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
