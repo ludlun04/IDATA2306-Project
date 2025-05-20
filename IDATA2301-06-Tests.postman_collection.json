@@ -3,7 +3,8 @@
 		"_postman_id": "f0bdc152-0aa9-4c6d-b2e9-9763cc9c6b7d",
 		"name": "IDATA2301-06-Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "27024266"
+		"_exporter_id": "27024266",
+		"_collection_link": "https://group-2-8902.postman.co/workspace/Group-2-Workspace~9c95614f-1507-4a46-84c6-a4a47380bffb/collection/27024266-f0bdc152-0aa9-4c6d-b2e9-9763cc9c6b7d?action=share&source=collection_link&creator=27024266"
 	},
 	"item": [
 		{
@@ -31,7 +32,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"admin@user.no\",\r\n    \"password\":\"yes\"\r\n}",
+							"raw": "{\r\n    \"username\":\"chuck@ntnu.no\",\r\n    \"password\":\"Nunchucks2024\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -72,7 +73,45 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"user@user.no\",\r\n    \"password\": \"yes\"\r\n}",
+							"raw": "{\r\n    \"username\": \"dave@ntnu.no\",\r\n    \"password\": \"Dangerous2024\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/authenticate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company user token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"company_token\", pm.response.text())"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"company@user.no\",\r\n    \"password\": \"yes\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -130,7 +169,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"admin@user.no\",\r\n    \"password\":\"yes\"\r\n}",
+							"raw": "{\r\n    \"username\":\"chuck@ntnu.no\",\r\n    \"password\":\"Nunchucks2024\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -287,7 +326,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(4);",
+									"    pm.expect(jsonData.length).to.equal(5);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -332,7 +371,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(8);",
+									"    pm.expect(jsonData.length).to.equal(9);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -377,7 +416,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(2);",
+									"    pm.expect(jsonData.length).to.equal(1);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -422,7 +461,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(15);",
+									"    pm.expect(jsonData.length).to.equal(16);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -507,7 +546,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(3);",
+									"    pm.expect(jsonData.length).to.equal(25);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -589,7 +628,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(1);",
+									"    pm.expect(jsonData.length).to.equal(25);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -714,7 +753,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(3);",
+									"    pm.expect(jsonData.length).to.equal(11);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -799,7 +838,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(1);",
+									"    pm.expect(jsonData.length).to.equal(15);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -884,7 +923,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(1);",
+									"    pm.expect(jsonData.length).to.equal(0);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -929,7 +968,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    const jsonData = pm.response.json();",
-									"    pm.expect(jsonData.length).to.equal(2);",
+									"    pm.expect(jsonData.length).to.equal(5);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -956,41 +995,6 @@
 									"key": "keyword",
 									"value": "olKsWa"
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Attempt get by id without auth",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Response is 403\", function () {",
-									"    pm.response.to.have.status(403);",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/car/2",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"car",
-								"2"
 							]
 						}
 					},
@@ -1145,8 +1149,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Response is 400\", function () {",
-									"    pm.response.to.have.status(400);",
+									"pm.test(\"Response is 403\", function () {",
+									"    pm.response.to.have.status(403);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1155,11 +1159,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"year\": 2016,\n    \"numberOfSeats\": 4,\n    \"pricePerDay\": 700,\n    \"model\": {\n        \"id\": 3,\n        \"name\": \"Polo\",\n        \"brand\": {\n            \"id\": 2,\n            \"name\": \"Volkswagen\"\n        }\n    },\n    \"fuelType\": {\n        \"id\": 2,\n        \"name\": \"Diesel\"\n    },\n    \"transmissionType\": {\n        \"id\": 1,\n        \"name\": \"Manual\"\n    },\n    \"addons\": [\n        {\n            \"id\": 1,\n            \"name\": \"GPS\"\n        }\n    ],\n    \"features\": [\n        {\n            \"id\": 1,\n            \"name\": \"Air conditioning\"\n        }\n    ],\n    \"company\": {\n        \"id\": 0,\n        \"name\": \"Company\",\n        \"address\": \"Apple road\",\n        \"phoneNumber\": {\n            \"id\": 2,\n            \"countryCode\": \"+47\",\n            \"number\": \"12345678\"\n        }\n    }\n}",
+							"raw": "{\n    \"year\": 2016,\n    \"numberOfSeats\": 4,\n    \"pricePerDay\": 700,\n    \"model\": {\n        \"id\": 3,\n        \"name\": \"Polo\",\n        \"brand\": {\n            \"id\": 2,\n            \"name\": \"Volkswagen\"\n        }\n    },\n    \"fuelType\": {\n        \"id\": 2,\n        \"name\": \"Diesel\"\n    },\n    \"transmissionType\": {\n        \"id\": 1,\n        \"name\": \"Manual\"\n    },\n    \"addons\": [\n        {\n            \"id\": 1,\n            \"name\": \"GPS\"\n        }\n    ],\n    \"features\": [\n        {\n            \"id\": 1,\n            \"name\": \"Air conditioning\"\n        }\n    ],\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1187,7 +1201,9 @@
 								"exec": [
 									"pm.test(\"Response is 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"});"
+									"});",
+									"",
+									"pm.collectionVariables.set(\"created_car\", pm.response.text())"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -1199,7 +1215,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"year\": 2016,\n    \"numberOfSeats\": 4,\n    \"pricePerDay\": 700,\n    \"model\": {\n        \"id\": 3,\n        \"name\": \"Polo\",\n        \"brand\": {\n            \"id\": 2,\n            \"name\": \"Volkswagen\"\n        }\n    },\n    \"fuelType\": {\n        \"id\": 2,\n        \"name\": \"Diesel\"\n    },\n    \"transmissionType\": {\n        \"id\": 1,\n        \"name\": \"Manual\"\n    },\n    \"addons\": [\n        {\n            \"id\": 1,\n            \"name\": \"GPS\"\n        }\n    ],\n    \"features\": [\n        {\n            \"id\": 1,\n            \"name\": \"Air conditioning\"\n        }\n    ],\n    \"company\": {\n        \"id\": 1,\n        \"name\": \"Company\",\n        \"address\": \"Apple road\",\n        \"phoneNumber\": {\n            \"id\": 2,\n            \"countryCode\": \"+47\",\n            \"number\": \"12345678\"\n        }\n    }\n}",
+							"raw": "{\n    \"year\": 2016,\n    \"numberOfSeats\": 4,\n    \"pricePerDay\": 700,\n    \"model\": {\n        \"id\": 3,\n        \"name\": \"Polo\",\n        \"brand\": {\n            \"id\": 2,\n            \"name\": \"Volkswagen\"\n        }\n    },\n    \"fuelType\": {\n        \"id\": 2,\n        \"name\": \"Diesel\"\n    },\n    \"transmissionType\": {\n        \"id\": 1,\n        \"name\": \"Manual\"\n    },\n    \"addons\": [\n        {\n            \"id\": 1,\n            \"name\": \"GPS\"\n        }\n    ],\n    \"features\": [\n        {\n            \"id\": 1,\n            \"name\": \"Air conditioning\"\n        }\n    ],\n    \"company\": {\n        \"id\": 1,\n        \"name\": \"Company\",\n        \"address\": {\n            \"id\": 1,\n            \"zipCode\": 123,\n            \"country\": \"Norway\",\n            \"streetAddress\": \"RandomStreet\"\n        },\n        \"phoneNumber\": {\n            \"id\": 2,\n            \"countryCode\": \"+47\",\n            \"number\": \"12345678\"\n        }\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1231,7 +1247,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.have.lengthOf(5);",
+									"    pm.expect(jsonData).to.have.lengthOf(27);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1274,13 +1290,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/car/2",
+							"raw": "{{base_url}}/car/{{created_car}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"car",
-								"2"
+								"{{created_car}}"
 							]
 						}
 					},
@@ -1331,7 +1347,7 @@
 									"",
 									"pm.test(\"Response body contains the correct amount of cars\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.have.lengthOf(4);",
+									"    pm.expect(jsonData).to.have.lengthOf(26);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1353,6 +1369,116 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Valid put update visibility",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{company_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "visibility",
+								"value": "false",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "true",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/car/1/visibility",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car",
+								"1",
+								"visibility"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token put update visibility",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "false",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/car/1/visibility",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"car",
+								"1",
+								"visibility"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1370,7 +1496,7 @@
 									"    pm.response.to.have.status(200)\r",
 									"})\r",
 									"pm.test(\"Body contains 2 companies\", () => {\r",
-									"    pm.expect(pm.response.json().length).to.equal(2)\r",
+									"    pm.expect(pm.response.json().length).to.equal(18)\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -1394,7 +1520,142 @@
 					"response": []
 				},
 				{
-					"name": "Get Company",
+					"name": "Cannot get all companies without admin role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/company",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.collectionVariables.set(\"created_company\", pm.response.text())\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"My special test company\",\r\n    \"address\": {\r\n        \"zipCode\": 2000,\r\n        \"country\": \"Norway Ish\",\r\n        \"streetAddress\": \"Some streetAddress in Norway\"\r\n    },\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"+47\",\r\n        \"number\": \"34293847328\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/company",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cannot add company without admin role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"My special test company\",\r\n    \"address\": {\r\n        \"zipCode\": 2000,\r\n        \"country\": \"Norway Ish\",\r\n        \"streetAddress\": \"Some streetAddress in Norway\"\r\n    },\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"+47\",\r\n        \"number\": \"34293847328\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/company",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Can get company as admin",
 					"event": [
 						{
 							"listen": "test",
@@ -1413,6 +1674,48 @@
 						"method": "GET",
 						"header": [],
 						"url": {
+							"raw": "{{base_url}}/company/{{created_company}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"{{created_company}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Can get company as company user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code to be 200\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{company_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
 							"raw": "{{base_url}}/company/1",
 							"host": [
 								"{{base_url}}"
@@ -1426,20 +1729,76 @@
 					"response": []
 				},
 				{
-					"name": "Add user to company",
+					"name": "Can not get company as user not in company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code to be 401\", function() {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
-						"method": "POST",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{company_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/company/0/user/0",
+							"raw": "{{base_url}}/company/7",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"company",
-								"0",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add user to company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/company/{{created_company}}/user/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"{{created_company}}",
 								"user",
-								"0"
+								"3"
 							]
 						}
 					},
@@ -1447,17 +1806,35 @@
 				},
 				{
 					"name": "Get Users In Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Company has 1 user\", () => {\r",
+									"    pm.expect(pm.response.json().length).to.equal(1)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/company/0/users",
+							"raw": "{{base_url}}/company/{{created_company}}/users",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"company",
-								"0",
+								"{{created_company}}",
 								"users"
 							]
 						}
@@ -1465,19 +1842,41 @@
 					"response": []
 				},
 				{
-					"name": "Get Users In Company Copy",
+					"name": "Cannot get company if not in it",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
-						"method": "DELETE",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/company/0/user/1",
+							"raw": "{{base_url}}/company/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"company",
-								"0",
-								"user",
 								"1"
 							]
 						}
@@ -1485,19 +1884,427 @@
 					"response": []
 				},
 				{
-					"name": "Get Users In Company Copy",
+					"name": "Can get company as user in company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{company_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/company/0/users",
+							"raw": "{{base_url}}/company/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"company",
-								"0",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user from company",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/company/{{created_company}}/user/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"{{created_company}}",
+								"user",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users In Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Expect company to only have one user\", () => {\r",
+									"    pm.expect(pm.response.json()).to.have.lengthOf(0)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/company/{{created_company}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"{{created_company}}",
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"My special test company\",\r\n    \"address\": {\r\n        \"zipCode\": 2000,\r\n        \"country\": \"Norway Ish\",\r\n        \"streetAddress\": \"Some streetAddress in Norway\"\r\n    },\r\n    \"phoneNumber\": {\r\n        \"countryCode\": \"+47\",\r\n        \"number\": \"34293847328\"\r\n    }\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/company/{{created_company}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"{{created_company}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cannot get deleted company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code to be 404\", function() {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/company/{{created_company}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"{{created_company}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update company as admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Name was changed\", function() {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json.name).to.eql(\"UPDATED\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": 3,\n        \"name\": \"UPDATED\",\n        \"address\": {\n            \"id\": 2,\n            \"zipCode\": \"2345\",\n            \"country\": \"Norway\",\n            \"streetAddress\": \"Borgundveien 4\"\n        },\n        \"phoneNumber\": {\n            \"id\": 2,\n            \"countryCode\": \"+47\",\n            \"number\": \"12345678\"\n        }\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/company/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update company as company user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Name was changed\", function() {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json.name).to.eql(\"COMPANY USER NAME\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{company_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": 2,\n        \"name\": \"COMPANY USER NAME\",\n        \"address\": {\n            \"id\": 2,\n            \"zipCode\": \"2345\",\n            \"country\": \"Norway\",\n            \"streetAddress\": \"Borgundveien 4\"\n        },\n        \"phoneNumber\": {\n            \"id\": 2,\n            \"countryCode\": \"+47\",\n            \"number\": \"12345678\"\n        }\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/company/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User cannot update company they are not a part of",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{company_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": 7,\n        \"name\": \"Miller Bil UPDATED\",\n        \"address\": {\n            \"id\": 2,\n            \"zipCode\": \"2345\",\n            \"country\": \"Norway\",\n            \"streetAddress\": \"Borgundveien 4\"\n        },\n        \"phoneNumber\": {\n            \"id\": 2,\n            \"countryCode\": \"+47\",\n            \"number\": \"12345678\"\n        }\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/company/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cannot update non-existing company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": 100000000000000000,\n        \"name\": \"Miller Bil UPDATED\",\n        \"address\": {\n            \"id\": 2,\n            \"zipCode\": \"2345\",\n            \"country\": \"Norway\",\n            \"streetAddress\": \"Borgundveien 4\"\n        },\n        \"phoneNumber\": {\n            \"id\": 2,\n            \"countryCode\": \"+47\",\n            \"number\": \"12345678\"\n        }\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/company/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get companies used in cars",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Correct amount of cars\", function () {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json.length).to.equal(17);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/company/with_rentals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company",
+								"with_rentals"
 							]
 						}
 					},
@@ -1509,17 +2316,17 @@
 			"name": "Order",
 			"item": [
 				{
-					"name": "Create Car",
+					"name": "Setup dates",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", () => {\r",
-									"    pm.response.to.have.status(200)\r",
-									"})\r",
-									"\r",
-									"pm.collectionVariables.set(\"order_created_car\", pm.response.text())"
+									"pm.environment.set(\"today\", new Date());",
+									"pm.environment.set(\"tomorrow\", new Date(new Date() + 1));",
+									"pm.environment.set(\"testing\", 23);",
+									"",
+									"console.log(\"set env dates\");"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -1527,11 +2334,270 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/get",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt get orders no token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/history",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of orders\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.lengthOf(6);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/history",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get admin orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of orders\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.lengthOf(0);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/history",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt get active user orders no token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/active",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get active user orders before insert",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"console.log(\"active orders before insert: \" + pm.response.json().length)",
+									"pm.environment.set(\"active_orders_before_insert\", pm.response.json().length);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/active",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt post order no token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Current time\r",
+									"let now = new Date();\r",
+									"\r",
+									"// Start date = now\r",
+									"let startDate = now.toISOString();\r",
+									"\r",
+									"// End date = 24 hours later\r",
+									"let tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);\r",
+									"let endDate = tomorrow.toISOString();\r",
+									"\r",
+									"// Set them as environment or local variables\r",
+									"pm.variables.set(\"startDate\", startDate);\r",
+									"pm.variables.set(\"endDate\", endDate);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"year\": 2016,\r\n    \"numberOfSeats\": 4,\r\n    \"pricePerDay\": 700,\r\n    \"model\": {\r\n        \"id\": 3,\r\n        \"name\": \"Polo\",\r\n        \"brand\": {\r\n            \"id\": 2,\r\n            \"name\": \"Volkswagen\"\r\n        }\r\n    },\r\n    \"fuelType\": {\r\n        \"id\": 2,\r\n        \"name\": \"Diesel\"\r\n    },\r\n    \"transmissionType\": {\r\n        \"id\": 1,\r\n        \"name\": \"Manual\"\r\n    },\r\n    \"addons\": [\r\n        {\r\n            \"id\": 1,\r\n            \"name\": \"GPS\"\r\n        }\r\n    ],\r\n    \"features\": [\r\n        {\r\n            \"id\": 1,\r\n            \"name\": \"Air conditioning\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"carId\": 1,\r\n    \"addonIds\": [\r\n        1\r\n    ],\r\n    \"startDate\": \"{{today}}\",\r\n    \"endDate\": \"{{tomorrow}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1539,12 +2605,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/car",
+							"raw": "{{base_url}}/order",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"car"
+								"order"
 							]
 						}
 					},
@@ -1591,11 +2657,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"carId\": 1,\r\n    \"addonIds\": [\r\n        1\r\n    ],\r\n    \"startDate\": \"{{startDate}}\",\r\n    \"endDate\": \"{{endDate}}\"\r\n}",
+							"raw": "{\r\n    \"carId\": 2,\r\n    \"addonIds\": [\r\n        1\r\n    ],\r\n    \"startDate\": \"{{today}}\",\r\n    \"endDate\": \"{{tomorrow}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1615,7 +2691,54 @@
 					"response": []
 				},
 				{
-					"name": "Order Created",
+					"name": "Get active user orders after insert",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Correct amount of orders\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(pm.environment.get(\"active_orders_before_insert\") + 1);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/active",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order by id",
 					"event": [
 						{
 							"listen": "test",
@@ -1626,7 +2749,7 @@
 									"})\r",
 									"\r",
 									"pm.test(\"Getting the correct order\", () => {\r",
-									"    pm.expect(pm.response.json()[\"orderId\"]).to.equal(3)\r",
+									"    pm.expect(\"\" + pm.response.json()[\"orderId\"]).to.equal(pm.variables.get(\"created_order\"))\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -1651,7 +2774,7 @@
 					"response": []
 				},
 				{
-					"name": "Cannot get other users order",
+					"name": "Attempt get order of other user by id",
 					"event": [
 						{
 							"listen": "test",
@@ -1693,20 +2816,14 @@
 					"response": []
 				},
 				{
-					"name": "Get orders on car",
+					"name": "Attempt get order by non-existing id",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", () => {\r",
-									"    pm.response.to.have.status(200)\r",
-									"})\r",
-									"\r",
-									"\r",
-									"pm.test(\"Car 1 has 7 orders\", () => {\r",
-									"    const data = pm.response.json()\r",
-									"    pm.expect(data.length).to.equal(7)\r",
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -1718,21 +2835,126 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/order/car/1",
+							"raw": "{{base_url}}/order/999999999999999",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"order",
-								"car",
-								"1"
+								"999999999999999"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Non owner user or admin user cannot delete order",
+					"name": "Attempt get order by invalid id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/-9999999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"-9999999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get orders on car",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test(\"Car 5 has 1 orders\", () => {\r",
+									"    const data = pm.response.json()\r",
+									"    pm.expect(data.length).to.equal(1)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/car/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"car",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt delete order with no auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/{{created_order}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt delete other user's order by id",
 					"event": [
 						{
 							"listen": "test",
@@ -1768,6 +2990,70 @@
 							"path": [
 								"order",
 								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt delete order by non-existing id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/9999999999999999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"9999999999999999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt delete order by invalid id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/-1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"-1"
 							]
 						}
 					},
@@ -1839,17 +3125,204 @@
 					"response": []
 				},
 				{
-					"name": "RemoveCar",
+					"name": "Get orders by car Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct amount of orders\", () => {\r",
+									"    const json = pm.response.json();\r",
+									"    pm.expect(json.length).to.equal(6);\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
-						"method": "DELETE",
+						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/car",
+							"raw": "{{base_url}}/order/car/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"car"
+								"order",
+								"car",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt get orders by company id no auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", () => {\r",
+									"    pm.response.to.have.status(403)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/company/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"company",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt get orders by company id with user not belonging to company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/company/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"company",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt get orders by non-existing company id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/company/9999999999999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"company",
+								"9999999999999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get orders by company id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct amount of orders\", () => {\r",
+									"    const json = pm.response.json();\r",
+									"    pm.expect(json.length).to.equal(6)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{company_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/company/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"company",
+								"1"
 							]
 						}
 					},
@@ -1872,7 +3345,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Body contains 2 objects\", function() {\r",
-									"    pm.expect(pm.response.json().length).to.equal(2);\r",
+									"    pm.expect(pm.response.json().length).to.equal(3);\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -1884,12 +3357,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users",
+							"raw": "{{base_url}}/user",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users"
+								"user"
 							]
 						}
 					},
@@ -1925,12 +3398,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users",
+							"raw": "{{base_url}}/user",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users"
+								"user"
 							]
 						}
 					},
@@ -1948,7 +3421,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Username to be admin\", () => {\r",
-									"    pm.expect(pm.response.json().username).to.eql(\"admin\")\r",
+									"    pm.expect(pm.response.json().firstName).to.eql(\"Chuck\")\r",
 									"\r",
 									"})"
 								],
@@ -1961,12 +3434,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/details",
+							"raw": "{{base_url}}/user/details",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
+								"user",
 								"details"
 							]
 						}
@@ -1997,12 +3470,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/details",
+							"raw": "{{base_url}}/user/details",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
+								"user",
 								"details"
 							]
 						}
@@ -2030,12 +3503,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/favorites",
+							"raw": "{{base_url}}/user/favorites",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
+								"user",
 								"favorites"
 							]
 						}
@@ -2066,12 +3539,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/favorites",
+							"raw": "{{base_url}}/user/favorites",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
+								"user",
 								"favorites"
 							]
 						}
@@ -2104,12 +3577,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/1",
+							"raw": "{{base_url}}/user/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
+								"user",
 								"1"
 							]
 						}
@@ -2140,12 +3613,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/1",
+							"raw": "{{base_url}}/user/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
+								"user",
 								"1"
 							]
 						}
@@ -2182,12 +3655,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/1",
+							"raw": "{{base_url}}/user/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
+								"user",
 								"1"
 							]
 						}
@@ -2195,57 +3668,23 @@
 					"response": []
 				},
 				{
-					"name": "Get User By Name",
+					"name": "Add User",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Expect response to contain user with name admin\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0].username).to.equal(\"admin\");\r",
-									"})\r",
-									"\r",
-									""
+									"pm.collectionVariables.set(\"created_user\", pm.response.text())"
 								],
 								"type": "text/javascript",
 								"packages": {}
 							}
 						}
 					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/users/search/admin",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"users",
-								"search",
-								"admin"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add User",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -2259,12 +3698,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/users/add",
+							"raw": "{{base_url}}/user/add",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
+								"user",
 								"add"
 							]
 						}
@@ -2272,32 +3711,14 @@
 					"response": []
 				},
 				{
-					"name": "Remove a user",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/users/2",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"users",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Cannot get user 2",
+					"name": "Get Created User",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -2309,13 +3730,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/2",
+							"raw": "{{base_url}}/user/{{created_user}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
-								"2"
+								"user",
+								"{{created_user}}"
 							]
 						}
 					},
@@ -2350,13 +3771,209 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/users/1",
+							"raw": "{{base_url}}/user/{{created_user}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
-								"1"
+								"user",
+								"{{created_user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Can't remove user without admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user/{{created_user}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"{{created_user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user/{{created_user}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"{{created_user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cannot get deleted user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user/{{created_user}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"{{created_user}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CarBrand",
+			"item": [
+				{
+					"name": "Get car brands used in cars",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(7);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/brand/with_rentals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"brand",
+								"with_rentals"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FuelType",
+			"item": [
+				{
+					"name": "Get fuel type used in cars",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body contains the correct amount of cars\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(3);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fuel/with_rentals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fuel",
+								"with_rentals"
 							]
 						}
 					},
@@ -2406,6 +4023,20 @@
 		{
 			"key": "order_created_car",
 			"value": ""
+		},
+		{
+			"key": "created_user",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "created_car",
+			"value": ""
+		},
+		{
+			"key": "created_company",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
