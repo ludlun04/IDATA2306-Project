@@ -192,7 +192,7 @@ public class UserController {
     User user = userService.getUserById(userDetails.getId());
 
     Long id = carFavorite.getCarId();
-    Boolean isFavorite = carFavorite.isFavorite();
+    boolean isFavorite = carFavorite.isFavorite();
 
     ResponseEntity<Boolean> toReturn;
     try {

@@ -11,6 +11,11 @@ public class FuelTypeService {
 
   private final FuelTypeRepository fuelTypeRepository;
 
+  /**
+   * Creates an instance of FuelTypeService.
+   *
+   * @param fuelTypeRepository the fuel type repository
+   */
   public FuelTypeService(FuelTypeRepository fuelTypeRepository) {
     this.fuelTypeRepository = fuelTypeRepository;
   }

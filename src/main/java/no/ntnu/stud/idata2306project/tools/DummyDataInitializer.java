@@ -27,6 +27,10 @@ import org.springframework.stereotype.Component;
 import no.ntnu.stud.idata2306project.model.contact.PhoneNumber;
 import no.ntnu.stud.idata2306project.model.user.User;
 
+/**
+ * DummyDataInitializer is a Spring component that initializes the application with
+ * dummy data when the application is ready.
+ */
 @Component
 public class DummyDataInitializer implements ApplicationListener<ApplicationReadyEvent> {
 

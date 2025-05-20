@@ -13,6 +13,15 @@ import org.springframework.data.repository.ListCrudRepository;
  * specific criteria.
  */
 public interface CarImageRepository extends ListCrudRepository<CarImage, Long> {
+
+  /**
+   * Finds a car image by its car ID, image type, and image width.
+   *
+   * @param carId the ID of the car
+   * @param imageType the type of the image
+   * @param imageWidth the width of the image
+   * @return the car image that matches the specified criteria
+   */
   CarImage findCarImageByCarIdAndImageTypeAndImageWidth(
       long carId,
       ImageType imageType,

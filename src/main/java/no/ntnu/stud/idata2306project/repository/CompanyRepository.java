@@ -16,6 +16,11 @@ import org.springframework.data.repository.ListCrudRepository;
  */
 public interface CompanyRepository extends ListCrudRepository<Company, Long> {
 
+  /**
+   * Finds all companies that have cars.
+   *
+   * @return a set of companies that have cars
+   */
   @Query("""
       SELECT company
             FROM Company company
@@ -23,8 +28,20 @@ public interface CompanyRepository extends ListCrudRepository<Company, Long> {
       """)
   Set<Company> findAllInUseOnCars();
 
+  /**
+   * Find all companies a user belongs to.
+   *
+   * @param usersId the ID of the user
+   * @return a set of companies that the user belongs to
+   */
   Set<Company> findAllByUsers_Id(long usersId);
 
+  /**
+   * Finds all companies that have a specific car.
+   *
+   * @param car the car to search for
+   * @return a list of companies that have the specified car
+   */
   @Query("""
       SELECT company
                   FROM Company company
