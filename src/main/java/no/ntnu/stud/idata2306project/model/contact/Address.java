@@ -67,7 +67,7 @@ public class Address {
   }
 
   /**
-   * Returns the address part of the address.
+   * Returns the street address part of the address.
    *
    * @return the address part of the address
    */
@@ -85,7 +85,7 @@ public class Address {
   }
 
   /**
-   * Sets the address.
+   * Sets the street address.
    *
    * @param address the new address
    */

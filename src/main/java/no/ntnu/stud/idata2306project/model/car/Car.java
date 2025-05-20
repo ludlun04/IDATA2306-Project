@@ -269,11 +269,7 @@ public class Car {
       return false;
     }
 
-    if (car.getId() == this.getId()) {
-      return true;
-    } else {
-      return false;
-    }
+    return car.getId() == this.getId();
   }
 
   /**

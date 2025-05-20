@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Set;
 
-import no.ntnu.stud.idata2306project.dto.CarDto;
-import no.ntnu.stud.idata2306project.model.car.Car;
 import no.ntnu.stud.idata2306project.model.company.Company;
 import no.ntnu.stud.idata2306project.model.user.User;
 import no.ntnu.stud.idata2306project.security.AccessUserDetails;

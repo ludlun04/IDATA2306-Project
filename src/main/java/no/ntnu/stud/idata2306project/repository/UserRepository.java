@@ -11,5 +11,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * entities.
  */
 public interface UserRepository extends JpaRepository<User, Long> {
+
+  /**
+   * Finds a user by their email address.
+   *
+   * @param email the email address of the user to find
+   * @return an {@link Optional} containing the found user, or empty if no user with the specified
+   *     email exists
+   */
   public Optional<User> findByEmail(String email);
 }

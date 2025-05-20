@@ -16,8 +16,20 @@ import org.springframework.data.jpa.repository.Query;
  * specific criteria.
  */
 public interface CarRepository extends JpaRepository<Car, Long> {
+
+  /**
+   * Finds a set of cars whose model matches the specified model.
+   *
+   * @param model the car model to search for
+   * @return a set of cars that match the specified model
+   */
   Set<Car> findByModel(CarModel model);
 
+  /**
+   * Fins all the unique number of seats in all cars.
+   *
+   * @return a set of unique number of seats in all cars
+   */
   @Query("""
       SELECT DISTINCT car.numberOfSeats
       FROM Car car
@@ -25,6 +37,12 @@ public interface CarRepository extends JpaRepository<Car, Long> {
       """)
   Set<Integer> findAllAmountOfSeatsInCars();
 
+    /**
+     * Finds all cars that belong to a specific company.
+     *
+     * @param companyId the ID of the company
+     * @return a list of cars that belong to the specified company
+     */
   @Query("""
       SELECT company.cars
                   FROM Company company

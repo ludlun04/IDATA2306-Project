@@ -15,6 +15,11 @@ import org.springframework.data.repository.ListCrudRepository;
  */
 public interface FuelTypeRepository extends ListCrudRepository<FuelType, Long> {
 
+  /**
+   * Find all fuel types that are currently in use on cars.
+   *
+   * @return a set of fuel types that are currently in use on cars
+   */
   @Query("""
       SELECT DISTINCT fuelType
             FROM FuelType fuelType JOIN Car car ON fuelType.id = car.fuelType.id

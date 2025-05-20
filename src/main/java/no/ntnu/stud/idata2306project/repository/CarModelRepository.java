@@ -13,7 +13,22 @@ import org.springframework.data.repository.ListCrudRepository;
  * specific criteria.
  */
 public interface CarModelRepository extends ListCrudRepository<CarModel, Long> {
+
+  /**
+   * Finds a set of car models whose names contain the specified keyword,
+   * ignoring case.
+   *
+   * @param keyword the keyword to search for in car model names
+   * @return a set of car models whose names contain the specified keyword
+   */
   Set<CarModel> findByNameContainingIgnoreCase(String keyword);
 
+  /**
+   * Finds a set of car models whose brand names contain the specified keyword,
+   * ignoring case.
+   *
+   * @param name the keyword to search for in car brand names
+   * @return a set of car models whose brand names contain the specified keyword
+   */
   Set<CarModel> findByBrandNameContainingIgnoreCase(String name);
 }
