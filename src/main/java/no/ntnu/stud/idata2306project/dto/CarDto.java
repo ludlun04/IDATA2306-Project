@@ -25,6 +25,7 @@ public class CarDto {
   private String description;
   private List<Addon> addons;
   private List<Feature> features;
+  private boolean visible;
 
   /**
    * Sets the id of the car dto.
@@ -222,5 +223,23 @@ public class CarDto {
    */
   public List<Feature> getFeatures() {
     return features;
+  }
+
+  /**
+   * Sets the visibility of the car dto.
+   *
+   * @param visible the visibility of the car dto
+   */
+  public void setVisible(boolean visible) {
+    this.visible = visible;
+  }
+
+  /**
+   * Gets the visibility of the car dto.
+   *
+   * @return the visibility of the car dto
+   */
+  public boolean getVisible() {
+    return visible;
   }
 }

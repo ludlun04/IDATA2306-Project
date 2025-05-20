@@ -155,6 +155,7 @@ public class CarService {
     carDto.setDescription(car.getDescription());
     carDto.setAddons(car.getAddons());
     carDto.setFeatures(car.getFeatures());
+    carDto.setVisible(car.isVisible());
 
     return carDto;
   }
